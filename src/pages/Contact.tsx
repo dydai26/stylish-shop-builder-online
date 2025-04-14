@@ -271,7 +271,7 @@ const Contact = () => {
           <div className="my-16">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-brand-brown">Still Have Questions?</h2>
-              <p className="text-gray-600 mt-2 w-1/2 mx-auto">
+              <p className="text-gray-600 mt-2  mx-auto">
                 Want to know more about healthy eating and the services I offer? Drop the questions and answers section below or contact me in a way convenient for you.
               </p>
             </div>

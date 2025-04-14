@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -128,6 +127,7 @@ const StripePaymentForm = ({
                   color: '#9e2146',
                 },
               },
+              hidePostalCode: true
             }}
           />
         </div>
@@ -151,7 +151,6 @@ const StripePaymentForm = ({
         <p>Card number: 4242 4242 4242 4242</p>
         <p>Expiry date: Any future date</p>
         <p>CVC: Any 3 digits</p>
-        <p>ZIP: Any 5 digits</p>
         <p className="mt-2 text-xs text-gray-500">Note: This is a test mode payment that will appear in your Stripe dashboard.</p>
       </div>
     </form>
