@@ -46,7 +46,7 @@ const IntroAnimation = ({ onAnimationComplete }: { onAnimationComplete: () => vo
         <img 
           src="/intro1.PNG" 
           alt="ECOVLUU Logo" 
-          className="w-auto h-32 md:w-40 md:h-40"
+          className="max-w-[260px] max-h-[160px] object-contain md:max-w-[160px] md:max-h-[160px]"
         />
       </div>
       </div>
