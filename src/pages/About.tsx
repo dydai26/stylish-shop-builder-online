@@ -54,7 +54,7 @@ const AboutPage = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[#E08F35] font-medium text-lg mb-2">
+                  <h3 className="text-[#E08F35] font-medium text-lg mb-2 text-left">
                     CRAMBE ABYSSINICA OIL
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed text-left">
@@ -73,7 +73,7 @@ const AboutPage = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[#E08F35] font-medium text-lg mb-2">
+                  <h3 className="text-[#E08F35] font-medium text-lg mb-2 text-left">
                     GENADVANCE® LIFE
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed text-left">
@@ -92,7 +92,7 @@ const AboutPage = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[#E08F35] font-medium text-lg mb-2">
+                  <h3 className="text-[#E08F35] font-medium text-lg mb-2 text-left">
                     KERATIN
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed text-left">
@@ -111,7 +111,7 @@ const AboutPage = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[#E08F35] font-medium text-lg mb-2">
+                  <h3 className="text-[#E08F35] font-medium text-lg mb-2 text-left">
                     SAFFRON EXTRACT
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed text-left">
@@ -130,7 +130,7 @@ const AboutPage = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[#E08F35] font-medium text-lg mb-2">
+                  <h3 className="text-[#E08F35] font-medium text-lg mb-2 text-left">
                     AMINO ACIDS
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed text-left">
@@ -149,7 +149,7 @@ const AboutPage = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[#E08F35] font-medium text-lg mb-2">
+                  <h3 className="text-[#E08F35] font-medium text-lg mb-2 text-left">
                     ALOE VERA
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed text-left">
@@ -229,7 +229,7 @@ const AboutPage = () => {
           </div>
           
           <h3 className="text-xl font-medium text-[#5A4A41] mb-6" data-animate>
-            CATALINA BACUL, founder
+            CATALINA BACIU, founder
           </h3>
           
           <div className="space-y-6 text-gray-600 text-sm leading-relaxed text-justify" data-animate>
