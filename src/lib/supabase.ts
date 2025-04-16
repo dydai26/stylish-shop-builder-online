@@ -7,22 +7,14 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // SQL query to create reviews table:
-/*
-CREATE TABLE IF NOT EXISTS reviews (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-  text TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  date TEXT
-);
-*/
+/* ... keep existing code (SQL table creation) ... */
 
 // UPS API credentials
 const UPS_CLIENT_ID = '9X8eEjrWfwfIBZyr0H4T8ZhXGcSwXHzCJNvE0bdFPISoFMxu';
 const UPS_CLIENT_SECRET = 'TPG00XQHHbKCZpoBXGrcHCNmSvAuRJFOPPDfoylgdftWt7mR4jxPDTRB9jVyxS8i';
+const UPS_API_URL = 'https://wwwcie.ups.com/api'; // Using test environment URL
 
-// Типи для інтеграції з UPS
+// Types for UPS integration
 export interface UPSAddress {
   addressLine: string;
   city: string;
@@ -39,20 +31,24 @@ export interface UPSShippingRate {
   deliveryTimeEstimate: string;
 }
 
-// Функція для отримання токену доступу UPS API
+// Function to get UPS access token
 const getUPSAccessToken = async (): Promise<string> => {
   try {
-    // У реальному проекті цей запит повинен виконуватися на стороні сервера
-    // для безпеки клієнтських даних
-    console.log('Getting UPS access token...');
-    
-    // Імітуємо отримання токена
-    // У реальній реалізації тут був би fetch запит до UPS OAuth API
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve('SIMULATED_UPS_ACCESS_TOKEN');
-      }, 500);
+    const response = await fetch('https://wwwcie.ups.com/security/v1/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-merchant-id': UPS_CLIENT_ID,
+      },
+      body: `grant_type=client_credentials&client_id=${UPS_CLIENT_ID}&client_secret=${UPS_CLIENT_SECRET}`,
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to get UPS access token');
+    }
+
+    const data = await response.json();
+    return data.access_token;
   } catch (error) {
     console.error('Error getting UPS access token:', error);
     throw error;
@@ -60,32 +56,47 @@ const getUPSAccessToken = async (): Promise<string> => {
 };
 
 /**
- * Валідація та пошук адреси через UPS API
+ * Validate and lookup address through UPS API
  */
 export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddress[]> => {
   try {
-    // Отримуємо токен доступу
     const accessToken = await getUPSAccessToken();
     
-    // Імітуємо відповідь від UPS API
-    console.log('Validating address with UPS:', address);
-    
-    // У реальній реалізації тут був би fetch запит до UPS Address Validation API
-    // з використанням отриманого токену
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // Припустимо, що UPS знайшов схожу адресу
-        resolve([
-          {
-            addressLine: address.addressLine,
-            city: address.city,
-            postalCode: address.postalCode,
-            countryCode: address.countryCode,
-            stateProvinceCode: address.stateProvinceCode
-          }
-        ]);
-      }, 1000);
+    const response = await fetch(`${UPS_API_URL}/addressvalidation/v1/1`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        XAVRequest: {
+          AddressKeyFormat: {
+            AddressLine: address.addressLine,
+            PoliticalDivision2: address.city,
+            PostcodePrimaryLow: address.postalCode,
+            CountryCode: address.countryCode,
+          },
+        },
+      }),
     });
+
+    if (!response.ok) {
+      throw new Error('Address validation failed');
+    }
+
+    const data = await response.json();
+    
+    // Parse and return validated addresses
+    const validatedAddresses = data.XAVResponse.ValidAddressIndicator 
+      ? [address] // If address is valid, return the original
+      : data.XAVResponse.CandidateAddressList?.CandidateAddress?.map((candidate: any) => ({
+          addressLine: candidate.AddressKeyFormat.AddressLine,
+          city: candidate.AddressKeyFormat.PoliticalDivision2,
+          postalCode: candidate.AddressKeyFormat.PostcodePrimaryLow,
+          countryCode: candidate.AddressKeyFormat.CountryCode,
+        })) || [];
+
+    return validatedAddresses;
   } catch (error) {
     console.error('Error validating UPS address:', error);
     throw error;
@@ -93,7 +104,7 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
 };
 
 /**
- * Отримання доступних тарифів доставки від UPS
+ * Get available shipping rates from UPS
  */
 export const getUPSShippingRates = async (
   fromAddress: UPSAddress,
@@ -102,49 +113,81 @@ export const getUPSShippingRates = async (
   packageDimensions?: { length: number; width: number; height: number }
 ): Promise<UPSShippingRate[]> => {
   try {
-    // Отримуємо токен доступу
     const accessToken = await getUPSAccessToken();
-    
-    // Імітуємо запит до UPS для отримання тарифів
-    console.log('Getting shipping rates from UPS:', { fromAddress, toAddress, packageWeight, packageDimensions });
-    
-    // У реальній реалізації тут був би fetch запит до UPS Rate API
-    // з використанням отриманого токену
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // Повертаємо приклади доступних тарифів
-        resolve([
-          {
-            serviceCode: 'UPS_GROUND',
-            serviceName: 'UPS Ground',
-            totalPrice: 10.99,
-            currency: 'EUR',
-            deliveryTimeEstimate: '3-5 business days'
+
+    const response = await fetch(`${UPS_API_URL}/rating/v1/Shop`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        RateRequest: {
+          Request: {
+            RequestOption: "Shop",
+            TransactionReference: {
+              CustomerContext: "Rating and Service"
+            }
           },
-          {
-            serviceCode: 'UPS_3DAY',
-            serviceName: 'UPS 3-Day Select',
-            totalPrice: 15.99,
-            currency: 'EUR',
-            deliveryTimeEstimate: '3 business days'
-          },
-          {
-            serviceCode: 'UPS_2DAY',
-            serviceName: 'UPS 2nd Day Air',
-            totalPrice: 22.99,
-            currency: 'EUR',
-            deliveryTimeEstimate: '2 business days'
-          },
-          {
-            serviceCode: 'UPS_NEXT_DAY',
-            serviceName: 'UPS Next Day Air',
-            totalPrice: 34.99,
-            currency: 'EUR',
-            deliveryTimeEstimate: 'Next business day'
+          Shipment: {
+            Shipper: {
+              Address: {
+                AddressLine: fromAddress.addressLine,
+                City: fromAddress.city,
+                PostalCode: fromAddress.postalCode,
+                CountryCode: fromAddress.countryCode,
+              }
+            },
+            ShipTo: {
+              Address: {
+                AddressLine: toAddress.addressLine,
+                City: toAddress.city,
+                PostalCode: toAddress.postalCode,
+                CountryCode: toAddress.countryCode,
+              }
+            },
+            Package: {
+              PackagingType: {
+                Code: "02", // Customer Supplied Package
+                Description: "Package"
+              },
+              PackageWeight: {
+                UnitOfMeasurement: {
+                  Code: "KGS"
+                },
+                Weight: packageWeight.toString()
+              },
+              ...(packageDimensions && {
+                Dimensions: {
+                  UnitOfMeasurement: {
+                    Code: "CM"
+                  },
+                  Length: packageDimensions.length.toString(),
+                  Width: packageDimensions.width.toString(),
+                  Height: packageDimensions.height.toString()
+                }
+              })
+            }
           }
-        ]);
-      }, 1500);
+        }
+      }),
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to get shipping rates');
+    }
+
+    const data = await response.json();
+    
+    return data.RateResponse.RatedShipment.map((rate: any) => ({
+      serviceCode: rate.Service.Code,
+      serviceName: rate.Service.Description,
+      totalPrice: parseFloat(rate.TotalCharges.MonetaryValue),
+      currency: rate.TotalCharges.CurrencyCode,
+      deliveryTimeEstimate: rate.GuaranteedDelivery?.BusinessDaysInTransit 
+        ? `${rate.GuaranteedDelivery.BusinessDaysInTransit} business days`
+        : 'Delivery time varies'
+    }));
   } catch (error) {
     console.error('Error getting UPS shipping rates:', error);
     throw error;
