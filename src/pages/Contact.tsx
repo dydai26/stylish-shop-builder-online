@@ -121,13 +121,13 @@ const Contact = () => {
             Have questions? We're here to help you with your hair care journey.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
               <div className="bg-brand-brown/10 p-4 rounded-full mb-4">
                 <Phone className="h-6 w-6 text-brand-brown" />
               </div>
               <h3 className="text-lg font-bold mb-2">Call Us</h3>
-              <p className="text-gray-700">+353 1 234 5678</p>
+              <p className="text-gray-700">+353 89 211 8018</p>
               <p className="text-gray-500">Mon-Fri, 9am-5pm</p>
             </div>
             
@@ -139,16 +139,8 @@ const Contact = () => {
               <p className="text-gray-700">dydai26@gmail.com</p>
               <p className="text-gray-500">We'll respond within 24 hours</p>
             </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
-              <div className="bg-brand-brown/10 p-4 rounded-full mb-4">
-                <MapPin className="h-6 w-6 text-brand-brown" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Visit Us</h3>
-              <p className="text-gray-700">A6, Block A, Sentry Business Park,</p>
-              <p className="text-gray-700">Swords Road, Santry, Dublin 9, Ireland</p>
             </div>
-          </div>
+            
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
             <div>

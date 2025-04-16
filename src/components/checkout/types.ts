@@ -1,4 +1,3 @@
-
 import { UPSShippingRate } from "@/lib/supabase";
 
 export interface CheckoutFormData {
@@ -40,7 +39,6 @@ export interface OrderData {
   items: any[];
   shipping?: ShippingInfo;
   subtotal: number;
-  tax: number;
   total: number;
   date: string;
   paymentInfo?: PaymentInfo;

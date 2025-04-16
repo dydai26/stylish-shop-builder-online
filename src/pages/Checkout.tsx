@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
@@ -61,9 +60,8 @@ const Checkout = () => {
     
     try {
       const subtotal = getCartTotal();
-      const shipping = selectedShippingRate ? selectedShippingRate.totalPrice : (subtotal > 0 ? 5.99 : 0);
-      const tax = subtotal * 0.21;
-      const total = subtotal + shipping + tax;
+      const shipping = selectedShippingRate ? selectedShippingRate.totalPrice : (subtotal > 0 ? 8.93 : 0);
+      const total = subtotal + shipping;
       
       const orderData = {
         orderId,
@@ -81,9 +79,8 @@ const Checkout = () => {
         shipping: selectedShippingRate ? {
           name: selectedShippingRate.serviceName,
           price: selectedShippingRate.totalPrice
-        } : { name: "Standard Shipping", price: 5.99 },
+        } : { name: "Standard Shipping", price: 8.93 },
         subtotal: subtotal,
-        tax: tax,
         total: total,
         date: new Date().toISOString(),
         paymentInfo: paymentInfo
@@ -244,9 +241,8 @@ const Checkout = () => {
   };
   
   const subtotal = getCartTotal();
-  const shipping = selectedShippingRate ? selectedShippingRate.totalPrice : (subtotal > 0 ? 5.99 : 0);
-  const tax = subtotal * 0.21;
-  const total = subtotal + shipping + tax;
+  const shipping = selectedShippingRate ? selectedShippingRate.totalPrice : (subtotal > 0 ? 8.93 : 0);
+  const total = subtotal + shipping;
   
   if (cartItems.length === 0) {
     navigate("/cart");
@@ -314,7 +310,6 @@ const Checkout = () => {
                 cartItems={cartItems}
                 subtotal={subtotal}
                 shipping={shipping}
-                tax={tax}
                 total={total}
                 selectedShippingRate={selectedShippingRate}
               />

@@ -61,7 +61,7 @@ const Cart = () => {
   };
   
   const subtotal = getCartTotal();
-  const shipping = subtotal > 0 ? 5.99 : 0;
+  const shipping = subtotal > 0 ? 8.93 : 0;
   const total = subtotal + shipping;
 
   return (
