@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { 
   RefreshCw, 
   Truck, 
-  HelpCircle,
-  ArrowLeft,
-  CreditCard
+  HelpCircle 
 } from "lucide-react";
 import { 
   Tooltip, 
@@ -140,53 +138,11 @@ const ShippingStep = ({
           </div>
         )}
         
-        {/* Mobile buttons - visible only on small screens */}
-        <div className="flex flex-col gap-3 mt-6 sm:hidden">
-          <Button 
-            onClick={handleNextStep}
-            className="bg-brand-orange hover:bg-brand-orange/90 text-white w-full"
-          >
-            <CreditCard className="mr-2 h-4 w-4" />
-            Continue to Payment
-          </Button>
-          
-          <Button 
-            type="button" 
-            onClick={validateAddress} 
-            variant="outline" 
-            disabled={isValidatingAddress}
-            className="w-full"
-          >
-            {isValidatingAddress ? (
-              <>
-                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                Validating...
-              </>
-            ) : (
-              <>
-                <Truck className="mr-2 h-4 w-4" />
-                Validate with UPS
-              </>
-            )}
-          </Button>
-          
-          <Button 
-            onClick={handlePrevStep}
-            variant="outline"
-            className="w-full"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-        </div>
-        
-        {/* Desktop buttons - hidden on small screens */}
-        <div className="hidden sm:flex justify-between mt-6">
+        <div className="flex justify-between mt-6">
           <Button 
             onClick={handlePrevStep}
             variant="outline"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
           <div className="flex items-center gap-2">
@@ -223,7 +179,6 @@ const ShippingStep = ({
               onClick={handleNextStep}
               className="bg-brand-orange hover:bg-brand-orange/90 text-white"
             >
-              <CreditCard className="mr-2 h-4 w-4" />
               Continue to Payment
             </Button>
           </div>

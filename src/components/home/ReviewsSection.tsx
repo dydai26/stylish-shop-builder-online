@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useReviews } from "@/context/ReviewsContext";
 import ReviewCard from "@/components/ui/ReviewCard";
@@ -84,17 +85,17 @@ const ReviewsSection = () => {
           </div>
         )}
         
-        <div className="flex flex-row justify-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button
             onClick={() => setFormOpen(!formOpen)}
-            className="bg-brand-brown text-white font-medium rounded hover:bg-opacity-90 transition-colors w-[136px] h-[40px]"
+            className="bg-brand-brown text-white font-medium px-6 py-3 rounded hover:bg-opacity-90 transition-colors"
           >
             {formOpen ? "Cancel" : "Leave a Review"}
           </Button>
           
           <Link to="/reviews">
             <Button
-              className="bg-brand-orange text-white font-medium rounded hover:bg-opacity-90 transition-colors w-[136px] h-[40px]"
+              className="bg-brand-orange text-white font-medium px-6 py-3 rounded hover:bg-opacity-90 transition-colors"
             >
               All Reviews
             </Button>

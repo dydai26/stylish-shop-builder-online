@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 
 const AboutSection = () => {
@@ -14,11 +15,11 @@ const AboutSection = () => {
           {/* Left Column */}
           <div className="space-y-4 sm:space-y-6">
             {/* Benefits of Natural Ingredients */}
-            <div className="flex flex-row gap-4 items-start mt-0 sm:mt-18" data-animate>
-              <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start mt-0 sm:mt-18" data-animate>
+              <div className="w-full sm:w-20 h-40 sm:h-20 rounded-md overflow-hidden flex-shrink-0">
                 <img src="/_DSC8533.jpg" alt="Natural ingredients" className="w-full h-full object-cover" />
               </div>
-              <div className="text-left">
+              <div className="text-center sm:text-left">
                 <h3 className="font-semibold">The Benefits of Natural Ingredients</h3>
                 <p className="text-gray-600 text-sm">
                   Our products are made with organic ingredients to nourish your hair.
@@ -27,11 +28,11 @@ const AboutSection = () => {
             </div>
             
            {/* Key Ingredients */}
-           <div className="flex flex-row gap-4 items-start" data-animate>
-              <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start" data-animate>
+              <div className="w-full sm:w-20 h-40 sm:h-20 rounded-md overflow-hidden flex-shrink-0">
                 <img src="/image container.jpg" alt="Key ingredients" className="w-full h-full object-cover" />
               </div>
-              <div className="text-left">
+              <div className="text-center sm:text-left">
                 <h3 className="font-semibold">Key Ingredients for Hair Health</h3>
                 <p className="text-gray-600 text-sm">
                   Learn about the essential oils and extracts that make our products effective.
@@ -43,11 +44,11 @@ const AboutSection = () => {
           {/* Right Column */}
           <div className="space-y-4 sm:space-y-6 mt-4 md:mt-0">
             {/* Developed by Professionals */}
-            <div className="flex flex-row gap-4 items-start" data-animate>
-              <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start" data-animate>
+              <div className="w-full sm:w-20 h-40 sm:h-20 rounded-md overflow-hidden flex-shrink-0">
                 <img src="/image 2.jpg" alt="Brand founder" className="w-full h-full object-cover" />
               </div>
-              <div className="text-left">
+              <div className="text-center sm:text-left">
                 <h3 className="font-semibold">Developed by Professionals</h3>
                 <p className="text-gray-600 text-sm">
                   Find out more about brand founder with 25 years of experience in the industry.
@@ -56,11 +57,11 @@ const AboutSection = () => {
             </div>
             
             {/* Expert Advice */}
-            <div className="flex flex-row gap-4 items-start" data-animate>
-              <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start" data-animate>
+              <div className="w-full sm:w-20 h-40 sm:h-20 rounded-md overflow-hidden flex-shrink-0">
                 <img src="/image 11.jpg" alt="Expert advice" className="w-full h-full object-cover" />
               </div>
-              <div className="text-left">
+              <div className="text-center sm:text-left">
                 <h3 className="font-semibold">Expert Advice on Hair Care</h3>
                 <p className="text-gray-600 text-sm">
                   Free consultation from our professionals on how to maintain healthy hair.

@@ -34,7 +34,11 @@ const OrderItems = ({ orderData }: OrderItemsProps) => {
         </div>
         <div className="flex justify-between w-1/2 py-1">
           <span>Shipping:</span>
-          <span>€{(orderData.shipping?.price || 8.93).toFixed(2)}</span>
+          <span>€{(orderData.shipping?.price || 5.99).toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between w-1/2 py-1">
+          <span>Tax (21%):</span>
+          <span>€{orderData.tax.toFixed(2)}</span>
         </div>
         <div className="flex justify-between w-1/2 py-1 font-medium border-t mt-1">
           <span>Total:</span>

@@ -1,3 +1,4 @@
+
 import emailjs from '@emailjs/browser';
 import { OrderData } from '@/components/checkout/types';
 
@@ -22,6 +23,7 @@ export const sendOrderConfirmationEmail = async (orderData: OrderData) => {
       items_list: itemsList,
       subtotal: `€${orderData.subtotal.toFixed(2)}`,
       shipping: `€${(orderData.shipping?.price || 0).toFixed(2)}`,
+      tax: `€${orderData.tax.toFixed(2)}`,
       total: `€${orderData.total.toFixed(2)}`,
       payment_method: orderData.paymentInfo ? "Credit Card (Stripe)" : "N/A",
       shipping_method: orderData.shipping?.name || "Standard Shipping",

@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, ReactNode } from "react";
 import { CartItem } from "@/context/CartContext";
 
@@ -28,9 +29,9 @@ export interface OrderData {
   items: CartItem[];
   shipping?: ShippingInfo;
   subtotal: number;
+  tax: number;
   total: number;
   date: string;
-  paymentInfo?: any;
 }
 
 interface OrderContextType {

@@ -69,9 +69,6 @@ const App = () => {
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/order-success" element={<OrderSuccess />} />
                     <Route path="/reviews" element={<Reviews />} />
-                    <Route path="/terms" element={<TermsAndConditions />} />
-                    <Route path="/privacy" element={<PrivacyPolicy />} />
-                    <Route path="/returns" element={<ReturnsAndRefundPolicy />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                   <Toaster />

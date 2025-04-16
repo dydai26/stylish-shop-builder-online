@@ -1,3 +1,4 @@
+
 import React from "react";
 import { UPSShippingRate } from "@/lib/supabase";
 import { CartItem } from "@/context/CartContext";
@@ -6,6 +7,7 @@ interface OrderSummaryProps {
   cartItems: CartItem[];
   subtotal: number;
   shipping: number;
+  tax: number;
   total: number;
   selectedShippingRate: UPSShippingRate | null;
 }
@@ -14,6 +16,7 @@ const OrderSummary = ({
   cartItems,
   subtotal,
   shipping,
+  tax,
   total,
   selectedShippingRate
 }: OrderSummaryProps) => {
@@ -57,6 +60,11 @@ const OrderSummary = ({
           ) : (
             <span>€{shipping.toFixed(2)}</span>
           )}
+        </div>
+
+        <div className="flex justify-between">
+          <span className="text-gray-600">Tax (21% VAT)</span>
+          <span>€{tax.toFixed(2)}</span>
         </div>
 
         <div className="border-t pt-4 flex justify-between font-bold text-lg">
