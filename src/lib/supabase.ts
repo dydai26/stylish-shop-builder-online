@@ -14,7 +14,7 @@ const UPS_CLIENT_ID = '9X8eEjrWfwfIBZyr0H4T8ZhXGcSwXHzCJNvE0bdFPISoFMxu';
 const UPS_CLIENT_SECRET = 'TPG00XQHHbKCZpoBXGrcHCNmSvAuRJFOPPDfoylgdftWt7mR4jxPDTRB9jVyxS8i';
 
 // Важливо: встановити MOCK_MODE=true для використання мокових API викликів під час розробки
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 // Types for UPS integration
 export interface UPSAddress {
