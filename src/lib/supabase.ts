@@ -13,8 +13,8 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 const UPS_CLIENT_ID = '9X8eEjrWfwfIBZyr0H4T8ZhXGcSwXHzCJNvE0bdFPISoFMxu';
 const UPS_CLIENT_SECRET = 'TPG00XQHHbKCZpoBXGrcHCNmSvAuRJFOPPDfoylgdftWt7mR4jxPDTRB9jVyxS8i';
 
-// For development and testing, we'll use mock data to avoid CORS issues with direct API calls
-const MOCK_MODE = true; // Set to false when using a backend proxy for production
+// Set to false to use real UPS API calls
+const MOCK_MODE = false;
 
 // Types for UPS integration
 export interface UPSAddress {
@@ -41,8 +41,8 @@ const getUPSAccessToken = async (): Promise<string> => {
   }
   
   try {
-    // In production, this would be a server-side call to avoid CORS issues
-    const response = await fetch('https://wwwcie.ups.com/security/v1/oauth/token', {
+    // For production, this would ideally be a server-side call to avoid CORS issues
+    const response = await fetch('https://onlinetools.ups.com/security/v1/oauth/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -106,7 +106,7 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
     
     console.log('Sending address validation request:', JSON.stringify(validationPayload));
     
-    const response = await fetch(`https://wwwcie.ups.com/api/addressvalidation/v1/1`, {
+    const response = await fetch(`https://onlinetools.ups.com/api/addressvalidation/v1/1`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -335,7 +335,7 @@ export const getUPSShippingRates = async (
     
     console.log('Sending rate request:', JSON.stringify(rateRequest));
     
-    const response = await fetch(`https://wwwcie.ups.com/api/rating/v1/Shop`, {
+    const response = await fetch(`https://onlinetools.ups.com/api/rating/v1/Shop`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
