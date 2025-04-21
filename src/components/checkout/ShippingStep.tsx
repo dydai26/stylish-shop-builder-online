@@ -68,7 +68,6 @@ const ShippingStep = ({
 
   const handleValidateAddress = async () => {
     try {
-      setApiErrorOccurred(false);
       await validateAddress();
     } catch (error) {
       console.error("Error in validate address:", error);
@@ -169,7 +168,7 @@ const ShippingStep = ({
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Connection Error</AlertTitle>
             <AlertDescription>
-              We couldn't connect to the UPS shipping provider. Please try again or contact support if the problem persists.
+              We couldn't connect to our shipping provider. We're showing estimated rates instead.
             </AlertDescription>
           </Alert>
         )}

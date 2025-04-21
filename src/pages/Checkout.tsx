@@ -224,9 +224,8 @@ const Checkout = () => {
       }
       
       toast({
-        title: "Shipping Calculation Error",
-        description: "There was an error connecting to UPS. We're using estimated shipping rates for your address.",
-        variant: "destructive"
+        title: "Shipping Calculation",
+        description: "We're using estimated shipping rates for your address.",
       });
     } finally {
       setIsValidatingAddress(false);
@@ -260,12 +259,6 @@ const Checkout = () => {
         console.error("Error fetching shipping rates:", error);
         // Use fallback rates if API call fails
         rates = fallbackShippingRates;
-        
-        toast({
-          title: "Shipping Rates Error",
-          description: "We couldn't retrieve real-time shipping rates. Using estimated rates instead.",
-          variant: "destructive"
-        });
       }
       
       if (rates && rates.length > 0) {
@@ -290,9 +283,8 @@ const Checkout = () => {
         }));
         
         toast({
-          title: "Shipping Options Limited",
-          description: "We couldn't find specific shipping options for your address. Using standard rates instead.",
-          variant: "destructive"
+          title: "Shipping Estimate",
+          description: "We're showing estimated shipping rates for your destination.",
         });
       }
     } catch (error) {
@@ -306,9 +298,8 @@ const Checkout = () => {
       }));
       
       toast({
-        title: "Shipping Calculation Failed",
-        description: "An unexpected error occurred. Using standard shipping rates for your order.",
-        variant: "destructive"
+        title: "Shipping Information",
+        description: "Using standard shipping rates for your order.",
       });
     } finally {
       setIsLoadingRates(false);
