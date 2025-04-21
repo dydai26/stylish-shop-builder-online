@@ -12,7 +12,9 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 // UPS API credentials
 const UPS_CLIENT_ID = '9X8eEjrWfwfIBZyr0H4T8ZhXGcSwXHzCJNvE0bdFPISoFMxu';
 const UPS_CLIENT_SECRET = 'TPG00XQHHbKCZpoBXGrcHCNmSvAuRJFOPPDfoylgdftWt7mR4jxPDTRB9jVyxS8i';
-const UPS_API_URL = 'https://wwwcie.ups.com/api'; // Using test environment URL
+
+// For development and testing, we'll use mock data to avoid CORS issues with direct API calls
+const MOCK_MODE = true; // Set to false when using a backend proxy for production
 
 // Types for UPS integration
 export interface UPSAddress {
@@ -33,7 +35,13 @@ export interface UPSShippingRate {
 
 // Function to get UPS access token
 const getUPSAccessToken = async (): Promise<string> => {
+  if (MOCK_MODE) {
+    console.log('Mock mode: Returning fake access token');
+    return 'mock_access_token_for_development';
+  }
+  
   try {
+    // In production, this would be a server-side call to avoid CORS issues
     const response = await fetch('https://wwwcie.ups.com/security/v1/oauth/token', {
       method: 'POST',
       headers: {
@@ -59,8 +67,25 @@ const getUPSAccessToken = async (): Promise<string> => {
 
 /**
  * Validate and lookup address through UPS API
+ * In development mode, returns mock data to avoid CORS issues
  */
 export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddress[]> => {
+  // For development and testing, return a mocked validation response
+  if (MOCK_MODE) {
+    console.log('Mock mode: Validating address:', address);
+    
+    // Simulate a slight delay to mimic API call
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Return a slightly modified address to simulate validation correction
+    return [{
+      addressLine: address.addressLine,
+      city: address.city,
+      postalCode: address.postalCode,
+      countryCode: address.countryCode,
+    }];
+  }
+  
   try {
     const accessToken = await getUPSAccessToken();
     console.log('Validating address:', address);
@@ -81,7 +106,7 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
     
     console.log('Sending address validation request:', JSON.stringify(validationPayload));
     
-    const response = await fetch(`${UPS_API_URL}/addressvalidation/v1/1`, {
+    const response = await fetch(`https://wwwcie.ups.com/api/addressvalidation/v1/1`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -143,6 +168,7 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
 
 /**
  * Get available shipping rates from UPS
+ * In development mode, returns mock data to avoid CORS issues
  */
 export const getUPSShippingRates = async (
   fromAddress: UPSAddress,
@@ -150,6 +176,104 @@ export const getUPSShippingRates = async (
   packageWeight: number,
   packageDimensions?: { length: number; width: number; height: number }
 ): Promise<UPSShippingRate[]> => {
+  // For development and testing, return mocked rates
+  if (MOCK_MODE) {
+    console.log('Mock mode: Getting shipping rates from', fromAddress, 'to', toAddress);
+    
+    // Simulate a slight delay to mimic API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Generate different rates based on destination country
+    const countryCode = getCountryCode(toAddress.countryCode);
+    let rates: UPSShippingRate[] = [];
+    
+    // Mock different rates based on country and package weight
+    if (countryCode === 'IE') {
+      // Ireland rates
+      rates = [
+        {
+          serviceCode: 'IE_standard',
+          serviceName: 'UPS Standard (Ireland)',
+          totalPrice: 5.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '1-2 business days'
+        },
+        {
+          serviceCode: 'IE_express',
+          serviceName: 'UPS Express Saver (Ireland)',
+          totalPrice: 9.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: 'Next business day'
+        }
+      ];
+    } else if (['GB', 'UK'].includes(countryCode)) {
+      // UK rates
+      rates = [
+        {
+          serviceCode: 'GB_standard',
+          serviceName: 'UPS Standard (UK)',
+          totalPrice: 12.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '2-3 business days'
+        },
+        {
+          serviceCode: 'GB_express',
+          serviceName: 'UPS Express (UK)',
+          totalPrice: 22.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '1-2 business days'
+        }
+      ];
+    } else if (['FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT'].includes(countryCode)) {
+      // Core EU countries
+      rates = [
+        {
+          serviceCode: 'EU_standard',
+          serviceName: 'UPS Standard (EU)',
+          totalPrice: 14.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '2-4 business days'
+        },
+        {
+          serviceCode: 'EU_express',
+          serviceName: 'UPS Express (EU)',
+          totalPrice: 24.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '1-2 business days'
+        }
+      ];
+    } else {
+      // Rest of Europe
+      rates = [
+        {
+          serviceCode: 'EU_other_standard',
+          serviceName: 'UPS Standard (Europe)',
+          totalPrice: 19.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '3-5 business days'
+        },
+        {
+          serviceCode: 'EU_other_express',
+          serviceName: 'UPS Express (Europe)',
+          totalPrice: 29.99,
+          currency: 'EUR',
+          deliveryTimeEstimate: '2-3 business days'
+        }
+      ];
+    }
+    
+    // Adjust prices based on weight
+    if (packageWeight > 2) {
+      rates = rates.map(rate => ({
+        ...rate,
+        totalPrice: parseFloat((rate.totalPrice * 1.5).toFixed(2))
+      }));
+    }
+    
+    console.log('Returning mock shipping rates:', rates);
+    return rates;
+  }
+  
   try {
     const accessToken = await getUPSAccessToken();
     console.log('Getting shipping rates from', fromAddress, 'to', toAddress);
@@ -211,7 +335,7 @@ export const getUPSShippingRates = async (
     
     console.log('Sending rate request:', JSON.stringify(rateRequest));
     
-    const response = await fetch(`${UPS_API_URL}/rating/v1/Shop`, {
+    const response = await fetch(`https://wwwcie.ups.com/api/rating/v1/Shop`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,

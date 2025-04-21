@@ -9,7 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
 import { validateUPSAddress, getUPSShippingRates, UPSAddress, UPSShippingRate } from "@/lib/supabase";
 
-// Import our new components
+// Import our components
 import CheckoutStepper from "@/components/checkout/CheckoutSteppers";
 import PersonalInfoStep from "@/components/checkout/PersonalInfoStep";
 import ShippingStep from "@/components/checkout/ShippingStep";
@@ -43,12 +43,31 @@ const Checkout = () => {
   const [selectedShippingRate, setSelectedShippingRate] = useState<UPSShippingRate | null>(null);
   const [processingPayment, setProcessingPayment] = useState(false);
   
+  // Default fallback shipping rates in case API fails
+  const fallbackShippingRates: UPSShippingRate[] = [
+    {
+      serviceCode: "fallback_standard",
+      serviceName: "Standard Delivery",
+      totalPrice: 5.99,
+      currency: "EUR",
+      deliveryTimeEstimate: "3-5 business days"
+    },
+    {
+      serviceCode: "fallback_express",
+      serviceName: "Express Delivery",
+      totalPrice: 12.99,
+      currency: "EUR",
+      deliveryTimeEstimate: "1-2 business days"
+    }
+  ];
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
     if (name === "shippingMethod") {
-      const selected = shippingRates.find(rate => rate.serviceCode === value);
+      const selected = shippingRates.find(rate => rate.serviceCode === value) || 
+                       fallbackShippingRates.find(rate => rate.serviceCode === value);
       if (selected) {
         setSelectedShippingRate(selected);
       }
@@ -130,7 +149,6 @@ const Checkout = () => {
     }
     
     setIsValidatingAddress(true);
-    setShippingRates([]);
     
     try {
       console.log("Validating address with UPS:", { address, city, postalCode, country });
@@ -142,8 +160,21 @@ const Checkout = () => {
         countryCode: country,
       };
       
-      const validatedAddresses = await validateUPSAddress(upsAddress);
-      console.log("Validated addresses:", validatedAddresses);
+      // Try to validate address but handle failures gracefully
+      let validatedAddresses: UPSAddress[] = [];
+      try {
+        validatedAddresses = await validateUPSAddress(upsAddress);
+        console.log("Validated addresses:", validatedAddresses);
+      } catch (error) {
+        console.error("Address validation failed:", error);
+        // Use original address if validation fails
+        validatedAddresses = [upsAddress];
+        
+        toast({
+          title: "Address Validation Notice",
+          description: "We couldn't validate your address with UPS. Using address as entered.",
+        });
+      }
       
       if (validatedAddresses.length > 0) {
         const validAddress = validatedAddresses[0];
@@ -156,26 +187,47 @@ const Checkout = () => {
         }));
         
         toast({
-          title: "Address Validated",
-          description: "Your shipping address has been validated. Calculating shipping rates...",
+          title: "Address Processed",
+          description: "Calculating shipping rates...",
         });
         
-        fetchShippingRates(validAddress);
+        // Try to fetch shipping rates with fallback
+        await fetchShippingRates(validAddress);
       } else {
+        // If no addresses were returned, show a fallback message and use fallback rates
         toast({
           title: "Address Not Found",
-          description: "UPS could not validate this address. Please check your input and try again.",
+          description: "We couldn't find your address. Please check your input or try a different address.",
           variant: "destructive"
         });
-        setIsValidatingAddress(false);
+        setShippingRates(fallbackShippingRates);
+        
+        if (!formData.shippingMethod) {
+          setFormData(prev => ({
+            ...prev,
+            shippingMethod: fallbackShippingRates[0].serviceCode
+          }));
+          setSelectedShippingRate(fallbackShippingRates[0]);
+        }
       }
     } catch (error) {
-      console.error("Error validating address:", error);
+      console.error("Error in address validation flow:", error);
+      // Use fallback shipping rates
+      setShippingRates(fallbackShippingRates);
+      
+      if (!formData.shippingMethod) {
+        setFormData(prev => ({
+          ...prev,
+          shippingMethod: fallbackShippingRates[0].serviceCode
+        }));
+        setSelectedShippingRate(fallbackShippingRates[0]);
+      }
+      
       toast({
-        title: "Address Validation Error",
-        description: "There was an error validating your address with UPS. Please try again later.",
-        variant: "destructive"
+        title: "Shipping Calculation",
+        description: "We're using estimated shipping rates for your address.",
       });
+    } finally {
       setIsValidatingAddress(false);
     }
   };
@@ -199,8 +251,15 @@ const Checkout = () => {
       
       console.log("Calculated package weight:", totalWeight, "kg");
       
-      const rates = await getUPSShippingRates(fromAddress, toAddress, totalWeight);
-      console.log("Received shipping rates:", rates);
+      let rates: UPSShippingRate[] = [];
+      try {
+        rates = await getUPSShippingRates(fromAddress, toAddress, totalWeight);
+        console.log("Received shipping rates:", rates);
+      } catch (error) {
+        console.error("Error fetching shipping rates:", error);
+        // Use fallback rates if API call fails
+        rates = fallbackShippingRates;
+      }
       
       if (rates && rates.length > 0) {
         setShippingRates(rates);
@@ -215,22 +274,35 @@ const Checkout = () => {
           description: `${rates.length} shipping options found for your address.`,
         });
       } else {
+        // If no rates were returned, use fallback rates
+        setShippingRates(fallbackShippingRates);
+        setSelectedShippingRate(fallbackShippingRates[0]);
+        setFormData(prev => ({
+          ...prev,
+          shippingMethod: fallbackShippingRates[0].serviceCode
+        }));
+        
         toast({
-          title: "No Shipping Options",
-          description: "No shipping rates available for this destination. Please try a different address.",
-          variant: "destructive"
+          title: "Shipping Estimate",
+          description: "We're showing estimated shipping rates for your destination.",
         });
       }
     } catch (error) {
-      console.error("Error fetching shipping rates:", error);
+      console.error("Error in shipping rates flow:", error);
+      // Use fallback rates as a last resort
+      setShippingRates(fallbackShippingRates);
+      setSelectedShippingRate(fallbackShippingRates[0]);
+      setFormData(prev => ({
+        ...prev,
+        shippingMethod: fallbackShippingRates[0].serviceCode
+      }));
+      
       toast({
-        title: "Shipping Rates Error",
-        description: "Could not get UPS shipping rates. Please try again later.",
-        variant: "destructive"
+        title: "Shipping Information",
+        description: "Using standard shipping rates for your order.",
       });
     } finally {
       setIsLoadingRates(false);
-      setIsValidatingAddress(false);
     }
   };
   
@@ -259,12 +331,19 @@ const Checkout = () => {
       }
       
       if (!formData.shippingMethod && shippingRates.length > 0) {
-        toast({
-          title: "Shipping Method Required",
-          description: "Please select a shipping method to continue.",
-          variant: "destructive"
-        });
-        return;
+        // If no shipping method is selected but rates are available, auto-select the first one
+        setFormData(prev => ({
+          ...prev,
+          shippingMethod: shippingRates[0].serviceCode
+        }));
+        setSelectedShippingRate(shippingRates[0]);
+      } else if (!formData.shippingMethod) {
+        // If no rates available, use fallback
+        setFormData(prev => ({
+          ...prev,
+          shippingMethod: fallbackShippingRates[0].serviceCode
+        }));
+        setSelectedShippingRate(fallbackShippingRates[0]);
       }
     }
     

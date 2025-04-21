@@ -1,10 +1,11 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
   RefreshCw, 
   Truck, 
-  HelpCircle 
+  HelpCircle,
+  AlertTriangle
 } from "lucide-react";
 import { 
   Tooltip, 
@@ -12,6 +13,7 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CheckoutFormData } from "./types";
 import { UPSShippingRate } from "@/lib/supabase";
 
@@ -34,6 +36,45 @@ const ShippingStep = ({
   isValidatingAddress,
   shippingRates
 }: ShippingStepProps) => {
+  const [apiErrorOccurred, setApiErrorOccurred] = useState(false);
+  
+  // Add fallback shipping options to use when API fails
+  const fallbackShippingRates = [
+    {
+      serviceCode: "fallback_standard",
+      serviceName: "Standard Delivery",
+      totalPrice: 5.99,
+      currency: "EUR",
+      deliveryTimeEstimate: "3-5 business days"
+    },
+    {
+      serviceCode: "fallback_express",
+      serviceName: "Express Delivery",
+      totalPrice: 12.99,
+      currency: "EUR",
+      deliveryTimeEstimate: "1-2 business days"
+    },
+    {
+      serviceCode: "fallback_economy",
+      serviceName: "Economy Delivery",
+      totalPrice: 3.99,
+      currency: "EUR",
+      deliveryTimeEstimate: "5-7 business days"
+    }
+  ];
+
+  // Use fallback rates if API returns empty and user has tried to validate
+  const displayRates = shippingRates.length > 0 ? shippingRates : (apiErrorOccurred ? fallbackShippingRates : []);
+
+  const handleValidateAddress = async () => {
+    try {
+      await validateAddress();
+    } catch (error) {
+      console.error("Error in validate address:", error);
+      setApiErrorOccurred(true);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
@@ -122,11 +163,21 @@ const ShippingStep = ({
           </select>
         </div>
         
-        {shippingRates.length > 0 && (
+        {apiErrorOccurred && (
+          <Alert variant="destructive" className="bg-red-100 border-red-200">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Connection Error</AlertTitle>
+            <AlertDescription>
+              We couldn't connect to our shipping provider. We're showing estimated rates instead.
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {displayRates.length > 0 && (
           <div className="mt-6 border-t pt-4">
             <h3 className="font-medium mb-3">Select Shipping Method</h3>
             <div className="space-y-2">
-              {shippingRates.map((rate) => (
+              {displayRates.map((rate) => (
                 <label key={rate.serviceCode} className="flex items-center justify-between border p-3 rounded hover:bg-gray-50 cursor-pointer">
                   <div className="flex items-center">
                     <input
@@ -162,7 +213,7 @@ const ShippingStep = ({
                 <TooltipTrigger asChild>
                   <Button 
                     type="button" 
-                    onClick={validateAddress} 
+                    onClick={handleValidateAddress} 
                     variant="outline" 
                     size="sm"
                     disabled={isValidatingAddress}
