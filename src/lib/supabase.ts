@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://inivoiunisrgdinrcquu.supabase.co';
@@ -167,8 +166,7 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
 };
 
 /**
- * Get available shipping rates from UPS
- * In development mode, returns mock data to avoid CORS issues
+ * Отримати тарифи доставки UPS через Supabase Edge Function.
  */
 export const getUPSShippingRates = async (
   fromAddress: UPSAddress,
@@ -176,210 +174,28 @@ export const getUPSShippingRates = async (
   packageWeight: number,
   packageDimensions?: { length: number; width: number; height: number }
 ): Promise<UPSShippingRate[]> => {
-  // For development and testing, return mocked rates
-  if (MOCK_MODE) {
-    console.log('Mock mode: Getting shipping rates from', fromAddress, 'to', toAddress);
-    
-    // Simulate a slight delay to mimic API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Generate different rates based on destination country
-    const countryCode = getCountryCode(toAddress.countryCode);
-    let rates: UPSShippingRate[] = [];
-    
-    // Mock different rates based on country and package weight
-    if (countryCode === 'IE') {
-      // Ireland rates
-      rates = [
-        {
-          serviceCode: 'IE_standard',
-          serviceName: 'UPS Standard (Ireland)',
-          totalPrice: 5.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '1-2 business days'
-        },
-        {
-          serviceCode: 'IE_express',
-          serviceName: 'UPS Express Saver (Ireland)',
-          totalPrice: 9.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: 'Next business day'
-        }
-      ];
-    } else if (['GB', 'UK'].includes(countryCode)) {
-      // UK rates
-      rates = [
-        {
-          serviceCode: 'GB_standard',
-          serviceName: 'UPS Standard (UK)',
-          totalPrice: 12.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '2-3 business days'
-        },
-        {
-          serviceCode: 'GB_express',
-          serviceName: 'UPS Express (UK)',
-          totalPrice: 22.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '1-2 business days'
-        }
-      ];
-    } else if (['FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT'].includes(countryCode)) {
-      // Core EU countries
-      rates = [
-        {
-          serviceCode: 'EU_standard',
-          serviceName: 'UPS Standard (EU)',
-          totalPrice: 14.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '2-4 business days'
-        },
-        {
-          serviceCode: 'EU_express',
-          serviceName: 'UPS Express (EU)',
-          totalPrice: 24.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '1-2 business days'
-        }
-      ];
-    } else {
-      // Rest of Europe
-      rates = [
-        {
-          serviceCode: 'EU_other_standard',
-          serviceName: 'UPS Standard (Europe)',
-          totalPrice: 19.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '3-5 business days'
-        },
-        {
-          serviceCode: 'EU_other_express',
-          serviceName: 'UPS Express (Europe)',
-          totalPrice: 29.99,
-          currency: 'EUR',
-          deliveryTimeEstimate: '2-3 business days'
-        }
-      ];
-    }
-    
-    // Adjust prices based on weight
-    if (packageWeight > 2) {
-      rates = rates.map(rate => ({
-        ...rate,
-        totalPrice: parseFloat((rate.totalPrice * 1.5).toFixed(2))
-      }));
-    }
-    
-    console.log('Returning mock shipping rates:', rates);
-    return rates;
-  }
-  
+  // Запит через Supabase Edge Function
   try {
-    const accessToken = await getUPSAccessToken();
-    console.log('Getting shipping rates from', fromAddress, 'to', toAddress);
-    
-    // Convert country names to ISO country codes if needed
-    const fromCountryCode = getCountryCode(fromAddress.countryCode);
-    const toCountryCode = getCountryCode(toAddress.countryCode);
-    
-    const rateRequest = {
-      RateRequest: {
-        Request: {
-          RequestOption: "Shop",
-          TransactionReference: {
-            CustomerContext: "Rating and Service"
-          }
-        },
-        Shipment: {
-          Shipper: {
-            Address: {
-              AddressLine: fromAddress.addressLine,
-              City: fromAddress.city,
-              PostalCode: fromAddress.postalCode,
-              CountryCode: fromCountryCode,
-            }
-          },
-          ShipTo: {
-            Address: {
-              AddressLine: toAddress.addressLine,
-              City: toAddress.city,
-              PostalCode: toAddress.postalCode,
-              CountryCode: toCountryCode,
-            }
-          },
-          Package: {
-            PackagingType: {
-              Code: "02", // Customer Supplied Package
-              Description: "Package"
-            },
-            PackageWeight: {
-              UnitOfMeasurement: {
-                Code: "KGS"
-              },
-              Weight: packageWeight.toString()
-            },
-            ...(packageDimensions && {
-              Dimensions: {
-                UnitOfMeasurement: {
-                  Code: "CM"
-                },
-                Length: packageDimensions.length.toString(),
-                Width: packageDimensions.width.toString(),
-                Height: packageDimensions.height.toString()
-              }
-            })
-          }
-        }
-      }
-    };
-    
-    console.log('Sending rate request:', JSON.stringify(rateRequest));
-    
-    const response = await fetch(`https://onlinetools.ups.com/api/rating/v1/Shop`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(rateRequest),
+    const response = await fetch("/functions/v1/ups-shipping-rates", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fromAddress, toAddress, packageWeight, packageDimensions }),
     });
 
-    const responseText = await response.text();
-    console.log('UPS shipping rates raw response:', responseText);
-    
     if (!response.ok) {
-      throw new Error(`Failed to get shipping rates: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error("Edge function UPS shipping rates error:", errorText);
+      throw new Error(errorText);
     }
 
-    try {
-      const data = JSON.parse(responseText);
-      console.log('Parsed shipping rates response:', data);
-      
-      if (!data.RateResponse?.RatedShipment) {
-        console.warn('No shipping rates returned');
-        return [];
-      }
-      
-      const ratedShipments = Array.isArray(data.RateResponse.RatedShipment) 
-        ? data.RateResponse.RatedShipment 
-        : [data.RateResponse.RatedShipment];
-      
-      return ratedShipments.map((rate: any) => ({
-        serviceCode: rate.Service.Code,
-        serviceName: getServiceName(rate.Service.Code),
-        totalPrice: parseFloat(rate.TotalCharges.MonetaryValue),
-        currency: rate.TotalCharges.CurrencyCode,
-        deliveryTimeEstimate: rate.GuaranteedDelivery?.BusinessDaysInTransit 
-          ? `${rate.GuaranteedDelivery.BusinessDaysInTransit} business days`
-          : 'Delivery time varies'
-      }));
-    } catch (parseError) {
-      console.error('Error parsing UPS rates response:', parseError);
-      return [];
+    const data = await response.json();
+    if (Array.isArray(data.rates)) {
+      return data.rates;
     }
+    throw new Error(data.error || "No rates returned");
   } catch (error) {
-    console.error('Error getting UPS shipping rates:', error);
-    return [];
+    console.error("Error from UPS shipping edge function:", error);
+    throw error;
   }
 };
 
