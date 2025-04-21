@@ -44,10 +44,12 @@ const getUPSAccessToken = async (): Promise<string> => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get UPS access token');
+      console.error('UPS token response:', await response.text());
+      throw new Error(`Failed to get UPS access token: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
+    console.log('UPS token obtained successfully');
     return data.access_token;
   } catch (error) {
     console.error('Error getting UPS access token:', error);
@@ -61,6 +63,23 @@ const getUPSAccessToken = async (): Promise<string> => {
 export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddress[]> => {
   try {
     const accessToken = await getUPSAccessToken();
+    console.log('Validating address:', address);
+    
+    // Convert country name to ISO country code if needed
+    const countryCode = getCountryCode(address.countryCode);
+    
+    const validationPayload = {
+      XAVRequest: {
+        AddressKeyFormat: {
+          AddressLine: address.addressLine,
+          PoliticalDivision2: address.city,
+          PostcodePrimaryLow: address.postalCode,
+          CountryCode: countryCode,
+        },
+      },
+    };
+    
+    console.log('Sending address validation request:', JSON.stringify(validationPayload));
     
     const response = await fetch(`${UPS_API_URL}/addressvalidation/v1/1`, {
       method: 'POST',
@@ -68,38 +87,57 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        XAVRequest: {
-          AddressKeyFormat: {
-            AddressLine: address.addressLine,
-            PoliticalDivision2: address.city,
-            PostcodePrimaryLow: address.postalCode,
-            CountryCode: address.countryCode,
-          },
-        },
-      }),
+      body: JSON.stringify(validationPayload),
     });
 
+    const responseText = await response.text();
+    console.log('UPS address validation raw response:', responseText);
+    
     if (!response.ok) {
-      throw new Error('Address validation failed');
+      throw new Error(`Address validation failed: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
-    
-    // Parse and return validated addresses
-    const validatedAddresses = data.XAVResponse.ValidAddressIndicator 
-      ? [address] // If address is valid, return the original
-      : data.XAVResponse.CandidateAddressList?.CandidateAddress?.map((candidate: any) => ({
-          addressLine: candidate.AddressKeyFormat.AddressLine,
-          city: candidate.AddressKeyFormat.PoliticalDivision2,
-          postalCode: candidate.AddressKeyFormat.PostcodePrimaryLow,
-          countryCode: candidate.AddressKeyFormat.CountryCode,
-        })) || [];
-
-    return validatedAddresses;
+    try {
+      const data = JSON.parse(responseText);
+      console.log('Parsed address validation response:', data);
+      
+      // Handle various response formats
+      if (data.XAVResponse?.ValidAddressIndicator) {
+        // Address is valid
+        console.log('Address is valid according to UPS');
+        return [address];
+      } else if (data.XAVResponse?.NoCandidatesIndicator) {
+        // No matches found
+        console.log('No valid addresses found');
+        return [];
+      } else if (data.XAVResponse?.CandidateAddressList) {
+        // Handle candidate addresses
+        const candidates = Array.isArray(data.XAVResponse.CandidateAddressList.CandidateAddress)
+          ? data.XAVResponse.CandidateAddressList.CandidateAddress
+          : [data.XAVResponse.CandidateAddressList.CandidateAddress];
+        
+        console.log('Found candidate addresses:', candidates.length);
+        
+        return candidates.map((candidate: any) => ({
+          addressLine: candidate.AddressKeyFormat.AddressLine[0] || address.addressLine,
+          city: candidate.AddressKeyFormat.PoliticalDivision2 || address.city,
+          postalCode: candidate.AddressKeyFormat.PostcodePrimaryLow || address.postalCode,
+          countryCode: candidate.AddressKeyFormat.CountryCode || countryCode,
+        }));
+      } else {
+        // Fallback - return original address
+        console.log('No specific validation result, returning original address');
+        return [address];
+      }
+    } catch (parseError) {
+      console.error('Error parsing UPS response:', parseError);
+      // If parsing fails, return the original address
+      return [address];
+    }
   } catch (error) {
     console.error('Error validating UPS address:', error);
-    throw error;
+    // In case of API failure, return the original address
+    return [address];
   }
 };
 
@@ -114,82 +152,177 @@ export const getUPSShippingRates = async (
 ): Promise<UPSShippingRate[]> => {
   try {
     const accessToken = await getUPSAccessToken();
-
+    console.log('Getting shipping rates from', fromAddress, 'to', toAddress);
+    
+    // Convert country names to ISO country codes if needed
+    const fromCountryCode = getCountryCode(fromAddress.countryCode);
+    const toCountryCode = getCountryCode(toAddress.countryCode);
+    
+    const rateRequest = {
+      RateRequest: {
+        Request: {
+          RequestOption: "Shop",
+          TransactionReference: {
+            CustomerContext: "Rating and Service"
+          }
+        },
+        Shipment: {
+          Shipper: {
+            Address: {
+              AddressLine: fromAddress.addressLine,
+              City: fromAddress.city,
+              PostalCode: fromAddress.postalCode,
+              CountryCode: fromCountryCode,
+            }
+          },
+          ShipTo: {
+            Address: {
+              AddressLine: toAddress.addressLine,
+              City: toAddress.city,
+              PostalCode: toAddress.postalCode,
+              CountryCode: toCountryCode,
+            }
+          },
+          Package: {
+            PackagingType: {
+              Code: "02", // Customer Supplied Package
+              Description: "Package"
+            },
+            PackageWeight: {
+              UnitOfMeasurement: {
+                Code: "KGS"
+              },
+              Weight: packageWeight.toString()
+            },
+            ...(packageDimensions && {
+              Dimensions: {
+                UnitOfMeasurement: {
+                  Code: "CM"
+                },
+                Length: packageDimensions.length.toString(),
+                Width: packageDimensions.width.toString(),
+                Height: packageDimensions.height.toString()
+              }
+            })
+          }
+        }
+      }
+    };
+    
+    console.log('Sending rate request:', JSON.stringify(rateRequest));
+    
     const response = await fetch(`${UPS_API_URL}/rating/v1/Shop`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        RateRequest: {
-          Request: {
-            RequestOption: "Shop",
-            TransactionReference: {
-              CustomerContext: "Rating and Service"
-            }
-          },
-          Shipment: {
-            Shipper: {
-              Address: {
-                AddressLine: fromAddress.addressLine,
-                City: fromAddress.city,
-                PostalCode: fromAddress.postalCode,
-                CountryCode: fromAddress.countryCode,
-              }
-            },
-            ShipTo: {
-              Address: {
-                AddressLine: toAddress.addressLine,
-                City: toAddress.city,
-                PostalCode: toAddress.postalCode,
-                CountryCode: toAddress.countryCode,
-              }
-            },
-            Package: {
-              PackagingType: {
-                Code: "02", // Customer Supplied Package
-                Description: "Package"
-              },
-              PackageWeight: {
-                UnitOfMeasurement: {
-                  Code: "KGS"
-                },
-                Weight: packageWeight.toString()
-              },
-              ...(packageDimensions && {
-                Dimensions: {
-                  UnitOfMeasurement: {
-                    Code: "CM"
-                  },
-                  Length: packageDimensions.length.toString(),
-                  Width: packageDimensions.width.toString(),
-                  Height: packageDimensions.height.toString()
-                }
-              })
-            }
-          }
-        }
-      }),
+      body: JSON.stringify(rateRequest),
     });
 
+    const responseText = await response.text();
+    console.log('UPS shipping rates raw response:', responseText);
+    
     if (!response.ok) {
-      throw new Error('Failed to get shipping rates');
+      throw new Error(`Failed to get shipping rates: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
-    
-    return data.RateResponse.RatedShipment.map((rate: any) => ({
-      serviceCode: rate.Service.Code,
-      serviceName: rate.Service.Description,
-      totalPrice: parseFloat(rate.TotalCharges.MonetaryValue),
-      currency: rate.TotalCharges.CurrencyCode,
-      deliveryTimeEstimate: rate.GuaranteedDelivery?.BusinessDaysInTransit 
-        ? `${rate.GuaranteedDelivery.BusinessDaysInTransit} business days`
-        : 'Delivery time varies'
-    }));
+    try {
+      const data = JSON.parse(responseText);
+      console.log('Parsed shipping rates response:', data);
+      
+      if (!data.RateResponse?.RatedShipment) {
+        console.warn('No shipping rates returned');
+        return [];
+      }
+      
+      const ratedShipments = Array.isArray(data.RateResponse.RatedShipment) 
+        ? data.RateResponse.RatedShipment 
+        : [data.RateResponse.RatedShipment];
+      
+      return ratedShipments.map((rate: any) => ({
+        serviceCode: rate.Service.Code,
+        serviceName: getServiceName(rate.Service.Code),
+        totalPrice: parseFloat(rate.TotalCharges.MonetaryValue),
+        currency: rate.TotalCharges.CurrencyCode,
+        deliveryTimeEstimate: rate.GuaranteedDelivery?.BusinessDaysInTransit 
+          ? `${rate.GuaranteedDelivery.BusinessDaysInTransit} business days`
+          : 'Delivery time varies'
+      }));
+    } catch (parseError) {
+      console.error('Error parsing UPS rates response:', parseError);
+      return [];
+    }
   } catch (error) {
     console.error('Error getting UPS shipping rates:', error);
-    throw error;
+    return [];
   }
+};
+
+// Helper function to get country code
+const getCountryCode = (country: string): string => {
+  const countryCodes: {[key: string]: string} = {
+    'Ireland': 'IE',
+    'United Kingdom': 'GB',
+    'France': 'FR',
+    'Germany': 'DE',
+    'Spain': 'ES',
+    'Italy': 'IT',
+    'Netherlands': 'NL',
+    'Belgium': 'BE',
+    'Portugal': 'PT',
+    'Switzerland': 'CH',
+    'Austria': 'AT',
+    'Poland': 'PL',
+    'Sweden': 'SE',
+    'Denmark': 'DK',
+    'Norway': 'NO',
+    'Finland': 'FI',
+    'Greece': 'GR',
+    // Already a country code
+    'IE': 'IE',
+    'GB': 'GB',
+    'FR': 'FR',
+    'DE': 'DE',
+    'ES': 'ES',
+    'IT': 'IT',
+    'NL': 'NL',
+    'BE': 'BE',
+    'PT': 'PT',
+    'CH': 'CH',
+    'AT': 'AT',
+    'PL': 'PL',
+    'SE': 'SE',
+    'DK': 'DK',
+    'NO': 'NO',
+    'FI': 'FI',
+    'GR': 'GR',
+  };
+  
+  return countryCodes[country] || country;
+};
+
+// Helper function to get service name from service code
+const getServiceName = (serviceCode: string): string => {
+  const serviceNames: {[key: string]: string} = {
+    '01': 'UPS Next Day Air',
+    '02': 'UPS 2nd Day Air',
+    '03': 'UPS Ground',
+    '07': 'UPS Worldwide Express',
+    '08': 'UPS Worldwide Expedited',
+    '11': 'UPS Standard',
+    '12': 'UPS 3 Day Select',
+    '14': 'UPS Next Day Air Early',
+    '54': 'UPS Worldwide Express Plus',
+    '59': 'UPS 2nd Day Air A.M.',
+    '65': 'UPS Saver',
+    '82': 'UPS Today Standard',
+    '83': 'UPS Today Dedicated Courier',
+    '84': 'UPS Today Intercity',
+    '85': 'UPS Today Express',
+    '86': 'UPS Today Express Saver',
+    '96': 'UPS Worldwide Express Freight'
+  };
+  
+  return serviceNames[serviceCode] || `UPS Service (${serviceCode})`;
 };

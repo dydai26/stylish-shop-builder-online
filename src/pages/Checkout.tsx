@@ -123,15 +123,18 @@ const Checkout = () => {
     if (!address || !city || !postalCode || !country) {
       toast({
         title: "Address Validation Error",
-        description: "Please fill in all address fields before validating.",
+        description: "Please fill in all address fields before calculating shipping rates.",
         variant: "destructive"
       });
       return;
     }
     
     setIsValidatingAddress(true);
+    setShippingRates([]);
     
     try {
+      console.log("Validating address with UPS:", { address, city, postalCode, country });
+      
       const upsAddress: UPSAddress = {
         addressLine: address,
         city: city,
@@ -140,6 +143,7 @@ const Checkout = () => {
       };
       
       const validatedAddresses = await validateUPSAddress(upsAddress);
+      console.log("Validated addresses:", validatedAddresses);
       
       if (validatedAddresses.length > 0) {
         const validAddress = validatedAddresses[0];
@@ -153,25 +157,25 @@ const Checkout = () => {
         
         toast({
           title: "Address Validated",
-          description: "Your shipping address has been validated by UPS.",
+          description: "Your shipping address has been validated. Calculating shipping rates...",
         });
         
         fetchShippingRates(validAddress);
       } else {
         toast({
           title: "Address Not Found",
-          description: "UPS could not validate this address. Please check your input.",
+          description: "UPS could not validate this address. Please check your input and try again.",
           variant: "destructive"
         });
+        setIsValidatingAddress(false);
       }
     } catch (error) {
       console.error("Error validating address:", error);
       toast({
         title: "Address Validation Error",
-        description: "There was an error validating your address with UPS.",
+        description: "There was an error validating your address with UPS. Please try again later.",
         variant: "destructive"
       });
-    } finally {
       setIsValidatingAddress(false);
     }
   };
@@ -180,6 +184,8 @@ const Checkout = () => {
     setIsLoadingRates(true);
     
     try {
+      console.log("Fetching shipping rates to:", toAddress);
+      
       const fromAddress: UPSAddress = {
         addressLine: "123 Store St",
         city: "Dublin",
@@ -187,27 +193,44 @@ const Checkout = () => {
         countryCode: "Ireland"
       };
       
-      const totalWeight = cartItems.reduce((sum, item) => sum + (item.quantity * 0.5), 0);
+      // Calculate package weight based on items in cart
+      // Assuming each item weighs 0.5 kg as a default
+      const totalWeight = Math.max(0.1, cartItems.reduce((sum, item) => sum + (item.quantity * 0.5), 0));
+      
+      console.log("Calculated package weight:", totalWeight, "kg");
       
       const rates = await getUPSShippingRates(fromAddress, toAddress, totalWeight);
+      console.log("Received shipping rates:", rates);
       
-      setShippingRates(rates);
-      if (rates.length > 0) {
+      if (rates && rates.length > 0) {
+        setShippingRates(rates);
         setSelectedShippingRate(rates[0]);
         setFormData(prev => ({
           ...prev,
           shippingMethod: rates[0].serviceCode
         }));
+        
+        toast({
+          title: "Shipping Options Available",
+          description: `${rates.length} shipping options found for your address.`,
+        });
+      } else {
+        toast({
+          title: "No Shipping Options",
+          description: "No shipping rates available for this destination. Please try a different address.",
+          variant: "destructive"
+        });
       }
     } catch (error) {
       console.error("Error fetching shipping rates:", error);
       toast({
         title: "Shipping Rates Error",
-        description: "Could not get UPS shipping rates.",
+        description: "Could not get UPS shipping rates. Please try again later.",
         variant: "destructive"
       });
     } finally {
       setIsLoadingRates(false);
+      setIsValidatingAddress(false);
     }
   };
   
@@ -230,6 +253,15 @@ const Checkout = () => {
         toast({
           title: "Missing Information",
           description: "Please fill in all required shipping information.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      if (!formData.shippingMethod && shippingRates.length > 0) {
+        toast({
+          title: "Shipping Method Required",
+          description: "Please select a shipping method to continue.",
           variant: "destructive"
         });
         return;
