@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://inivoiunisrgdinrcquu.supabase.co';
@@ -12,8 +13,8 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 const UPS_CLIENT_ID = '9X8eEjrWfwfIBZyr0H4T8ZhXGcSwXHzCJNvE0bdFPISoFMxu';
 const UPS_CLIENT_SECRET = 'TPG00XQHHbKCZpoBXGrcHCNmSvAuRJFOPPDfoylgdftWt7mR4jxPDTRB9jVyxS8i';
 
-// Важливо: встановити MOCK_MODE=false для використання реальних API викликів
-const MOCK_MODE = false;
+// Важливо: встановити MOCK_MODE=true для використання мокових API викликів під час розробки
+const MOCK_MODE = true;
 
 // Types for UPS integration
 export interface UPSAddress {
@@ -195,6 +196,13 @@ export const getUPSShippingRates = async (
         totalPrice: 24.99,
         currency: "EUR",
         deliveryTimeEstimate: "1-2 business days"
+      },
+      {
+        serviceCode: "mock_economy",
+        serviceName: "UPS Economy (Mock)",
+        totalPrice: 8.99,
+        currency: "EUR",
+        deliveryTimeEstimate: "5-7 business days"
       }
     ];
   }
@@ -203,10 +211,16 @@ export const getUPSShippingRates = async (
   console.log('Making REAL request to UPS API via Edge Function');
   
   try {
-    // URL має бути відносним для правильної роботи в різних середовищах
-    const response = await fetch("/functions/v1/ups-shipping-rates", {
+    // Використовуємо повний URL із Supabase проекту
+    const funcUrl = `${supabaseUrl}/functions/v1/ups-shipping-rates`;
+    console.log("Calling Edge Function at:", funcUrl);
+    
+    const response = await fetch(funcUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${supabaseKey}`
+      },
       body: JSON.stringify({ fromAddress, toAddress, packageWeight, packageDimensions }),
     });
 
@@ -215,7 +229,7 @@ export const getUPSShippingRates = async (
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Edge function UPS shipping rates error:", errorText);
-      throw new Error(errorText);
+      throw new Error(errorText || "Edge function error");
     }
 
     const data = await response.json();
