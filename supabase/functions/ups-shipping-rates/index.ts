@@ -5,7 +5,8 @@
  * Endpoint: POST /ups-shipping-rates
  */
 
-import { serve } from 'std/server'
+// Потрібно використовувати правильний імпорт з префіксом
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 
 serve(async (req) => {
   if (req.method !== 'POST') {
