@@ -27,8 +27,20 @@ serve(async (req) => {
   }
 
   // Витягуємо секрети з Environment (налаштовуються через Supabase Secrets)
-  const UPS_CLIENT_ID = Deno.env.get("UPS_CLIENT_ID")!;
-  const UPS_CLIENT_SECRET = Deno.env.get("UPS_CLIENT_SECRET")!;
+  const UPS_CLIENT_ID = Deno.env.get("UPS_CLIENT_ID");
+  const UPS_CLIENT_SECRET = Deno.env.get("UPS_CLIENT_SECRET");
+
+  console.log("Edge Function: Starting UPS rates calculation");
+  console.log(`Edge Function: Client ID available? ${Boolean(UPS_CLIENT_ID)}`);  
+  console.log(`Edge Function: Client Secret available? ${Boolean(UPS_CLIENT_SECRET)}`);  
+
+  if (!UPS_CLIENT_ID || !UPS_CLIENT_SECRET) {
+    console.error("Edge Function: UPS credentials missing");
+    return new Response(JSON.stringify({ 
+      error: 'UPS credentials not configured in Supabase Secrets',
+      debug: { hasClientId: Boolean(UPS_CLIENT_ID), hasClientSecret: Boolean(UPS_CLIENT_SECRET) }
+    }), { status: 500 });
+  }
 
   // Функція для отримання токену
   async function getUPSToken() {
@@ -36,6 +48,8 @@ serve(async (req) => {
     params.append('grant_type', 'client_credentials');
     params.append('client_id', UPS_CLIENT_ID);
     params.append('client_secret', UPS_CLIENT_SECRET);
+
+    console.log("Edge Function: Getting UPS token");
 
     const resp = await fetch("https://onlinetools.ups.com/security/v1/oauth/token", {
       method: 'POST',
@@ -46,9 +60,12 @@ serve(async (req) => {
       body: params,
     });
     if (!resp.ok) {
-      throw new Error('UPS token error: ' + (await resp.text()));
+      const errorText = await resp.text();
+      console.error('Edge Function: UPS token error:', errorText);
+      throw new Error('UPS token error: ' + errorText);
     }
     const data = await resp.json();
+    console.log("Edge Function: Token obtained successfully");
     return data.access_token;
   }
 
@@ -68,6 +85,10 @@ serve(async (req) => {
       };
       return cc[country] || country;
     };
+
+    console.log("Edge Function: Preparing rate request");
+    console.log(`Edge Function: From ${from.city}, ${from.countryCode} to ${to.city}, ${to.countryCode}`);
+    console.log(`Edge Function: Package weight ${packageWeight}kg`);
 
     const rateRequest = {
       RateRequest: {
@@ -108,6 +129,8 @@ serve(async (req) => {
       }
     };
 
+    console.log("Edge Function: Sending UPS rates request");
+
     const resp = await fetch("https://onlinetools.ups.com/api/rating/v1/Shop", {
       method: 'POST',
       headers: {
@@ -119,13 +142,16 @@ serve(async (req) => {
 
     const text = await resp.text();
     if (!resp.ok) {
+      console.error('Edge Function: UPS rates error:', text);
       throw new Error('UPS rates error: ' + text);
     }
 
     let data;
     try {
       data = JSON.parse(text);
-    } catch {
+      console.log("Edge Function: Received UPS rates response");
+    } catch (e) {
+      console.error('Edge Function: Failed to parse UPS response:', e);
       throw new Error("Parsing UPS rates JSON fail");
     }
 
@@ -133,6 +159,9 @@ serve(async (req) => {
     const ratedShipments = Array.isArray(data?.RateResponse?.RatedShipment)
       ? data.RateResponse.RatedShipment
       : (data?.RateResponse?.RatedShipment ? [data.RateResponse.RatedShipment] : []);
+      
+    console.log(`Edge Function: Found ${ratedShipments.length} shipping options`);
+    
     const rates = ratedShipments.map((rate: any) => ({
       serviceCode: rate.Service.Code,
       serviceName: rate.Service.Description || rate.Service.Code,
@@ -143,14 +172,40 @@ serve(async (req) => {
         : 'Delivery time varies'
     }));
 
+    console.log("Edge Function: Processed rates:", JSON.stringify(rates));
     return rates;
   }
 
   try {
+    console.log("Edge Function: Starting UPS API flow");
     const token = await getUPSToken();
     const rates = await getRates(token);
-    return new Response(JSON.stringify({ rates }), { status: 200 });
+    
+    // Додаємо трохи розширену відповідь для зручності діагностики
+    return new Response(JSON.stringify({ 
+      rates: rates,
+      meta: {
+        requestTime: new Date().toISOString(),
+        origin: `${fromAddress.city}, ${fromAddress.countryCode}`,
+        destination: `${toAddress.city}, ${toAddress.countryCode}`,
+        packageWeight: packageWeight
+      }
+    }), { 
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   } catch (e) {
-    return new Response(JSON.stringify({ error: String(e) }), { status: 500 });
+    console.error("Edge Function: Error processing request:", e);
+    return new Response(JSON.stringify({ 
+      error: String(e),
+      details: "Помилка при обробці запиту UPS API в Edge Function"
+    }), { 
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 });

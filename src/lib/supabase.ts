@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://inivoiunisrgdinrcquu.supabase.co';
@@ -9,11 +8,11 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 // SQL query to create reviews table:
 /* ... keep existing code (SQL table creation) ... */
 
-// UPS API credentials
+// UPS API credentials - ці ключі зараз використовуються тільки для MOCK_MODE
 const UPS_CLIENT_ID = '9X8eEjrWfwfIBZyr0H4T8ZhXGcSwXHzCJNvE0bdFPISoFMxu';
 const UPS_CLIENT_SECRET = 'TPG00XQHHbKCZpoBXGrcHCNmSvAuRJFOPPDfoylgdftWt7mR4jxPDTRB9jVyxS8i';
 
-// Set to false to use real UPS API calls
+// Важливо: встановити MOCK_MODE=false для використання реальних API викликів
 const MOCK_MODE = false;
 
 // Types for UPS integration
@@ -70,6 +69,8 @@ const getUPSAccessToken = async (): Promise<string> => {
  * In development mode, returns mock data to avoid CORS issues
  */
 export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddress[]> => {
+  console.log('Starting address validation, MOCK_MODE=', MOCK_MODE);
+  
   // For development and testing, return a mocked validation response
   if (MOCK_MODE) {
     console.log('Mock mode: Validating address:', address);
@@ -175,14 +176,42 @@ export const getUPSShippingRates = async (
   packageWeight: number,
   packageDimensions?: { length: number; width: number; height: number }
 ): Promise<UPSShippingRate[]> => {
-  // Запит через Supabase Edge Function
+  // Якщо включений мок-режим, повертаємо фіктивні дані
+  if (MOCK_MODE) {
+    console.log('Mock mode ON: Returning mock shipping rates');
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return [
+      {
+        serviceCode: "mock_standard",
+        serviceName: "UPS Standard (Mock)",
+        totalPrice: 12.99,
+        currency: "EUR",
+        deliveryTimeEstimate: "3-5 business days"
+      },
+      {
+        serviceCode: "mock_express",
+        serviceName: "UPS Express (Mock)",
+        totalPrice: 24.99,
+        currency: "EUR",
+        deliveryTimeEstimate: "1-2 business days"
+      }
+    ];
+  }
+  
+  // Реальний запит через Supabase Edge Function
+  console.log('Making REAL request to UPS API via Edge Function');
+  
   try {
+    // URL має бути відносним для правильної роботи в різних середовищах
     const response = await fetch("/functions/v1/ups-shipping-rates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ fromAddress, toAddress, packageWeight, packageDimensions }),
     });
 
+    console.log('Response status from Edge Function:', response.status);
+    
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Edge function UPS shipping rates error:", errorText);
@@ -190,6 +219,8 @@ export const getUPSShippingRates = async (
     }
 
     const data = await response.json();
+    console.log('Received rates from Edge Function:', data);
+    
     if (Array.isArray(data.rates)) {
       return data.rates;
     }
