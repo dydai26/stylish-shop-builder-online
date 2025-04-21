@@ -177,7 +177,7 @@ export const validateUPSAddress = async (address: UPSAddress): Promise<UPSAddres
   }
 };
 
-// Словник тарифів для кожної країни
+// Hardcoded shipping rates for each country
 const HARDCODED_UPS_RATES: Record<string, UPSShippingRate[]> = {
   "IE": [
     {
@@ -464,12 +464,12 @@ export const getUPSShippingRates = async (
 ): Promise<UPSShippingRate[]> => {
   const countryCode = getCountryCode(toAddress.countryCode);
 
-  // Якщо для країни є тарифи, повертаємо їх
+  // If there are rates for the country, return them
   if (HARDCODED_UPS_RATES[countryCode]) {
     return HARDCODED_UPS_RATES[countryCode];
   }
 
-  // Якщо немає — повертаємо універсальні тарифи для "решти Європи"
+  // If no rates for the country, return standard rates for "rest of Europe"
   return [
     {
       serviceCode: 'EU_other_standard',
