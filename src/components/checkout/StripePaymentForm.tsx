@@ -72,8 +72,8 @@ const StripePaymentForm = ({
       console.log("Payment method created:", paymentMethod);
       
       try {
-        const createTestPayment = await import('@/lib/stripe').then(module => module.createTestPayment);
-        const paymentResult = await createTestPayment(
+        const { createPayment } = await import('@/lib/stripe');
+        const paymentResult = await createPayment(
           paymentMethod.id,
           total,
           'eur',
