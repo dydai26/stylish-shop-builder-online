@@ -1,7 +1,5 @@
 
 // API keys and configuration values
-export const STRIPE_PUBLISHABLE_KEY = "pk_test_51QKQdPKOtNfpIm0rU1boZXpLyINriF9DkccqiLGzi91wjj8oZcgMDvxz7yvwLgowLWFIJl7ucJ9ZYeIwKCof8RMK00mU1a3mDZ";
+export const STRIPE_PUBLISHABLE_KEY = "pk_live_51QKQdPKOtNfpIm0rRq29AjDBWinr19bddlQpwWwYPv6EJLr2YY6to8P2cZlCJpsk8ShfGfzhYzceJ5GauNAnCfga00RCwnglT2";
 
-// Stripe Secret Key should never be exposed in frontend code
-// This should ideally be used only in secure backend environment
-export const STRIPE_SECRET_KEY = "sk_test_51QKQdPKOtNfpIm0rPFAW2UAvP3NJuZOk74RGWpimcpIpKCMczAlNuMxavrCto3BDMcGsmPkibxnpfpgenlMEAGo900K9asL9EC";
+// Note: Stripe Secret Key is stored securely in Supabase Edge Function Secrets
