@@ -1,0 +1,28 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "target": "ES2020",                  // сучасний JS
+    "module": "ESNext",                  // для імпортів ES
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], 
+    "allowJs": true,                      // дозволяє JS файли
+    "checkJs": false,                     // не перевіряти JS типи
+    "jsx": "react-jsx",                   // JSX для React 17+
+    "strict": true,                        // увімкнено всі строгі перевірки
+    "noImplicitAny": true,                 // не дозволяти any без типу
+    "strictNullChecks": true,              // суворі перевірки null/undefined
+    "noUnusedLocals": true,                // попередження про невикористані локальні змінні
+    "noUnusedParameters": true,            // попередження про невикористані параметри
+    "esModuleInterop": true,               // імпорт CommonJS як ES
+    "forceConsistentCasingInFileNames": true, 
+    "skipLibCheck": true,                  // пропуск перевірки типів у бібліотеках
+    "baseUrl": ".", 
+    "paths": {
+      "@/*": ["./src/*"]                  // псевдонім для імпортів
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

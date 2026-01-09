@@ -1,0 +1,17 @@
+[install]
+# Allow flexibility with Node versions
+dev = true
+optional = true
+peer = true
+
+# Don't enforce frozen lockfile to allow dependency updates
+frozenLockfile = false
+
+# Conservative script concurrency
+concurrentScripts = 2
+
+# Use hoisted linker for compatibility
+linker = "hoisted"
+
+# Skip problematic postinstall scripts
+trustedDependencies = []

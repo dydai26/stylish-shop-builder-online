@@ -1,0 +1,16 @@
+project_id = "inivoiunisrgdinrcquu"
+
+[functions.send-newsletter]
+verify_jwt = true
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.create-payment]
+verify_jwt = false
+
+[functions.get-resend-metrics]
+verify_jwt = true
+
+[functions.send-receipt]
+verify_jwt = true

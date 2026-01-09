@@ -1,0 +1,25 @@
+{
+    "git.ignoreLimitWarning": true,
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    },
+    "tailwindCSS.includeLanguages": {
+        "javascript": "javascript",
+        "html": "HTML",
+        "css": "css",
+        "typescript": "typescript",
+        "typescriptreact": "typescriptreact"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "deno.enable": true,
+    "deno.enablePaths": ["supabase/functions"],
+    "deno.unstable": true,
+    "deno.importMap": "./import_map.json",
+    "[typescript]": {
+        "editor.defaultFormatter": "denoland.vscode-deno"
+    }
+}
