@@ -2,32 +2,31 @@
 // share.php - Proxy for Facebook Crawler
 // Serves static HTML with Open Graph tags for Facebook/social bots.
 
-// 1. Get the slug
+// Debug mode is now disabled by default for production
+$debug = isset($_GET['debug']);
 $slug = isset($_GET['slug']) ? $_GET['slug'] : '';
 
-// 2. Validate/Sanitize slug
-// Allow alphanumeric, dashes, and UNDERSCORES.
-$slug = preg_replace('/[^a-z0-9-_]/i', '', $slug);
+// 1. Sanitize slug
+// We simply trim it. We will use urlencode() for the API call and htmlspecialchars() for HTML output.
+$slug = trim($slug);
 
 if (empty($slug)) {
-    // No slug? Redirect to blog home
+    if ($debug) die("Error: No slug provided.");
     header("Location: /blog");
     exit;
 }
 
-// 3. Supabase Config
 $supabaseUrl = "https://inivoiunisrgdinrcquu.supabase.co";
 $supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluaXZvaXVuaXNyZ2RpbnJjcXV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNzY0OTgsImV4cCI6MjA1OTg1MjQ5OH0.Ruox-xcKxcirSSmTsNHpPIXqUyFCApZOisJViI_Hp1w";
 
-// 4. Fetch Post Data
-$url = $supabaseUrl . "/rest/v1/blog_posts?slug=eq." . $slug . "&select=*";
+// URL encode the slug to handle spaces, emojis, and special chars in the API request
+// rawurlencode is safer for REST APIs (spaces become %20 instead of +)
+$url = $supabaseUrl . "/rest/v1/blog_posts?slug=eq." . rawurlencode($slug) . "&select=*";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-// Increase timeout
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-// Handle SSL verification issues if any (safe for this specific read-only op)
+curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     "apikey: " . $supabaseKey,
@@ -36,21 +35,26 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$curlError = curl_error($ch);
 curl_close($ch);
 
-// 5. Parse Data
+// ... (Debug block removed for brevity, it's not in the target range really but keeping context)
+
+// Default values
 $title = "ECOVLUU Blog";
 $description = "Read our latest article on ECOVLUU.";
-$imageUrl = "https://www.ecovluu.com/ecovluu-logo.png"; // Fallback image
-$articleUrl = "https://www.ecovluu.com/blog/" . $slug;
+$imageUrl = "https://www.ecovluu.com/ecovluu-logo.png";
+
+// CRITICAL: og:url must point to THIS file (share.php) so Facebook keeps using this metadata.
+// If we point it to /blog/slug, Facebook might re-crawl the React app and lose the tags.
+$shareUrl = "https://www.ecovluu.com/share.php?slug=" . rawurlencode($slug);
+// The "Real" URL for users is the blog
+$reactUrl = "https://www.ecovluu.com/blog/" . rawurlencode($slug);
 
 $posts = json_decode($response, true);
 
 if ($httpCode === 200 && !empty($posts) && isset($posts[0])) {
     $post = $posts[0];
     
-    // Success: use post data
     $title = htmlspecialchars($post['title']);
     $descText = $post['excerpt'] ? $post['excerpt'] : substr($post['content'], 0, 160);
     $description = htmlspecialchars($descText);
@@ -60,13 +64,7 @@ if ($httpCode === 200 && !empty($posts) && isset($posts[0])) {
          $rawImage = 'https://www.ecovluu.com' . $rawImage;
     }
     $imageUrl = htmlspecialchars($rawImage);
-} else {
-    // If we fail to find the post, we might want to still redirect to the blog post URL
-    // so the user sees the 404 on the React app, OR redirect to blog index.
-    // However, for Facebook crawler, if we return generic tags, it's better than nothing.
-    // Let's stick to the article URL so at least it clicks through correctly.
-}
-
+} 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,25 +75,37 @@ if ($httpCode === 200 && !empty($posts) && isset($posts[0])) {
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="<?php echo $articleUrl; ?>" />
+    <meta property="og:url" content="<?php echo $shareUrl; ?>" />
     <meta property="og:title" content="<?php echo $title; ?>" />
     <meta property="og:description" content="<?php echo $description; ?>" />
     <meta property="og:image" content="<?php echo $imageUrl; ?>" />
     <meta property="og:site_name" content="ECOVLUU" />
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<?php echo $articleUrl; ?>" />
-    <meta property="twitter:title" content="<?php echo $title; ?>" />
-    <meta property="twitter:description" content="<?php echo $description; ?>" />
-    <meta property="twitter:image" content="<?php echo $imageUrl; ?>" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="<?php echo $title; ?>" />
+    <meta name="twitter:description" content="<?php echo $description; ?>" />
+    <meta name="twitter:image" content="<?php echo $imageUrl; ?>" />
     
-    <!-- Redirect to actual content -->
+    <!-- Redirect to actual React App -->
     <script type="text/javascript">
-        window.location.href = "<?php echo $articleUrl; ?>";
+        // Decode the slug back for the JS redirect so the URL looks nice
+        var slug = <?php echo json_encode($slug); ?>;
+        // We use the cleaned URL for the redirect
+        window.location.href = "https://www.ecovluu.com/blog/" + encodeURIComponent(slug);
     </script>
 </head>
 <body>
-    <p>Redirecting to <a href="<?php echo $articleUrl; ?>"><?php echo $title; ?></a>...</p>
+    <h1><?php echo $title; ?></h1>
+    <img src="<?php echo $imageUrl; ?>" alt="<?php echo $title; ?>" style="max-width: 500px;">
+    <p><?php echo $description; ?></p>
+    
+    <p>Loading article...</p>
+    <script>
+        setTimeout(function() {
+             var slug = <?php echo json_encode($slug); ?>;
+             window.location.href = "https://www.ecovluu.com/blog/" + encodeURIComponent(slug);
+        }, 1000);
+    </script>
 </body>
 </html>

@@ -180,7 +180,7 @@ const BlogPost = () => {
             <p className="text-sm text-gray-500 mb-3">Enjoyed this article? Share it:</p>
             <ShareButtons
               url={articleUrl}
-              facebookUrl={`${BASE_URL}/share.php?slug=${post.slug}`}
+              facebookUrl={`${BASE_URL}/share.php?slug=${encodeURIComponent(post.slug)}`}
               title={post.title}
               description={description}
               imageUrl={imageUrl}
