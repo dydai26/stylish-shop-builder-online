@@ -1,20 +1,8 @@
-User-agent: Googlebot
-Disallow: /admin
-Disallow: /login
-Allow: /
-
-User-agent: Bingbot
-Disallow: /admin
-Disallow: /login
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
-Disallow: /admin
-Disallow: /login
+Disallow: /cart
+Disallow: /checkout
+Disallow: /order-success
 Allow: /
+
+# Sitemap
+Sitemap: https://ecovluu.com/sitemap.xml

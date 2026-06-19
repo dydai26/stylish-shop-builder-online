@@ -48,7 +48,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Contact Information */}
           <div className="md:col-span-1">
-            <img src="/Layer_2.png" alt="ECOVLUU" className="h-14 mb-3 text-left" />
+            <img src="/Layer_2.png" alt="ECOVLUU" loading="lazy" decoding="async" className="h-14 mb-3 text-left" />
             <p className="text-sm mb-2 font-light text-left ">info@ecovluu.com</p>
             <address className="not-italic text-sm font-light text-left">
               A6, Block A, Santry Business Park,<br/>
@@ -76,6 +76,7 @@ const Footer = () => {
               <li><Link to="/terms" className="hover:text-gray-300 transition-colors">Terms & Conditions</Link></li>
               <li><Link to="/privacy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link></li>
               <li><Link to="/returns" className="hover:text-gray-300 transition-colors">Returns & Refund Policy</Link></li>
+              <li><Link to="/shipping-policy" className="hover:text-gray-300 transition-colors">Shipping & Delivery Policy</Link></li>
             </ul>
           </div>
 
@@ -139,9 +140,10 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-    <div className="bg-white text-center text-sm text-[#4A3F3B] py-4 border-t border-[#ddd]">
-    Copyright © 2025 Ecovluu | Powered by Ecovluu
-  </div>
+    <div className="bg-white text-center text-sm text-[#4A3F3B] py-4 border-t border-[#ddd] flex flex-col items-center gap-1">
+      <p>Copyright © 2026 Ecovluu | Powered by Ecovluu</p>
+      <p className="text-[#4A3F3B]/80">🌱 Professional Hair Care · Dublin, Ireland</p>
+    </div>
 </>
   );
 };

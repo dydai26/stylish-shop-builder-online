@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { validatePromoCode, usePromoCode } from "@/lib/promoCodesService";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
+import { useGoogleTracking } from "@/hooks/useGoogleTracking";
 
 export interface Product {
   id: number;
@@ -17,6 +19,7 @@ export interface Product {
   metaTitle?: string;
   metaDescription?: string;
   slug?: string;
+  status: string;
 }
 
 export interface CartItem {
@@ -61,6 +64,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const [isValidatingPromo, setIsValidatingPromo] = useState(false);
+  const { trackAddToCart: trackMetaAddToCart } = useMetaTracking();
+  const { trackAddToCart: trackGoogleAddToCart } = useGoogleTracking();
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
@@ -77,6 +82,21 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [promoCode]);
 
   const addToCart = (product: Product, quantity: number = 1) => {
+    trackMetaAddToCart({
+      id: product.id.toString(),
+      name: product.name,
+      price: product.price,
+      quantity: quantity
+    });
+    
+    trackGoogleAddToCart({
+      id: product.id.toString(),
+      name: product.name,
+      price: product.price,
+      category: product.category,
+      quantity: quantity
+    });
+
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.product.id === product.id);
       

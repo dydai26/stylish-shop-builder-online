@@ -6,87 +6,154 @@ const ReturnsAndRefundPolicy = () => {
     <Layout>
       <div className="bg-gray-50 py-6 sm:py-12">
         <div className="container-custom px-2 sm:px-3">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Returns & Refunds</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">RETURN & REFUND POLICY</h1>
           
           <div className="bg-white p-6 sm:p-8 rounded-lg shadow-sm">
-            <div className="prose max-w-none">
+            <div className="prose max-w-none text-left">
               <p className="text-gray-600 mb-6">Last updated: {new Date().toLocaleDateString()}</p>
               
-              <div className="mb-8">
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">1. Right of Withdrawal (EU Consumers)</h2>
                 <p className="mb-4">
-                  At Ecovluu, we are committed to providing high-quality hair care products and ensuring your satisfaction. 
-                  If you are not entirely satisfied with your purchase, we are here to help. Please read our Return and 
-                  Refund Policy below to understand your rights and how to proceed with a return or refund.
+                  If you are a consumer residing in the European Union, you have the right to withdraw from your purchase within 14 calendar days without giving any reason.
                 </p>
-              </div>
+                <p className="mb-4">
+                  The withdrawal period expires 14 days after the day on which you, or a third party indicated by you (other than the carrier), acquire physical possession of the goods.
+                </p>
+                <p className="mb-4">
+                  To exercise your right of withdrawal, you must inform us of your decision by sending a clear statement by email to:
+                </p>
+                <p className="font-medium text-primary mb-4">Email: info@ecovluu.com</p>
+                <p className="mb-4 text-sm text-gray-500 italic">
+                  You may use the model withdrawal form provided below, but it is not mandatory.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Terms of Return</h2>
-              <p className="mb-4">
-                You have the right to return products purchased on our website within 14 days of receiving your order. 
-                Returns must be initiated within this period to qualify for a refund or exchange. Any returns received 
-                after this period will not be accepted.
-              </p>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">State of Return</h2>
-              <p className="mb-4">To be eligible for a return, products must be:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Unused, unopened, and in the original packaging.</li>
-                <li>In the same condition as when you received them, with all seals and labels intact.</li>
-                <li>Free from any signs of wear, tampering, or damage not caused by shipping.</li>
-              </ul>
-              <p className="mb-4 text-left">
-                Please note that for hygiene reasons, we cannot accept returns of products that have been opened or used.
-              </p>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">2. Effects of Withdrawal</h2>
+                <p className="mb-4">
+                  If you withdraw from this contract, we will reimburse all payments received from you, including the cost of standard delivery (excluding supplementary costs resulting from your choice of a delivery method other than the least expensive standard delivery offered by us).
+                </p>
+                <p className="mb-4">
+                  We may withhold reimbursement until we have received the goods back or you have supplied evidence of having sent back the goods, whichever is earlier.
+                </p>
+                <p className="mb-4">
+                  Refunds will be made using the same means of payment as you used for the initial transaction, unless expressly agreed otherwise.
+                </p>
+                <p className="mb-4">
+                  Reimbursement will be made no later than 14 days from the day we are informed about your decision to withdraw.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Reasons for Return</h2>
-              <p className="mb-4">We accept returns for the following reasons:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Damaged or Defective Product: If the product is damaged or defective upon arrival, please contact us immediately.</li>
-                <li>Incorrect or Wrong Product: If you received the wrong product, we will correct the issue promptly.</li>
-                <li>Unwanted or Changed Mind: If you decide you no longer want the product, it must remain unopened and in its original condition.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Process for Return</h2>
-              <p className="mb-4">To initiate a return, follow these steps:</p>
-              <ol className="list-decimal pl-6 mb-6 space-y-2 text-left">
-                <li>Contact Us: Email us at info@ecovluu.com with your order number, reason for return, and any supporting photos (if applicable).</li>
-                <li>Approval: Once your return request is approved, we will provide instructions on where to send the product.</li>
-                <li>Shipping: Return shipping costs are your responsibility, except in cases where the product was damaged, defective, or incorrect. Please use a trackable shipping service and keep proof of postage.</li>
-              </ol>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">3. Conditions for Returns</h2>
+                <p className="mb-4">
+                  You must send back the goods within 14 days from the date on which you communicated your withdrawal.
+                </p>
+                <p className="mb-4 font-semibold">Returned items must:</p>
+                <ul className="list-disc pl-6 mb-6 space-y-2">
+                  <li>Be unused</li>
+                  <li>Be unopened</li>
+                  <li>Have intact safety seals (if applicable)</li>
+                  <li>Be in original packaging</li>
+                  <li>Be in resalable condition</li>
+                </ul>
+                <p className="mb-4">
+                  You are only liable for any diminished value of the goods resulting from handling other than what is necessary to establish the nature, characteristics, and functioning of the goods.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Process of Refund</h2>
-              <p className="mb-4">
-                Once we receive and inspect your returned product, we will notify you of the approval or rejection of your refund. If approved:
-              </p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Refunds will be issued to your original method of payment.</li>
-                <li>The refund process may take up to 14 business days to appear on your account, depending on your payment provider.</li>
-                <li>If your return is rejected, we will notify you with the reason for rejection and offer to return the product to you at your expense.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Terms of Refund</h2>
-              <p className="mb-4">Refunds will be processed under the following conditions:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Products returned due to damage, defects, or incorrect orders will receive a full refund, including the original shipping cost.</li>
-                <li>For returns due to a change of mind, only the product price will be refunded. Original shipping costs are non-refundable.</li>
-                <li>We reserve the right to refuse returns that do not meet the conditions stated in this policy.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">4. Hygiene & Safety Exception (Cosmetic Products)</h2>
+                <p className="mb-4 italic text-gray-600">
+                  In accordance with Article 16(e) of Directive 2011/83/EU, the right of withdrawal does not apply to:
+                </p>
+                <p className="mb-4 border-l-4 border-primary pl-4 py-2 bg-gray-50">
+                  Sealed goods which are not suitable for return due to health protection or hygiene reasons, if they were unsealed after delivery.
+                </p>
+                <p className="mb-4 font-medium">
+                  Hair care and cosmetic products that have been opened, unsealed, or used cannot be returned for hygiene and safety reasons.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Contact Details</h2>
-              <p className="mb-4">
-                If you have any questions or concerns about this Privacy Policy or how we handle your data, please contact us:
-              </p>
-              <p className="mb-4">
-                Email: info@ecovluu.com<br />
-                Address: A6, Block A, Santry Business Park, Swords Road, Santry, Dublin 9, Ireland.
-              </p>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Additional Notes</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Please ensure that the returned products are securely packaged to avoid any damage during transit.</li>
-                <li>We recommend using a trackable shipping service, as we cannot be held responsible for returns lost in transit.</li>
-                <li>We reserve the right to update or modify this policy at any time. Changes will be posted on our website and will apply to orders placed after the update.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">5. Return Shipping Costs</h2>
+                <p className="mb-4">
+                  Unless the goods are defective, damaged, or incorrect, the customer is responsible for return shipping costs.
+                </p>
+                <p className="mb-4">
+                  If the product is defective, damaged, or incorrect, Ecovluu will bear the return shipping costs.
+                </p>
+                <p className="mb-4">
+                  We recommend using a tracked shipping service. We are not responsible for items lost during return shipment.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">6. Defective or Incorrect Products</h2>
+                <p className="mb-4">
+                  If you receive a defective, damaged, or incorrect item, please contact us within 48 hours of delivery and provide:
+                </p>
+                <ul className="list-disc pl-6 mb-4 space-y-1">
+                  <li>Order number</li>
+                  <li>Description of the issue</li>
+                  <li>Clear photographs of the product and packaging</li>
+                </ul>
+                <p className="mb-4">
+                  We will offer a replacement or a full refund, including shipping costs where applicable.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">7. Exchanges</h2>
+                <p className="mb-4">
+                  We do not offer direct exchanges.
+                  If you wish to replace an item, please return the original item and place a new order.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">8. How to Return an Item</h2>
+                <p className="mb-4">To initiate a return, please contact:</p>
+                <p className="font-medium text-primary mb-4">Email: info@ecovluu.com</p>
+                <p className="mb-4 underline underline-offset-4 decoration-primary">
+                  You will receive return instructions once your request has been reviewed.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8 bg-gray-50 p-6 rounded-lg border border-dashed border-gray-300">
+                <h2 className="text-xl font-bold mb-4">9. Model Withdrawal Form (Optional)</h2>
+                <p className="text-sm mb-4">To: Ecovluu</p>
+                <p className="text-sm mb-4">Email: info@ecovluu.com</p>
+                <p className="text-sm mb-6 underline underline-offset-4 decoration-gray-300">
+                  I hereby give notice that I withdraw from my contract of sale of the following goods:
+                </p>
+                
+                <div className="space-y-4 text-sm mt-6">
+                  <div className="border-b border-gray-200 pb-1">Order number:</div>
+                  <div className="border-b border-gray-200 pb-1">Ordered on / received on:</div>
+                  <div className="border-b border-gray-200 pb-1">Name of consumer:</div>
+                  <div className="border-b border-gray-200 pb-1">Address of consumer:</div>
+                  <div className="border-b border-gray-200 pb-1 h-8">Signature (only if submitted on paper):</div>
+                  <div className="border-b border-gray-200 pb-1">Date:</div>
+                </div>
+              </section>
             </div>
           </div>
         </div>

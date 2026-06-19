@@ -64,7 +64,7 @@ const Hero = () => {
           alt="ECOVLUU natural hair care banner"
           className="w-full h-auto"
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="async"
           onLoad={() => setImageLoaded(true)}
         />
@@ -104,7 +104,7 @@ const Hero = () => {
           alt="ECOVLUU natural hair care banner"
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="async"
           onLoad={() => setImageLoaded(true)}
         />

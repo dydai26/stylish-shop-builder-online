@@ -155,6 +155,7 @@ const ShippingStep = ({
           <Button 
             onClick={handleNextStep}
             className="bg-brand-orange hover:bg-brand-orange/90 text-white w-full"
+            disabled={shippingRates.length === 0 || isValidatingAddress}
           >
             <CreditCard className="mr-2 h-4 w-4" />
             Continue to Payment
@@ -232,6 +233,7 @@ const ShippingStep = ({
             <Button 
               onClick={handleNextStep}
               className="bg-brand-orange hover:bg-brand-orange/90 text-white"
+              disabled={shippingRates.length === 0 || isValidatingAddress}
             >
               <CreditCard className="mr-2 h-4 w-4" />
               Continue to Payment

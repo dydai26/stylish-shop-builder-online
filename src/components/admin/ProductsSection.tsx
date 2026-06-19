@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -333,6 +334,31 @@ const ProductsSection = () => {
       toast({
         title: "Error",
         description: "Failed to delete product. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleToggleStatus = async (product: Product) => {
+    try {
+      const newStatus = product.status === 'active' ? 'inactive' : 'active';
+      await updateProduct({
+        id: product.id,
+        status: newStatus
+      });
+      toast({
+        title: `Product ${newStatus === 'active' ? 'activated' : 'deactivated'}`,
+        description: `${product.name} is now ${newStatus}.`,
+      });
+      // Update local state for immediate feedback
+      setProducts(prev => prev.map(p => 
+        p.id === product.id ? { ...p, status: newStatus } : p
+      ));
+    } catch (error) {
+      console.error("Failed to toggle product status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update status. Please try again.",
         variant: "destructive",
       });
     }
@@ -728,11 +754,23 @@ const ProductsSection = () => {
             <Card key={product.id} className="p-6">
               <div className="flex justify-between items-start">
                 <div className="flex-1 pr-6">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-4 mb-2">
                     <h3 className="text-lg font-semibold">{product.name}</h3>
-                    <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
-                      {product.status}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
+                        {product.status}
+                      </Badge>
+                      <div className="flex items-center space-x-2 border rounded-full px-2 py-1 bg-muted/30">
+                        <Switch 
+                          checked={product.status === 'active'} 
+                          onCheckedChange={() => handleToggleStatus(product)}
+                          id={`status-${product.id}`}
+                        />
+                        <Label htmlFor={`status-${product.id}`} className="text-xs font-normal cursor-pointer">
+                          {product.status === 'active' ? 'On' : 'Off'}
+                        </Label>
+                      </div>
+                    </div>
                   </div>
                   <div className="text-muted-foreground text-sm mb-2">
                     SKU: {product.sku} | Category: {product.category}

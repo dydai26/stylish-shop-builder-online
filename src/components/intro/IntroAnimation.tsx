@@ -39,14 +39,14 @@ const IntroAnimation = ({ onAnimationComplete }: { onAnimationComplete: () => vo
         className={`transition-all duration-1500 ease-in-out ${
           animationStage === 'initial' ? 'scale-[0.2] opacity-0' : 
           animationStage === 'growing' ? 'scale-100 opacity-100' : 
-          animationStage === 'zooming' ? 'scale-[1.8] opacity-100' :
-          'scale-[3] opacity-0'
+          animationStage === 'zooming' ? 'scale-[1.5] md:scale-[1.8] opacity-100' :
+          'scale-[2] md:scale-[3] opacity-0'
         }`}
       >
         <img 
           src="/intro1.PNG" 
           alt="ECOVLUU Logo" 
-          className="max-w-[260px] max-h-[160px] object-contain md:max-w-[160px] md:max-h-[160px]"
+          className="max-w-[140px] max-h-[100px] object-contain md:max-w-[160px] md:max-h-[160px]"
         />
       </div>
       </div>

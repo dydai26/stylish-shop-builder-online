@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,7 +21,9 @@ import {
   ShoppingCart,
   BarChart3,
   Mail,
-  FileText
+  FileText,
+  Globe,
+  ExternalLink
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -67,7 +70,7 @@ const AdminDashboard = () => {
       const { data: products, error: productsError } = await supabase
         .from('products')
         .select('id, images, created_at')
-        .eq('status', 'active');
+        .neq('status', 'deleted');
       
       if (productsError) throw productsError;
 
@@ -161,7 +164,7 @@ const AdminDashboard = () => {
   
   // Redirect if not authenticated - Force rebuild with Orders
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth-access" replace />;
   }
 
   const handleLogout = () => {
@@ -348,6 +351,9 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       {/* Left Sidebar */}
       <div className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-card border-r border-border flex flex-col transition-all duration-300 ease-in-out`}>
         {/* Logo/Header */}
@@ -399,6 +405,21 @@ const AdminDashboard = () => {
             })}
           </div>
         </nav>
+
+        {/* View Site Button */}
+        <div className="px-4 py-2 border-t border-border">
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'space-x-3'} px-3 py-2 rounded-lg text-left transition-colors text-muted-foreground hover:bg-muted hover:text-foreground`}
+            title={sidebarCollapsed ? "View Website" : undefined}
+          >
+            <Globe className="h-4 w-4 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">View Website</span>}
+            {!sidebarCollapsed && <ExternalLink className="h-3 w-3 ml-auto opacity-50" />}
+          </a>
+        </div>
 
         {/* User info and logout */}
         <div className="p-4 border-t border-border">

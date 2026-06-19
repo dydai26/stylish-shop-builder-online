@@ -144,7 +144,7 @@ const Cart = () => {
                               />
                               <div>
                                 <Link 
-                                  to={`/product/${item.product.id}`}
+                                  to={`/product/${item.product.slug}`}
                                   className="font-medium text-brand-brown hover:underline text-sm lg:text-base"
                                 >
                                   {item.product.name}
@@ -204,7 +204,7 @@ const Cart = () => {
                         />
                         <div className="flex-1 min-w-0">
                           <Link 
-                            to={`/product/${item.product.id}`}
+                            to={`/product/${item.product.slug}`}
                             className="font-medium text-brand-brown hover:underline text-sm block truncate"
                           >
                             {item.product.name}

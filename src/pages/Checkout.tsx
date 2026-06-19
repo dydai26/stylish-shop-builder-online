@@ -9,6 +9,8 @@ import { toast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
 import { validateUPSAddress, getUPSShippingRates, UPSAddress, UPSShippingRate } from "@/lib/supabase";
 import { useTikTokTracking } from "@/hooks/useTikTokTracking";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
+import { useGoogleTracking } from "@/hooks/useGoogleTracking";
 
 // Import our components
 import CheckoutStepper from "@/components/checkout/CheckoutSteppers";
@@ -24,6 +26,15 @@ const Checkout = () => {
   const { cartItems, getCartTotal, clearCart, promoCode, getDiscountAmount, getDiscountedTotal, markPromoCodeAsUsed } = useCart();
   const { setOrderData } = useOrder();
   const navigate = useNavigate();
+  const { trackInitiateCheckout, trackPurchase: trackMetaPurchase } = useMetaTracking();
+  const { trackBeginCheckout: trackGoogleBeginCheckout, trackPurchase: trackGooglePurchase } = useGoogleTracking();
+  
+  useEffect(() => {
+    if (cartItems && cartItems.length > 0) {
+      trackInitiateCheckout(cartItems, getDiscountedTotal());
+      trackGoogleBeginCheckout(cartItems, getDiscountedTotal());
+    }
+  }, []); // Only track once when checkout is initiated
   
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<CheckoutFormData>({
@@ -45,20 +56,21 @@ const Checkout = () => {
   const [selectedShippingRate, setSelectedShippingRate] = useState<UPSShippingRate | null>(null);
   const [processingPayment, setProcessingPayment] = useState(false);
   
-  // Auto-calculate shipping rates when address is complete
+  // Shipping rates are only calculated when the user clicks "Validate with UPS"
+  // Automatic calculation is disabled to satisfy user requirements
+  /*
   useEffect(() => {
     const { address, city, postalCode, country } = formData;
     
-    // Only auto-calculate if all address fields are filled and we're on step 2
     if (currentStep === 2 && address && city && postalCode && country && !isValidatingAddress && !isLoadingRates) {
-      // Debounce the calculation to avoid too many API calls
       const timer = setTimeout(() => {
         validateAddress();
-      }, 1000); // Wait 1 second after user stops typing
+      }, 1000);
       
       return () => clearTimeout(timer);
     }
   }, [formData.address, formData.city, formData.postalCode, formData.country, currentStep]);
+  */
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -131,6 +143,10 @@ const Checkout = () => {
       try {
         await saveOrderToDatabase(orderData);
         console.log("Order saved to database");
+        
+        // Track Purchase event
+        trackMetaPurchase(cartItems, total, orderId);
+        trackGooglePurchase(cartItems, total, orderId);
       } catch (dbError) {
         console.error("Failed to save order to database:", dbError);
       }
@@ -220,10 +236,10 @@ const Checkout = () => {
       console.log("Fetching shipping rates from UPS API:", toAddress);
       
       const fromAddress: UPSAddress = {
-        addressLine: "123 Store St",
+        addressLine: "A6, Block A, Santry Business Park, Swords Road",
         city: "Dublin",
-        postalCode: "D01 AB12",
-        countryCode: "Ireland"
+        postalCode: "D09 X6V9",
+        countryCode: "IE"
       };
       
       // Calculate package weight based on items in cart

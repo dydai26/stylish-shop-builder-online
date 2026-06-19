@@ -4,14 +4,17 @@ import { Helmet } from "react-helmet-async";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useCart, Product } from "@/context/CartContext";
-import { getProductById, getRelatedProducts } from "@/lib/api";
+import { getProductById, getProductBySlug, getRelatedProducts } from "@/lib/api";
 import { Minus, Plus, ShoppingCart, Check } from "lucide-react";
 import ProductCard from "@/components/ui/ProductCard";
 import { toast } from "@/hooks/use-toast";
 import { useTikTokTracking } from "@/hooks/useTikTokTracking";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
+import { useGoogleTracking } from "@/hooks/useGoogleTracking";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 const ProductDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [quantity, setQuantity] = useState(1);
@@ -19,14 +22,16 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const { addToCart } = useCart();
   const { trackViewContent, trackAddToCart } = useTikTokTracking();
+  const { trackViewContent: trackMetaViewContent } = useMetaTracking();
+  const { trackViewItem: trackGoogleViewItem } = useGoogleTracking();
 
   useEffect(() => {
     const fetchProductData = async () => {
-      if (!id) return;
+      if (!slug) return;
 
       setLoading(true);
       try {
-        const productData = await getProductById(parseInt(id));
+        const productData = await getProductBySlug(slug);
         setProduct(productData);
         setSelectedImage(0);
 
@@ -36,6 +41,19 @@ const ProductDetail = () => {
             id: productData.id.toString(),
             name: productData.name,
             price: productData.price
+          });
+          
+          trackMetaViewContent({
+            id: productData.id.toString(),
+            name: productData.name,
+            price: productData.price
+          });
+
+          trackGoogleViewItem({
+            id: productData.id.toString(),
+            name: productData.name,
+            price: productData.price,
+            category: productData.category
           });
 
           const related = await getRelatedProducts(productData.category);
@@ -51,7 +69,7 @@ const ProductDetail = () => {
     fetchProductData();
     // Reset quantity when product changes
     setQuantity(1);
-  }, [id]);
+  }, [slug]);
 
   const handleIncreaseQuantity = () => {
     setQuantity(prev => prev + 1);
@@ -96,7 +114,7 @@ const ProductDetail = () => {
     if (!product) return null;
 
     const allImages = getAllImages();
-    const productUrl = `https://ecovluu.com/product/${product.id}`;
+    const productUrl = `https://ecovluu.com/product/${product.slug}`;
 
     const jsonLd = {
       "@context": "https://schema.org",
@@ -116,7 +134,7 @@ const ProductDetail = () => {
         "url": productUrl,
         "priceCurrency": "EUR",
         "price": product.price.toFixed(2),
-        "availability": "https://schema.org/InStock",
+        "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
         "seller": {
           "@type": "Organization",
           "name": "ECOVLUU"
@@ -155,6 +173,10 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <Layout>
+        <Helmet>
+          <title>Product Not Found - ECOVLUU</title>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
         <div className="container-custom py-4 sm:py-8 lg:py-12 text-center">
           <h1 className="text-2xl font-bold text-black">Product Not Found</h1>
           <p className="text-black mt-4">The product you are looking for does not exist.</p>
@@ -168,6 +190,7 @@ const ProductDetail = () => {
 
   const allImages = getAllImages();
   const productJsonLd = generateProductJsonLd();
+  const isInactive = product.status === 'inactive';
 
   return (
     <Layout>
@@ -208,10 +231,10 @@ const ProductDetail = () => {
           <div className="space-y-3 sm:space-y-4">
             {/* Main Image */}
             <div className="aspect-square overflow-hidden rounded-lg bg-gray-100">
-              <img
+              <OptimizedImage
                 src={allImages[selectedImage] || product.image}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transition-all duration-300 ${isInactive ? 'grayscale opacity-75' : ''}`}
               />
             </div>
 
@@ -225,9 +248,9 @@ const ProductDetail = () => {
                     className={`w-16 sm:w-20 h-16 sm:h-20 flex-shrink-0 rounded overflow-hidden border-2 transition-colors ${selectedImage === index
                         ? 'border-brand-orange'
                         : 'border-transparent hover:border-gray-300'
-                      }`}
+                      } ${isInactive ? 'grayscale opacity-75' : ''}`}
                   >
-                    <img
+                    <OptimizedImage
                       src={image}
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-cover"
@@ -246,8 +269,13 @@ const ProductDetail = () => {
 
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-brown mb-2 leading-tight">{product.name}</h1>
 
-            <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <div className="flex items-center gap-4 mb-4 sm:mb-6">
               <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-orange">€{product.price.toFixed(2)}</span>
+              {isInactive && (
+                <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wider">
+                  OUT OF STOCK
+                </span>
+              )}
             </div>
 
             <div className="mb-4 sm:mb-6">
@@ -279,9 +307,10 @@ const ProductDetail = () => {
 
               <Button
                 onClick={handleAddToCart}
-                className="bg-brand-orange hover:bg-brand-orange/90 text-white py-3 px-6 text-sm sm:text-base w-full sm:w-auto"
+                disabled={isInactive}
+                className={`${isInactive ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-orange hover:bg-brand-orange/90'} text-white py-3 px-6 text-sm sm:text-base w-full sm:w-auto`}
               >
-                Buy Now
+                {isInactive ? 'OUT OF STOCK' : 'Buy Now'}
               </Button>
             </div>
 

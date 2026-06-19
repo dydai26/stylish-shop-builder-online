@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { GOOGLE_ANALYTICS_ID, GOOGLE_ANALYTICS_PROPERTY_ID } from '@/lib/constants';
 
 interface AnalyticsData {
   overview: {
@@ -109,10 +110,10 @@ const GoogleAnalyticsSection = () => {
   useEffect(() => {
     fetchAnalyticsData();
     
-    // Set up auto-refresh every 5 minutes for real-time data
+    // Set up auto-refresh every 1 minute for real-time data
     const interval = setInterval(() => {
       fetchAnalyticsData();
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 1 * 60 * 1000); // 1 minute
     
     return () => clearInterval(interval);
   }, [dateRange]);
@@ -123,13 +124,16 @@ const GoogleAnalyticsSection = () => {
       
       // Try to fetch real Google Analytics data
       try {
-        console.log('Fetching real Google Analytics data...');
+        console.log('Fetching real Google Analytics data for property:', GOOGLE_ANALYTICS_PROPERTY_ID);
         const { data, error } = await supabase.functions.invoke('google-analytics', {
-          body: { dateRange }
+          body: { 
+            dateRange,
+            propertyId: GOOGLE_ANALYTICS_PROPERTY_ID
+          }
         });
 
         if (error) {
-          console.error('Supabase function error:', error);
+          console.error('Supabase function invocation error:', error);
           throw error;
         }
         
@@ -143,14 +147,15 @@ const GoogleAnalyticsSection = () => {
           });
           return;
         } else {
-          console.warn('Google Analytics API returned error:', data?.error, data?.details);
+          console.warn('Google Analytics API returned error response:', data);
           throw new Error(data?.error || 'Unknown API error');
         }
-      } catch (apiError) {
-        console.warn('Failed to fetch real analytics data:', apiError);
+      } catch (apiError: any) {
+        console.error('Full catch block error details:', apiError);
+        const errorMsg = apiError instanceof Error ? apiError.message : String(apiError);
         toast({
           title: "Using demo data",
-          description: "Configure Google Analytics API for real data. Check logs for details.",
+          description: `API Error: ${errorMsg}. Check console for details.`,
           variant: "destructive"
         });
       }
@@ -277,7 +282,7 @@ const GoogleAnalyticsSection = () => {
             Google Analytics
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Property ID: 12186918958 | Measurement ID: G-6MVF91T4LG
+            Property ID: {GOOGLE_ANALYTICS_PROPERTY_ID} | Measurement ID: {GOOGLE_ANALYTICS_ID}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -390,8 +395,10 @@ const GoogleAnalyticsSection = () => {
               <div className="space-y-2">
                 {analyticsData.realtime.topPages.map((page, index) => (
                   <div key={index} className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{page.page}</span>
-                    <div variant="secondary">{page.activeUsers} users</div>
+                    <span className="text-sm text-muted-foreground truncate max-w-[200px]" title={page.page}>
+                      {page.page}
+                    </span>
+                    <Badge variant="secondary">{page.activeUsers} users</Badge>
                   </div>
                 ))}
               </div>

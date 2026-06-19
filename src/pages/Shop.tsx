@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Layout from "@/components/layout/Layout";
+import DeliveryAnnouncement from "@/components/ui/DeliveryAnnouncement";
 import ProductCard from "@/components/ui/ProductCard";
 import { Product } from "@/context/CartContext";
 import { getAllProducts } from "@/lib/api";
@@ -49,6 +50,7 @@ const Shop = () => {
         <meta name="keywords" content="natural hair care, hair products, organic shampoo, hair mask, deep hydrating, ECOVLUU" />
         <link rel="canonical" href="https://www.ecovluu.com/shop" />
       </Helmet>
+      <DeliveryAnnouncement />
       <div className="bg-gray-50 py-4 sm:py-8">
         <div className="container-custom">
           <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">Shop Our Products</h1>

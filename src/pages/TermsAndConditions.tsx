@@ -6,197 +6,299 @@ const TermsAndConditions = () => {
     <Layout>
       <div className="bg-gray-50 py-6 sm:py-12">
         <div className="container-custom px-2 sm:px-3">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Terms & Conditions</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-left uppercase">TERMS & CONDITIONS</h1>
           
           <div className="bg-white p-6 sm:p-8 rounded-lg shadow-sm">
-            <div className="prose max-w-none">
-              <p className="text-gray-600 mb-6">Last updated: {new Date().toLocaleDateString()}</p>
+            <div className="prose max-w-none text-left">
+              <p className="text-gray-600 mb-6 font-light italic">Last updated: {new Date().toLocaleDateString()}</p>
               
-              <div className="mb-8">
+              <p className="mb-6">
+                These Terms & Conditions govern your use of the website <a href="https://www.ecovluu.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">www.ecovluu.com</a> and the purchase of products from Ecovluu. By accessing this website or placing an order, you agree to be bound by these Terms.
+              </p>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">1. Company Information</h2>
+                <div className="space-y-4">
+                  <div>
+                    <p className="font-bold text-primary text-lg">Ecovluu</p>
+                    <p className="flex items-center gap-2">
+                       <span className="font-semibold">Email:</span> 
+                       <a href="mailto:info@ecovluu.com" className="hover:text-primary transition-colors">info@ecovluu.com</a>
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                    <div>
+                      <p className="font-semibold text-gray-500 uppercase text-xs mb-1">Legal Entity Name</p>
+                      <p className="font-medium">Lab Organic Cosmetics Ltd/T.A Ecovluu</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-500 uppercase text-xs mb-1">Company Registration Number</p>
+                      <p className="font-medium">699199</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-500 uppercase text-xs mb-1">Registered Address</p>
+                      <p>Santry Business Park</p>
+                      <p>Swords Road,</p>
+                      <p>Santry, Dublin 9</p>
+                      <p className="text-gray-400 italic">D09X651</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">2. Scope of Application</h2>
                 <p className="mb-4">
-                  Welcome to Ecovluu! By accessing our website, purchasing our products, or using our services, 
-                  you agree to comply with the following Terms and Conditions. Please read these terms carefully 
-                  before using our website or placing an order. These Terms constitute a legally binding agreement 
-                  between Ecovluu and our customers. If you do not agree to these Terms, please refrain from using our Site.
+                  These Terms apply to all orders placed by consumers through this website.
                 </p>
-              </div>
+                <p className="mb-4 italic text-gray-600 border-l-4 border-primary pl-4 py-2 bg-gray-50 rounded-r-lg">
+                  Nothing in these Terms affects your statutory consumer rights under applicable EU or Irish law.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Definitions</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>"Ecovluu": Refers to Lab Organic Cosmetics LtdT/A Ecovluu including its officers, directors, employees, and affiliates.</li>
-                <li>"Customer": Any person accessing, browsing, or using the Site or purchasing products.</li>
-                <li>"Site": The website located at www.ecovluu.com.</li>
-                <li>"Products": Goods offered for sale on the Site.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">General Information</h2>
-              <p className="mb-4 text-left">
-                Ecovluu ("we", "us", "our") operates the website www.ecovluu.com ("Site"). These Terms and Conditions 
-                govern your use of the Site, including all related services and purchases. By using our Site, you agree 
-                to these Terms. We reserve the right to modify these Terms at any time. Updated Terms will take effect 
-                immediately upon posting. Your continued use of our Site indicates acceptance of any changes. If you have 
-                questions, please contact us at info@ecovluu.com.
-              </p>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">3. Products</h2>
+                <p className="mb-4">
+                  Ecovluu sells hair care products via its online store.
+                </p>
+                <p className="mb-4">
+                  Product descriptions, images, and specifications are provided as accurately as possible. Minor variations in packaging or presentation may occur.
+                </p>
+                <p className="mb-4 font-medium p-4 bg-brand-orange/10 text-[#4A3F3B] rounded border border-brand-orange/20 italic">
+                  Information provided on this website does not constitute medical advice.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Business Information</h2>
-              <p className="mb-4">
-                Ecovluu is a registered business operating under the following details:
-              </p>
-              <ul className="list-none pl-6 mb-6 space-y-2">
-                <li>Business Name: Lab Organic Cosmetics Ltd T/A Ecovluu</li>
-                <li>Registered Address: A6, Block A, Santry Business Park, Swords Road, Santry, Dublin 9, Ireland</li>
-                <li>Registration Number: 699199</li>
-                <li>Contact Email: info@ecovluu.com</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Ordering Process</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>All orders are subject to acceptance and availability.</li>
-                <li>After placing an order, you will receive an email confirmation. This confirmation does not constitute acceptance of your order.</li>
-                <li>A contract is formed when your order is dispatched. If there are any issues, such as stock shortages, we will notify you promptly to arrange an alternative or a refund.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">4. Prices and Payment</h2>
+                <p className="mb-4">
+                  All prices are displayed in EUR (€) and include VAT where applicable.
+                </p>
+                <p className="mb-4">
+                  Shipping costs are calculated separately and clearly displayed at checkout before payment is completed.
+                </p>
+                <p className="mb-4">
+                  We reserve the right to change prices at any time; however, the price applicable to your order will be the price displayed at the time of purchase.
+                </p>
+                <p className="mb-4 font-bold text-primary">
+                  Payment must be made in full at checkout using the available payment methods.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Right of Withdrawal (EU Customers)</h2>
-              <p className="mb-4">
-                As a customer in the EU, you have the right to cancel your order within 14 days of receiving your products 
-                without providing a reason. To exercise this right, please contact us at info@ecovluu.com with your order details.
-              </p>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Conditions for Withdrawal</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Returned products must be unused, in their original packaging, and in resalable condition.</li>
-                <li>The right of withdrawal does not apply to:
-                  <ul className="list-disc pl-6 mt-2 space-y-1 text-left">
-                    <li>Opened or used personal care products for hygiene reasons.</li>
-                    <li>Products that have been customized or made to order.</li>
-                    <li>Gift cards or promotional items.</li>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">5. Order Process & Contract Formation</h2>
+                <p className="mb-4">
+                  By placing an order, you make an offer to purchase the selected products.
+                </p>
+                <p className="mb-4">
+                  A contract is concluded once you receive an order confirmation email from Ecovluu.
+                </p>
+                <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-4">
+                  <p className="mb-3 font-semibold">We reserve the right to refuse or cancel an order in cases of:</p>
+                  <ul className="list-disc pl-6 space-y-1">
+                    <li>Product unavailability</li>
+                    <li>Pricing errors</li>
+                    <li>Suspected fraudulent activity</li>
                   </ul>
-                </li>
-              </ul>
+                </div>
+                <p className="mb-4 underline underline-offset-4 decoration-primary font-medium">
+                  If payment has been taken for a cancelled order, a full refund will be issued.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Refund Process</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Refunds will include the original delivery cost but exclude return shipping costs unless the product is defective.</li>
-                <li>Refunds will be processed within 14 days of receiving the returned items and will be credited to your original payment method.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Returns and Refunds</h2>
-              <p className="mb-4">
-                If you are not satisfied with your purchase, you can return the product within 30 days for a refund or exchange.
-              </p>
-              <p className="mb-4">To initiate a return:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Contact us at info@ecovluu.com with your order details and reason for the return.</li>
-                <li>Ship the product back to the address provided in our confirmation email.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">6. Shipping & Delivery</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="border border-gray-100 p-4 rounded bg-white shadow-sm">
+                    <h3 className="font-bold text-primary mb-3 uppercase tracking-wider text-sm border-b pb-2">Ireland</h3>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex justify-between"><span>Standard shipping:</span> <span className="font-bold">€12.05</span></li>
+                      <li className="flex justify-between"><span>Delivery time:</span> <span className="font-bold">2–5 business days</span></li>
+                    </ul>
+                  </div>
+                  <div className="border border-gray-100 p-4 rounded bg-white shadow-sm">
+                    <h3 className="font-bold text-primary mb-3 uppercase tracking-wider text-sm border-b pb-2">European Union</h3>
+                    <p className="text-sm mb-2 font-medium">Standard Shipping: €23.12</p>
+                    <p className="text-xs text-gray-500 mb-2 italic">Destinations are calculated at checkout based on individual rates.</p>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex justify-between"><span>Delivery time:</span> <span className="font-bold">5–10 business days</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <p className="mb-4 italic text-sm text-gray-600">
+                  Delivery times are estimates and may vary due to circumstances beyond our control.
+                </p>
+                <p className="mb-4 p-4 bg-gray-50 rounded text-sm leading-relaxed">
+                  Customers are responsible for providing accurate shipping information. Ecovluu is not liable for delays caused by incorrect or incomplete address details.
+                </p>
+                <p className="mb-4 font-medium text-sm">
+                  For full details, please refer to our <a href="/shipping-policy" className="text-primary hover:underline">Shipping & Delivery Policy</a>.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Conditions for Returns</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Products must be unused and in their original condition.</li>
-                <li>Returns for opened or used hair care products will only be accepted if the item is defective.</li>
-                <li>Customers are responsible for return shipping costs unless the product is defective or incorrect.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Pricing and Payments</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>All prices are displayed in EUR (€) and include VAT where applicable.</li>
-                <li>Payments are processed securely via trusted third-party providers like Stripe.</li>
-                <li>We reserve the right to adjust prices and correct errors without prior notice.</li>
-                <li>Discounts or coupon codes cannot be combined or applied retroactively.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">7. Right of Withdrawal (EU Consumers)</h2>
+                <p className="mb-4">
+                  If you are a consumer residing in the European Union, you have the right to withdraw from your purchase within 14 calendar days without giving any reason.
+                </p>
+                <p className="mb-4">
+                  The withdrawal period expires 14 days after the day you acquire physical possession of the goods.
+                </p>
+                <p className="mb-2">To exercise your right of withdrawal, contact:</p>
+                <div className="bg-primary/5 p-4 rounded-lg border border-primary/10 mb-4 inline-block">
+                  <p className="font-bold text-primary text-lg">info@ecovluu.com</p>
+                </div>
+                <p className="mb-4">
+                  Refunds will be processed within 14 days of receiving the returned goods or proof of return, whichever occurs first.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Warranty and Defects</h2>
-              <h3 className="text-lg font-semibold mb-3">Statutory Warranty</h3>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>All Ecovluu products are covered by a two-year statutory warranty under EU law.</li>
-                <li>The warranty applies only to products used within their stated expiration date or shelf life.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h3 className="text-lg font-semibold mb-3">Warranty Coverage</h3>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Products that are defective due to manufacturing faults or damage during shipping.</li>
-                <li>Products that do not comply with safety standards or contain incorrect labeling.</li>
-                <li>Adverse effects or unexpected reactions caused by a defective product.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">8. Conditions for Returns</h2>
+                <p className="mb-3 font-semibold">Returned items must:</p>
+                <ul className="list-disc pl-6 mb-6 space-y-2">
+                  <li>Be unused</li>
+                  <li>Be unopened</li>
+                  <li>Have intact safety seals (if applicable)</li>
+                  <li>Be in original packaging</li>
+                  <li>Be in resalable condition</li>
+                </ul>
+                <p className="mb-4 font-medium border-t pt-4">
+                  Unless the product is defective or incorrect, customers are responsible for return shipping costs.
+                </p>
+              </section>
 
-              <h3 className="text-lg font-semibold mb-3">Warranty Exclusions</h3>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Products used after their expiration date or outside their stated shelf life.</li>
-                <li>Individual allergic reactions or sensitivities, unless caused by a defect or incorrect labeling.</li>
-                <li>Damage resulting from improper storage, misuse, or failure to follow usage instructions.</li>
-                <li>Natural variations in product texture, color, or scent, as indicated on the product description.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Customer Responsibilities</h2>
-              <p className="mb-4">To ensure safe use of our products, customers are responsible for:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Reading and Following Instructions: Carefully follow usage instructions provided on the product packaging or our website.</li>
-                <li>Conducting a Patch Test: Perform a patch test before full use to check for potential allergic reactions.</li>
-                <li>Reviewing Ingredient Lists: Ensure you are not allergic or sensitive to any of the listed ingredients.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">9. Hygiene Exception (Cosmetic Products)</h2>
+                <p className="mb-4 text-gray-600 italic">
+                  In accordance with Article 16(e) of Directive 2011/83/EU, the right of withdrawal does not apply to sealed goods that are not suitable for return due to health protection or hygiene reasons if they have been unsealed after delivery.
+                </p>
+                <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                  <p className="font-bold text-red-700 uppercase text-sm tracking-wide">Important Hygiene Notice</p>
+                  <p className="text-red-800 font-medium">
+                    Hair care and cosmetic products that have been opened, unsealed, or used cannot be returned.
+                  </p>
+                </div>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Reporting a Defect or Adverse Reaction</h2>
-              <p className="mb-4">If you believe a product is defective or has caused an unexpected reaction due to a manufacturing issue:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Discontinue Use Immediately: Stop using the product and ensure it is safely stored.</li>
-                <li>Contact Us: Notify us at info@ecovluu.com within 14 days of receiving the product, providing:
-                  <ul className="list-disc pl-6 mt-2 space-y-1 text-left">
-                    <li>Your order number.</li>
-                    <li>A detailed description of the issue or reaction.</li>
-                    <li>The product's batch number (found on the packaging).</li>
-                  </ul>
-                </li>
-                <li>Product Inspection: We may request the return of the defective product for further investigation.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Resolution Options</h2>
-              <p className="mb-4">If a product is confirmed to be defective, you are entitled to one of the following remedies:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Replacement: A new product of the same type will be sent to you.</li>
-                <li>Refund: A refund will be issued to your original payment method.</li>
-                <li>Additional Remedies: Any other rights provided under applicable EU consumer protection laws.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">10. Defective or Incorrect Products</h2>
+                <p className="mb-4">
+                  If you receive a defective, damaged, or incorrect item, please contact us within 48 hours of delivery at:
+                </p>
+                <p className="font-bold text-primary text-xl mb-4">info@ecovluu.com</p>
+                <p className="mb-4 underline underline-offset-4 decoration-primary decoration-2">
+                  We will offer a replacement or full refund, including applicable shipping costs.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Limitation of Liability</h2>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>While our products are designed and tested for safety, individual sensitivities or allergic reactions may still occur.</li>
-                <li>Ecovluu is not liable for adverse effects caused by individual sensitivities, unless the product is proven to be defective or improperly labeled.</li>
-                <li>If you have known allergies or pre-existing conditions, consult a healthcare professional before use.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Delivery Times and Delays</h2>
-              <p className="mb-4">We aim to process and ship orders within 1-3 business days. Estimated delivery times are:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Ireland: 3-5 business days.</li>
-                <li>EU Countries: 5-10 business days.</li>
-                <li>Rest of the World: 10-15 business days.</li>
-              </ul>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">11. Legal Guarantee</h2>
+                <p className="mb-4">
+                  Consumers benefit from a minimum 2-year legal guarantee under EU consumer protection laws for goods that are faulty or not as described.
+                </p>
+                <p className="mb-4 text-sm text-gray-500 italic">
+                  This guarantee applies independently of any commercial warranty.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Cookie Policy</h2>
-              <p className="mb-4">Our website uses cookies to enhance your browsing experience. These include:</p>
-              <ul className="list-disc pl-6 mb-6 space-y-2 text-left">
-                <li>Essential Cookies: Necessary for website functionality, such as processing payments and maintaining security.</li>
-                <li>Analytics Cookies: To analyze site traffic and improve our services.</li>
-                <li>Advertising Cookies: To deliver personalized ads and promotions.</li>
-              </ul>
+              <hr className="my-8 border-gray-100" />
 
-              <h2 className="text-xl font-bold mb-4">Dispute Resolution</h2>
-              <p className="mb-4">
-                In the event of a dispute, you may contact us at info@ecovluu.com. If we are unable to resolve your concern, 
-                you can use the EU Online Dispute Resolution (ODR) platform to submit your complaint:
-                <a href="https://ec.europa.eu/odr" className="text-blue-600 hover:underline ml-1">
-                  https://ec.europa.eu/odr
-                </a>
-              </p>
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">12. Limitation of Liability</h2>
+                <p className="mb-4">
+                  Ecovluu shall not be liable for indirect, incidental, or consequential damages arising from the use of products purchased via the website.
+                </p>
+                <p className="mb-4 font-light text-gray-600">
+                  Nothing in these Terms limits liability where such limitation is not permitted under applicable law.
+                </p>
+              </section>
 
-              <h2 className="text-xl font-bold mb-4">Contact Information</h2>
-              <p className="mb-4">
-                For any questions or concerns about these Terms and Conditions, please contact us at:
-              </p>
-              <p className="mb-4">
-                Email: info@ecovluu.com<br />
-                Address: A6, Block A, Santry Business Park, Swords Road, Santry, Dublin 9, Ireland
-              </p>
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">13. Intellectual Property</h2>
+                <p className="mb-4">
+                  All content on this website, including text, graphics, branding, and images, is the property of Ecovluu and may not be reproduced without prior written consent.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">14. Force Majeure</h2>
+                <p className="mb-4 leading-relaxed">
+                  Ecovluu shall not be held liable for delays or failure to perform obligations due to events beyond reasonable control, including but not limited to natural disasters, strikes, transportation disruptions, or governmental actions.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">15. Severability</h2>
+                <p className="mb-4">
+                  If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">16. Amendments</h2>
+                <p className="mb-4">
+                  We reserve the right to update or modify these Terms & Conditions at any time. The version published on the website at the time of purchase shall apply to your order.
+                </p>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8">
+                <h2 className="text-xl font-bold mb-4">17. Governing Law & Jurisdiction</h2>
+                <div className="space-y-4">
+                  <p>
+                    These Terms are governed by the laws of Ireland and applicable European Union legislation.
+                  </p>
+                  <p>
+                    Any disputes shall be subject to the jurisdiction of the Irish courts.
+                  </p>
+                  <p className="p-3 bg-gray-50 border border-gray-200 rounded text-sm italic">
+                    Consumers may also use the EU Online Dispute Resolution platform where applicable.
+                  </p>
+                </div>
+              </section>
+
+              <hr className="my-8 border-gray-100" />
+
+              <section className="mb-8 py-6 px-8 bg-primary/5 rounded-xl border border-primary/10">
+                <h2 className="text-xl font-bold mb-4">18. Contact</h2>
+                <p className="mb-4 font-medium">
+                  For questions regarding these Terms & Conditions, please contact:
+                </p>
+                <p className="font-bold text-primary text-2xl tracking-tight">info@ecovluu.com</p>
+              </section>
             </div>
           </div>
         </div>
@@ -205,4 +307,4 @@ const TermsAndConditions = () => {
   );
 };
 
-export default TermsAndConditions; 
+export default TermsAndConditions;

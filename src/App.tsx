@@ -1,14 +1,11 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import './App.css';
 import Index from "@/pages/Index";
 import { Toaster } from "@/components/ui/toaster";
-import { CartProvider } from "@/context/CartContext";
-import { OrderProvider } from "@/context/OrderContext";
-import { ReviewsProvider } from "@/context/ReviewsContext";
-import { AdminProvider } from "@/context/AdminContext";
+import { AppProviders } from "@/components/AppProviders";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
@@ -29,6 +26,8 @@ const NotFound = React.lazy(() => import("@/pages/NotFound"));
 const TermsAndConditions = React.lazy(() => import("@/pages/TermsAndConditions"));
 const PrivacyPolicy = React.lazy(() => import("@/pages/PrivacyPolicy"));
 const ReturnsAndRefundPolicy = React.lazy(() => import("@/pages/ReturnsAndRefundPolicy"));
+const ShippingAndDeliveryPolicy = React.lazy(() => import("@/pages/ShippingAndDeliveryPolicy"));
+const DeepHydratingShampooLanding = React.lazy(() => import('@/components/product/DeepHydratingShampooLanding'));
 
 // Create a client with optimized settings
 const queryClient = new QueryClient({
@@ -57,16 +56,20 @@ const AppContent = () => {
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/shampoo-demo" element={<DeepHydratingShampooLanding />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/returns" element={<ReturnsAndRefundPolicy />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/shipping-policy" element={<ShippingAndDeliveryPolicy />} />
+          <Route path="/auth-access" element={<Login />} />
+          <Route path="/admin" element={<Navigate to="/ev-control-panel" replace />} />
+          <Route path="/ev-control-panel" element={<AdminDashboard />} />
+          <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
@@ -78,18 +81,10 @@ const AppContent = () => {
 const App = () => {
   return (
     <HelmetProvider>
-      <Router>
-        <QueryClientProvider client={queryClient}>
-          <AdminProvider>
-            <CartProvider>
-              <OrderProvider>
-                <ReviewsProvider>
-                  <AppContent />
-                </ReviewsProvider>
-              </OrderProvider>
-            </CartProvider>
-          </AdminProvider>
-        </QueryClientProvider>
+      <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <AppProviders queryClient={queryClient}>
+          <AppContent />
+        </AppProviders>
       </Router>
     </HelmetProvider>
   );
