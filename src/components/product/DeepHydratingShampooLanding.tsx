@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { StarRating } from "@/components/ui/StarRating";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus, Play } from "lucide-react";
+import { Minus, Plus, Play, ChevronLeft, ChevronRight, ZoomIn, MapPin, CheckCircle2, XCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -29,7 +29,10 @@ const DeepHydratingShampooLanding = () => {
   const [activeEducationTab, setActiveEducationTab] = useState("Hydration");
   const [activeResultTab, setActiveResultTab] = useState("Dry Hair");
   const [activeReviewFilter, setActiveReviewFilter] = useState("All (3)");
-  const [activeThumbnail, setActiveThumbnail] = useState(0);
+  const [activeMedia, setActiveMedia] = useState(0);
+  const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
+  const [pincode, setPincode] = useState("");
+  const [deliveryStatus, setDeliveryStatus] = useState<"idle" | "checking" | "available" | "unavailable">("idle");
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const { toast } = useToast();
 
@@ -48,6 +51,19 @@ const DeepHydratingShampooLanding = () => {
   const handleAddToCart = () => {
     console.log("Added to cart", quantity);
     // You can also add a toast notification here later
+  };
+
+  const handleCheckPincode = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pincode.trim()) return;
+    setDeliveryStatus("checking");
+    setTimeout(() => {
+      if (pincode.length >= 4) {
+        setDeliveryStatus("available");
+      } else {
+        setDeliveryStatus("unavailable");
+      }
+    }, 800);
   };
 
   // --- CONTENT MAPPING FOR TABS ---
@@ -104,14 +120,22 @@ const DeepHydratingShampooLanding = () => {
   };
 
   const reviewFilters = ["All (3)", "Dry Hair", "Fine Hair", "Oily Scalp", "Sensitive Scalp", "With Photos"];
-  const thumbnails = [
-    "/_DSC8533.jpg",
-    "/_DSC8542.jpg",
-    "/2.jpg",
-    "/2.2.png",
-    "/24.png",
-    "/IMG_7130.jpg"
+  const mediaItems: Array<{ type: 'image' | 'video', url: string, thumbUrl?: string }> = [
+    { type: 'image', url: "/_DSC8533.jpg" },
+    { type: 'image', url: "/_DSC8542.jpg" },
+    { type: 'image', url: "/2.jpg" },
+    { type: 'image', url: "/2.2.png" },
+    { type: 'image', url: "/24.png" },
+    { type: 'image', url: "/IMG_7130.jpg" }
   ];
+
+  const handlePrevMedia = () => {
+    setActiveMedia((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+  };
+
+  const handleNextMedia = () => {
+    setActiveMedia((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+  };
 
   return (
     <Layout>
@@ -133,33 +157,101 @@ const DeepHydratingShampooLanding = () => {
         </nav>
 
         {/* HERO SECTION */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16 lg:mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16 lg:mb-24 items-start relative">
           {/* Images Area (Left) */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:sticky lg:top-24 h-fit">
             <div className="w-full aspect-[4/5] sm:aspect-square bg-[#F7F3EE] rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border-2 border-brand-orange/20 relative overflow-hidden group">
-                <img 
-                  src={thumbnails[activeThumbnail]} 
-                  alt={`Deep Hydrating Shampoo - View ${activeThumbnail + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              {mediaItems[activeMedia].type === 'image' ? (
+                <>
+                  <img 
+                    src={mediaItems[activeMedia].url} 
+                    alt={`Deep Hydrating Shampoo - View ${activeMedia + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                    onClick={() => setIsZoomDialogOpen(true)}
+                  />
+                  <button 
+                    onClick={() => setIsZoomDialogOpen(true)}
+                    className="absolute bottom-4 right-4 bg-white/80 backdrop-blur p-2 rounded-full shadow-sm text-brand-brown hover:text-brand-orange transition-colors z-10 hidden sm:flex"
+                  >
+                    <ZoomIn size={20} />
+                  </button>
+                </>
+              ) : (
+                <video 
+                  src={mediaItems[activeMedia].url} 
+                  controls 
+                  autoPlay 
+                  muted 
+                  loop 
+                  className="w-full h-full object-cover"
                 />
-                {/* Custom Badge */}
-                <div className="absolute top-4 left-4 bg-brand-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-full z-10 shadow-sm">
-                  Best Seller
-                </div>
+              )}
+              
+              {/* Custom Badge */}
+              <div className="absolute top-4 left-4 bg-brand-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-full z-10 shadow-sm">
+                Best Seller
+              </div>
+
+              {/* Mobile Slider Controls */}
+              <button 
+                onClick={handlePrevMedia}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur p-2 rounded-full shadow-sm text-brand-brown hover:text-brand-orange transition-colors z-10 sm:hidden"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button 
+                onClick={handleNextMedia}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur p-2 rounded-full shadow-sm text-brand-brown hover:text-brand-orange transition-colors z-10 sm:hidden"
+              >
+                <ChevronRight size={20} />
+              </button>
+
+              {/* Mobile Dots */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 sm:hidden bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                {mediaItems.map((_, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${activeMedia === idx ? 'bg-white scale-125' : 'bg-white/50'}`}
+                  />
+                ))}
+              </div>
             </div>
             
             {/* Thumbnails */}
             <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
-              {thumbnails.map((thumb, idx) => (
+              {mediaItems.map((item, idx) => (
                 <button 
                   key={idx}
-                  onClick={() => setActiveThumbnail(idx)}
-                  className={`w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex-shrink-0 overflow-hidden bg-[#F7F3EE] border-2 transition-all ${activeThumbnail === idx ? 'border-brand-orange shadow-md' : 'border-transparent hover:border-brand-orange/50'}`}
+                  onClick={() => setActiveMedia(idx)}
+                  className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex-shrink-0 overflow-hidden bg-[#F7F3EE] border-2 transition-all ${activeMedia === idx ? 'border-brand-orange shadow-md' : 'border-transparent hover:border-brand-orange/50'}`}
                 >
-                  <img src={thumb} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img src={item.type === 'video' ? item.thumbUrl : item.url} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  {item.type === 'video' && (
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                      <Play className="w-6 h-6 text-white fill-white" />
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
+
+            {/* Zoom Dialog Modal */}
+            <Dialog open={isZoomDialogOpen} onOpenChange={setIsZoomDialogOpen}>
+              <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-4 flex flex-col bg-white border-none shadow-2xl rounded-xl">
+                 <DialogHeader className="flex justify-between items-center border-b pb-2">
+                   <DialogTitle className="text-xl text-brand-brown">Zoom Image</DialogTitle>
+                 </DialogHeader>
+                 <div className="relative flex-1 overflow-auto bg-[#F7F3EE] rounded-lg mt-2 flex items-center justify-center cursor-zoom-in">
+                   {mediaItems[activeMedia]?.type === 'image' && (
+                     <img 
+                       src={mediaItems[activeMedia].url} 
+                       alt="Zoomed Product" 
+                       className="max-w-none h-full w-full object-contain hover:scale-150 transition-transform duration-300 origin-center"
+                     />
+                   )}
+                 </div>
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* Product Info Area (Right) */}
@@ -214,6 +306,36 @@ const DeepHydratingShampooLanding = () => {
               >
                 ADD TO CART
               </Button>
+            </div>
+
+            {/* Delivery Pincode Checker */}
+            <div className="w-full mb-8 bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-5">
+              <div className="flex items-center gap-2 text-brand-brown font-semibold mb-3">
+                <MapPin size={18} className="text-brand-orange" />
+                Check Delivery Availability
+              </div>
+              <form onSubmit={handleCheckPincode} className="flex gap-2 relative">
+                <Input 
+                  placeholder="Enter Pincode / Zipcode" 
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value)}
+                  className="bg-white"
+                  maxLength={10}
+                />
+                <Button type="submit" variant="outline" className="shrink-0 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white" disabled={deliveryStatus === 'checking'}>
+                  {deliveryStatus === 'checking' ? 'Checking...' : 'Check'}
+                </Button>
+              </form>
+              {deliveryStatus === 'available' && (
+                <div className="flex items-center gap-2 mt-3 text-sm text-green-600 bg-green-50 p-2 rounded-md border border-green-100">
+                  <CheckCircle2 size={16} /> Delivery is available for {pincode}.
+                </div>
+              )}
+              {deliveryStatus === 'unavailable' && (
+                <div className="flex items-center gap-2 mt-3 text-sm text-red-600 bg-red-50 p-2 rounded-md border border-red-100">
+                  <XCircle size={16} /> Delivery is not available for {pincode}.
+                </div>
+              )}
             </div>
 
             {/* Badges */}
