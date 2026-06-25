@@ -57,7 +57,7 @@ const ProductsSection = () => {
   const { toast } = useToast();
 
   // Form states
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     name: "",
     slug: "",
     price: "",
@@ -74,11 +74,20 @@ const ProductsSection = () => {
     metaDescription: "",
     ogImage: "",
     status: "active",
-    educationContent: {} as Record<string, EducationContentItem>,
-    clinicalResults: {} as Record<string, ClinicalResultItem>,
-    faqs: [] as FaqItem[],
-    ugcVideos: [] as UgcVideoItem[],
-  });
+    educationContent: {} as Record<string, import('@/lib/productsService').EducationContentItem>,
+    clinicalResults: {} as Record<string, import('@/lib/productsService').ClinicalResultItem>,
+    faqs: [] as import('@/lib/productsService').FaqItem[],
+    ugcVideos: [] as import('@/lib/productsService').UgcVideoItem[],
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+  const [localFormData, setLocalFormData] = useState(initialFormData);
+  const [activeTab, setActiveTab] = useState("basic");
+
+  useEffect(() => {
+    setLocalFormData(formData);
+  }, [formData]);
+
 
   const categories = ["shampoo", "mask", "conditioner", "treatment"];
 
@@ -665,36 +674,7 @@ const ProductsSection = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-8 bg-muted rounded w-1/2 mb-2"></div>
-                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleEditProduct(product)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-5xl">
-                        <DialogHeader>
-                          <DialogTitle>Edit Product</DialogTitle>
-                        </DialogHeader>
-                        {renderProductForm(true)}
-                        <div className="flex justify-end space-x-2 pt-4 border-t">
-                          <Button
-                            variant="outline"
-                            onClick={() => {
-                              setIsEditDialogOpen(false);
-                              setEditingProduct(null);
-                              resetForm();
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button onClick={handleUpdateProduct}>Update Product</Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                
         </CardContent>
             </Card>
           ))}
@@ -889,6 +869,28 @@ const ProductsSection = () => {
           ))
         )}
       </div>
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                      
+                      <DialogContent className="max-w-5xl">
+                        <DialogHeader>
+                          <DialogTitle>Edit Product</DialogTitle>
+                        </DialogHeader>
+                        {renderProductForm(true)}
+                        <div className="flex justify-end space-x-2 pt-4 border-t">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setIsEditDialogOpen(false);
+                              setEditingProduct(null);
+                              resetForm();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                          <Button onClick={handleUpdateProduct}>Update Product</Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
     </div>
   );
 };
