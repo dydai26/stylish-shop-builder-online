@@ -116,7 +116,7 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = ({
               <img
                 src={url}
                 alt={`Preview ${index + 1}`}
-                className="w-full h-20 object-cover rounded-md border"
+                className="w-full aspect-[4/5] object-cover rounded-md border"
               />
               <Button
                 type="button"

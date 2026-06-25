@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import ImageUpload from "@/components/ui/ImageUpload";
 import MultiImageUpload from "@/components/ui/MultiImageUpload";
@@ -38,6 +39,10 @@ import {
   Product,
   CreateProductData,
   UpdateProductData,
+  EducationContentItem,
+  ClinicalResultItem,
+  FaqItem,
+  UgcVideoItem
 } from "@/lib/productsService";
 
 const ProductsSection = () => {
@@ -68,6 +73,10 @@ const ProductsSection = () => {
     metaDescription: "",
     ogImage: "",
     status: "active",
+    educationContent: {} as Record<string, EducationContentItem>,
+    clinicalResults: {} as Record<string, ClinicalResultItem>,
+    faqs: [] as FaqItem[],
+    ugcVideos: [] as UgcVideoItem[],
   });
 
   const categories = ["shampoo", "mask", "conditioner", "treatment"];
@@ -118,6 +127,10 @@ const ProductsSection = () => {
       metaDescription: "",
       ogImage: "",
       status: "active",
+      educationContent: {},
+      clinicalResults: {},
+      faqs: [],
+      ugcVideos: [],
     });
   };
 
@@ -198,6 +211,10 @@ const ProductsSection = () => {
         metaDescription: formData.metaDescription,
         ogImage: formData.ogImage,
         status: formData.status,
+        educationContent: formData.educationContent,
+        clinicalResults: formData.clinicalResults,
+        faqs: formData.faqs,
+        ugcVideos: formData.ugcVideos,
       };
 
       await createProduct(productData);
@@ -237,6 +254,10 @@ const ProductsSection = () => {
       metaDescription: product.metaDescription || "",
       ogImage: product.ogImage || "",
       status: product.status,
+      educationContent: product.educationContent || {},
+      clinicalResults: product.clinicalResults || {},
+      faqs: product.faqs || [],
+      ugcVideos: product.ugcVideos || [],
     });
     setIsEditDialogOpen(true);
   };
@@ -300,6 +321,10 @@ const ProductsSection = () => {
         metaDescription: formData.metaDescription,
         ogImage: formData.ogImage,
         status: formData.status,
+        educationContent: formData.educationContent,
+        clinicalResults: formData.clinicalResults,
+        faqs: formData.faqs,
+        ugcVideos: formData.ugcVideos,
       };
 
       await updateProduct(updateData);
@@ -366,244 +391,245 @@ const ProductsSection = () => {
 
   const ProductForm = ({ isEdit = false }: { isEdit?: boolean }) => {
     const [localFormData, setLocalFormData] = useState(formData);
+    const [activeTab, setActiveTab] = useState("basic");
 
-    // Синхронизируем локальное состояние при изменении props
     useEffect(() => {
       setLocalFormData(formData);
     }, [formData]);
 
-    const handleChange = useCallback((field: string, value: string) => {
+    const handleChange = useCallback((field: string, value: any) => {
       setLocalFormData(prev => ({
         ...prev,
         [field]: value
       }));
     }, []);
 
-    // Обновляем родительское состояние при потере фокуса
     const handleBlur = useCallback(() => {
       setFormData(localFormData);
     }, [localFormData]);
 
-    // 1. Обновляем интерфейс ImageUpload
     const handleImageChange = useCallback((field: string, value: string) => {
-      setLocalFormData(prev => ({
-        ...prev,
-        [field]: value
-      }));
-      // Сразу обновляем родительское состояние для изображений
-      setFormData(prev => ({
-        ...prev,
-        [field]: value
-      }));
+      setLocalFormData(prev => ({ ...prev, [field]: value }));
+      setFormData(prev => ({ ...prev, [field]: value }));
     }, []);
 
+    // Helpers for JSON updates
+    const updateJsonField = (field: string, newValue: any) => {
+      setLocalFormData(prev => ({ ...prev, [field]: newValue }));
+      setFormData(prev => ({ ...prev, [field]: newValue }));
+    };
+
     return (
-      <div className="space-y-4 max-h-[70vh] overflow-y-auto">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="name">Product Name</Label>
-            <Input
-              id="name"
-              value={localFormData.name}
-              onChange={(e) => handleChange('name', e.target.value)}
-              onBlur={handleBlur}
-              placeholder="Product name"
-              autoComplete="off"
-              spellCheck="false"
-            />
-          </div>
-          <div>
-            <Label htmlFor="slug">Slug</Label>
-            <Input
-              id="slug"
-              value={localFormData.slug || ""}
-              onChange={(e) => handleChange('slug', e.target.value)}
-              onBlur={handleBlur}
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="price">Price (€)</Label>
-            <Input
-              id="price"
-              type="text"
-              inputMode="decimal"
-              pattern="[0-9]*[.,]?[0-9]*"
-              value={localFormData.price ?? ""}
-              onChange={(e) => {
-                const val = e.target.value;
-                if (/^[0-9]*[.,]?[0-9]*$/.test(val) || val === "") {
-                  handleChange('price', val);
-                }
-              }}
-              onBlur={handleBlur}
-            />
-          </div>
-          <div>
-            <Label htmlFor="category">Category</Label>
-            <Select 
-              value={localFormData.category} 
-              onValueChange={(value) => {
-                // Одразу оновлюємо обидва стани для категорії
-                setLocalFormData(prev => ({
-                  ...prev,
-                  category: value
-                }));
-                setFormData(prev => ({
-                  ...prev,
-                  category: value
-                }));
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map(category => (
-                  <SelectItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <ImageUpload
-              label="Main Image"
-              value={localFormData.image}
-              onChange={(url) => handleImageChange('image', url)}
-              placeholder="Upload main product image"
-              required
-              maxSize={10} // Максимальный размер в МБ
-              acceptedTypes={['image/jpeg', 'image/png', 'image/webp']}
-            />
-          </div>
-          <div>
-            <Label htmlFor="sku">SKU</Label>
-            <Input
-              id="sku"
-              value={localFormData.sku || ""}
-              onChange={(e) => handleChange('sku', e.target.value)}
-              onBlur={handleBlur}
-            />
-          </div>
-        </div>
-
-        <div>
-          <MultiImageUpload
-            label="Additional Images"
-            value={localFormData.images}
-            onChange={(urls) => handleImageChange('images', urls)}
-            placeholder="Upload additional product images"
-            maxImages={8}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            value={localFormData.description || ""}
-            onChange={(e) => handleChange('description', e.target.value)}
-            onBlur={handleBlur}
-            rows={3}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="tags">Tags (comma-separated)</Label>
-          <Input
-            id="tags"
-            value={localFormData.tags || ""}
-            onChange={(e) => handleChange('tags', e.target.value)}
-            onBlur={handleBlur}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="benefits">Benefits (one per line)</Label>
-          <Textarea
-            id="benefits"
-            value={localFormData.benefits || ""}
-            onChange={(e) => handleChange('benefits', e.target.value)}
-            onBlur={handleBlur}
-            rows={4}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="usage">Usage Instructions</Label>
-          <Textarea
-            id="usage"
-            value={localFormData.usage || ""}
-            onChange={(e) => handleChange('usage', e.target.value)}
-            onBlur={handleBlur}
-            rows={2}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="ingredients">Ingredients</Label>
-          <Textarea
-            id="ingredients"
-            value={localFormData.ingredients || ""}
-            onChange={(e) => handleChange('ingredients', e.target.value)}
-            onBlur={handleBlur}
-            rows={3}
-          />
-        </div>
-
-        <div className="border-t pt-4">
-          <h4 className="font-medium mb-3">SEO Settings</h4>
-          <div className="space-y-3">
-            <div>
-              <Label htmlFor="metaTitle">Meta Title</Label>
-              <Input
-                id="metaTitle"
-                value={localFormData.metaTitle || ""}
-                onChange={(e) => handleChange('metaTitle', e.target.value)}
-                onBlur={handleBlur}
-              />
+      <div className="max-h-[85vh] overflow-y-auto pr-2">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-4 mb-4">
+            <TabsTrigger value="basic">Basic Info</TabsTrigger>
+            <TabsTrigger value="media">Media & SEO</TabsTrigger>
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="rich">Rich Tabs</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="basic" className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="name">Product Name</Label>
+                <Input id="name" value={localFormData.name} onChange={(e) => handleChange('name', e.target.value)} onBlur={handleBlur} />
+              </div>
+              <div>
+                <Label htmlFor="slug">Slug</Label>
+                <Input id="slug" value={localFormData.slug || ""} onChange={(e) => handleChange('slug', e.target.value)} onBlur={handleBlur} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="price">Price (€)</Label>
+                <Input id="price" type="text" inputMode="decimal" value={localFormData.price ?? ""} onChange={(e) => handleChange('price', e.target.value)} onBlur={handleBlur} />
+              </div>
+              <div>
+                <Label htmlFor="category">Category</Label>
+                <Select value={localFormData.category} onValueChange={(val) => { handleChange('category', val); setFormData(p => ({...p, category: val})); }}>
+                  <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <SelectContent>
+                    {categories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="sku">SKU</Label>
+                <Input id="sku" value={localFormData.sku || ""} onChange={(e) => handleChange('sku', e.target.value)} onBlur={handleBlur} />
+              </div>
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <Select value={localFormData.status} onValueChange={(val) => handleChange('status', val)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div>
-              <Label htmlFor="metaDescription">Meta Description</Label>
-              <Textarea
-                id="metaDescription"
-                value={localFormData.metaDescription || ""}
-                onChange={(e) => handleChange('metaDescription', e.target.value)}
-                onBlur={handleBlur}
-                rows={2}
-              />
+              <Label htmlFor="tags">Tags (comma-separated)</Label>
+              <Input id="tags" value={localFormData.tags || ""} onChange={(e) => handleChange('tags', e.target.value)} onBlur={handleBlur} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="media" className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <ImageUpload label="Main Image" value={localFormData.image} onChange={(url) => handleImageChange('image', url)} required />
+              <div className="space-y-3">
+                <h4 className="font-medium">SEO Settings</h4>
+                <Input placeholder="Meta Title" value={localFormData.metaTitle || ""} onChange={(e) => handleChange('metaTitle', e.target.value)} onBlur={handleBlur} />
+                <Textarea placeholder="Meta Description" value={localFormData.metaDescription || ""} onChange={(e) => handleChange('metaDescription', e.target.value)} onBlur={handleBlur} rows={2} />
+                <Input placeholder="OG Image URL" value={localFormData.ogImage || ""} onChange={(e) => handleChange('ogImage', e.target.value)} onBlur={handleBlur} />
+              </div>
+            </div>
+            <MultiImageUpload label="Additional Images" value={localFormData.images} onChange={(urls) => handleImageChange('images', urls)} maxImages={8} />
+          </TabsContent>
+
+          <TabsContent value="content" className="space-y-4">
+            <div>
+              <Label>Description</Label>
+              <Textarea value={localFormData.description || ""} onChange={(e) => handleChange('description', e.target.value)} onBlur={handleBlur} rows={4} />
             </div>
             <div>
-              <Label htmlFor="ogImage">OG Image URL</Label>
-              <Input
-                id="ogImage"
-                value={localFormData.ogImage || ""}
-                onChange={(e) => handleChange('ogImage', e.target.value)}
-                onBlur={handleBlur}
-              />
+              <Label>Benefits (one per line)</Label>
+              <Textarea value={localFormData.benefits || ""} onChange={(e) => handleChange('benefits', e.target.value)} onBlur={handleBlur} rows={4} />
             </div>
-          </div>
-        </div>
+            <div>
+              <Label>Usage Instructions</Label>
+              <Textarea value={localFormData.usage || ""} onChange={(e) => handleChange('usage', e.target.value)} onBlur={handleBlur} rows={3} />
+            </div>
+            <div>
+              <Label>Ingredients</Label>
+              <Textarea value={localFormData.ingredients || ""} onChange={(e) => handleChange('ingredients', e.target.value)} onBlur={handleBlur} rows={3} />
+            </div>
+          </TabsContent>
 
-        <div>
-          <Label htmlFor="status">Status</Label>
-          <Select value={localFormData.status} onValueChange={(value) => handleChange('status', value)}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+          <TabsContent value="rich" className="space-y-6">
+            {/* Education Content */}
+            <div className="border p-4 rounded-md">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-bold">Education Tabs</h4>
+                <Button type="button" variant="outline" size="sm" onClick={() => {
+                  const key = prompt("Enter Tab Name (e.g. Hydration):");
+                  if (key && !localFormData.educationContent[key]) {
+                    updateJsonField('educationContent', { ...localFormData.educationContent, [key]: { title: "", text1: "", text2: "", fact: "" } });
+                  }
+                }}>+ Add Tab</Button>
+              </div>
+              {Object.entries(localFormData.educationContent || {}).map(([key, item]: [string, any]) => (
+                <div key={key} className="mb-4 p-3 bg-muted/30 rounded border">
+                  <div className="flex justify-between font-medium mb-2"><span>{key}</span> <Button type="button" variant="ghost" size="sm" className="h-6 text-red-500" onClick={() => {
+                    const newObj = {...localFormData.educationContent}; delete newObj[key]; updateJsonField('educationContent', newObj);
+                  }}>Remove</Button></div>
+                  <Input placeholder="Title" value={item.title} className="mb-2" onChange={(e) => updateJsonField('educationContent', {...localFormData.educationContent, [key]: {...item, title: e.target.value}})} />
+                  <Textarea placeholder="Text 1" value={item.text1} className="mb-2" rows={2} onChange={(e) => updateJsonField('educationContent', {...localFormData.educationContent, [key]: {...item, text1: e.target.value}})} />
+                  <Textarea placeholder="Text 2" value={item.text2} className="mb-2" rows={2} onChange={(e) => updateJsonField('educationContent', {...localFormData.educationContent, [key]: {...item, text2: e.target.value}})} />
+                  <Input placeholder="Fact" value={item.fact} onChange={(e) => updateJsonField('educationContent', {...localFormData.educationContent, [key]: {...item, fact: e.target.value}})} />
+                </div>
+              ))}
+            </div>
+
+            {/* FAQs */}
+            <div className="border p-4 rounded-md">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-bold">FAQs</h4>
+                <Button type="button" variant="outline" size="sm" onClick={() => {
+                  updateJsonField('faqs', [...(localFormData.faqs || []), { question: "", answer: "" }]);
+                }}>+ Add FAQ</Button>
+              </div>
+              {(localFormData.faqs || []).map((faq, i) => (
+                <div key={i} className="mb-4 flex gap-2">
+                  <div className="flex-1 space-y-2">
+                    <Input placeholder="Question" value={faq.question} onChange={(e) => {
+                      const newFaqs = [...localFormData.faqs]; newFaqs[i].question = e.target.value; updateJsonField('faqs', newFaqs);
+                    }} />
+                    <Textarea placeholder="Answer" value={faq.answer} rows={2} onChange={(e) => {
+                      const newFaqs = [...localFormData.faqs]; newFaqs[i].answer = e.target.value; updateJsonField('faqs', newFaqs);
+                    }} />
+                  </div>
+                  <Button type="button" variant="ghost" size="icon" className="text-red-500" onClick={() => {
+                     const newFaqs = localFormData.faqs.filter((_, idx) => idx !== i); updateJsonField('faqs', newFaqs);
+                  }}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              ))}
+            </div>
+
+            {/* Results */}
+            <div className="border p-4 rounded-md">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-bold">Clinical Results Tabs</h4>
+                <Button type="button" variant="outline" size="sm" onClick={() => {
+                  const key = prompt("Enter Target (e.g. Dry Hair):");
+                  if (key && !localFormData.clinicalResults[key]) {
+                    updateJsonField('clinicalResults', { ...localFormData.clinicalResults, [key]: { percent1: "", desc1: "", percent2: "", desc2: "" } });
+                  }
+                }}>+ Add Result</Button>
+              </div>
+              {Object.entries(localFormData.clinicalResults || {}).map(([key, item]: [string, any]) => (
+                <div key={key} className="mb-4 p-3 bg-muted/30 rounded border">
+                  <div className="flex justify-between font-medium mb-2"><span>{key}</span> <Button type="button" variant="ghost" size="sm" className="h-6 text-red-500" onClick={() => {
+                    const newObj = {...localFormData.clinicalResults}; delete newObj[key]; updateJsonField('clinicalResults', newObj);
+                  }}>Remove</Button></div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <ImageUpload 
+                      label="Before Image" 
+                      value={item.beforeImage || ""} 
+                      onChange={(url) => updateJsonField('clinicalResults', {...localFormData.clinicalResults, [key]: {...item, beforeImage: url}})} 
+                    />
+                    <ImageUpload 
+                      label="After Image" 
+                      value={item.afterImage || ""} 
+                      onChange={(url) => updateJsonField('clinicalResults', {...localFormData.clinicalResults, [key]: {...item, afterImage: url}})} 
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 mb-2">
+                    <Input placeholder="Percent 1 (e.g. 92%)" value={item.percent1} onChange={(e) => updateJsonField('clinicalResults', {...localFormData.clinicalResults, [key]: {...item, percent1: e.target.value}})} />
+                    <Input placeholder="Desc 1" value={item.desc1} onChange={(e) => updateJsonField('clinicalResults', {...localFormData.clinicalResults, [key]: {...item, desc1: e.target.value}})} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Input placeholder="Percent 2 (e.g. 88%)" value={item.percent2} onChange={(e) => updateJsonField('clinicalResults', {...localFormData.clinicalResults, [key]: {...item, percent2: e.target.value}})} />
+                    <Input placeholder="Desc 2" value={item.desc2} onChange={(e) => updateJsonField('clinicalResults', {...localFormData.clinicalResults, [key]: {...item, desc2: e.target.value}})} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* UGC Videos */}
+            <div className="border p-4 rounded-md">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-bold">UGC Quotes/Videos</h4>
+                <Button type="button" variant="outline" size="sm" onClick={() => {
+                  updateJsonField('ugcVideos', [...(localFormData.ugcVideos || []), { quote: "", author: "", videoUrl: "" }]);
+                }}>+ Add UGC</Button>
+              </div>
+              {(localFormData.ugcVideos || []).map((ugc, i) => (
+                <div key={i} className="mb-4 p-3 bg-muted/30 rounded border flex gap-2">
+                  <div className="flex-1 space-y-2">
+                    <Input placeholder="Quote" value={ugc.quote} onChange={(e) => {
+                      const newUgc = [...localFormData.ugcVideos]; newUgc[i].quote = e.target.value; updateJsonField('ugcVideos', newUgc);
+                    }} />
+                    <Input placeholder="Author (e.g. @hanan · Verified Buyer)" value={ugc.author} onChange={(e) => {
+                      const newUgc = [...localFormData.ugcVideos]; newUgc[i].author = e.target.value; updateJsonField('ugcVideos', newUgc);
+                    }} />
+                    <VideoUpload label="Video (optional)" value={ugc.videoUrl || ""} onChange={(url) => {
+                      const newUgc = [...localFormData.ugcVideos]; newUgc[i].videoUrl = url; updateJsonField('ugcVideos', newUgc);
+                    }} />
+                  </div>
+                  <Button type="button" variant="ghost" size="icon" className="text-red-500" onClick={() => {
+                     const newUgc = localFormData.ugcVideos.filter((_, idx) => idx !== i); updateJsonField('ugcVideos', newUgc);
+                  }}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     );
   };
@@ -720,7 +746,7 @@ const ProductsSection = () => {
               Add Product
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-5xl">
             <DialogHeader>
               <DialogTitle>Add New Product</DialogTitle>
             </DialogHeader>
@@ -812,7 +838,7 @@ const ProductsSection = () => {
                           <Edit className="h-4 w-4" />
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-2xl">
+                      <DialogContent className="max-w-5xl">
                         <DialogHeader>
                           <DialogTitle>Edit Product</DialogTitle>
                         </DialogHeader>

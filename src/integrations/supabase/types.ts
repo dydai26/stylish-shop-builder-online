@@ -254,6 +254,10 @@ export type Database = {
           tags: Json | null
           updated_at: string | null
           usage: string | null
+          education_content: Json | null
+          clinical_results: Json | null
+          faqs: Json | null
+          ugc_videos: Json | null
         }
         Insert: {
           benefits?: Json | null
@@ -275,6 +279,10 @@ export type Database = {
           tags?: Json | null
           updated_at?: string | null
           usage?: string | null
+          education_content?: Json | null
+          clinical_results?: Json | null
+          faqs?: Json | null
+          ugc_videos?: Json | null
         }
         Update: {
           benefits?: Json | null
@@ -296,6 +304,10 @@ export type Database = {
           tags?: Json | null
           updated_at?: string | null
           usage?: string | null
+          education_content?: Json | null
+          clinical_results?: Json | null
+          faqs?: Json | null
+          ugc_videos?: Json | null
         }
         Relationships: []
       }

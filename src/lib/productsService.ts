@@ -1,5 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 
+
+export type EducationContentItem = { title: string; text1: string; text2: string; fact: string; };
+export type ClinicalResultItem = { percent1: string; desc1: string; percent2: string; desc2: string; beforeImage?: string; afterImage?: string; };
+export type FaqItem = { question: string; answer: string; };
+export type UgcVideoItem = { quote: string; author: string; videoUrl?: string; };
+
 export interface Product {
   id: number;
   name: string;
@@ -17,6 +23,11 @@ export interface Product {
   metaTitle?: string;
   metaDescription?: string;
   ogImage?: string;
+
+  educationContent?: Record<string, EducationContentItem>;
+  clinicalResults?: Record<string, ClinicalResultItem>;
+  faqs?: FaqItem[];
+  ugcVideos?: UgcVideoItem[];
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -38,6 +49,11 @@ export interface CreateProductData {
   metaTitle?: string;
   metaDescription?: string;
   ogImage?: string;
+
+  educationContent?: Record<string, EducationContentItem>;
+  clinicalResults?: Record<string, ClinicalResultItem>;
+  faqs?: FaqItem[];
+  ugcVideos?: UgcVideoItem[];
   status?: string;
 }
 
@@ -80,6 +96,10 @@ export const getAllProducts = async (): Promise<Product[]> => {
     metaDescription: product.meta_description || undefined,
     ogImage: product.og_image || undefined,
     status: product.status,
+    educationContent: product.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: product.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: product.faqs as FaqItem[] | undefined,
+    ugcVideos: product.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: product.created_at,
     updatedAt: product.updated_at,
   }));
@@ -120,6 +140,10 @@ export const getAllProductsAdmin = async (): Promise<Product[]> => {
     metaDescription: product.meta_description || undefined,
     ogImage: product.og_image || undefined,
     status: product.status,
+    educationContent: product.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: product.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: product.faqs as FaqItem[] | undefined,
+    ugcVideos: product.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: product.created_at,
     updatedAt: product.updated_at,
   }));
@@ -161,6 +185,10 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
     metaDescription: product.meta_description || undefined,
     ogImage: product.og_image || undefined,
     status: product.status,
+    educationContent: product.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: product.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: product.faqs as FaqItem[] | undefined,
+    ugcVideos: product.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: product.created_at,
     updatedAt: product.updated_at,
   }));
@@ -200,6 +228,10 @@ export const getProductById = async (id: number): Promise<Product | null> => {
     metaDescription: data.meta_description || undefined,
     ogImage: data.og_image || undefined,
     status: data.status,
+    educationContent: data.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: data.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: data.faqs as FaqItem[] | undefined,
+    ugcVideos: data.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };
@@ -241,6 +273,10 @@ export const getProductBySlug = async (
     metaDescription: data.meta_description || undefined,
     ogImage: data.og_image || undefined,
     status: data.status,
+    educationContent: data.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: data.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: data.faqs as FaqItem[] | undefined,
+    ugcVideos: data.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };
@@ -292,6 +328,10 @@ export const getRelatedProducts = async (
     metaDescription: product.meta_description || undefined,
     ogImage: product.og_image || undefined,
     status: product.status,
+    educationContent: product.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: product.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: product.faqs as FaqItem[] | undefined,
+    ugcVideos: product.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: product.created_at,
     updatedAt: product.updated_at,
   }));
@@ -320,6 +360,10 @@ export const createProduct = async (
       meta_description: productData.metaDescription,
       og_image: productData.ogImage,
       status: productData.status || "active",
+      education_content: productData.educationContent,
+      clinical_results: productData.clinicalResults,
+      faqs: productData.faqs,
+      ugc_videos: productData.ugcVideos,
     })
     .select()
     .single();
@@ -347,6 +391,10 @@ export const createProduct = async (
     metaDescription: data.meta_description || undefined,
     ogImage: data.og_image || undefined,
     status: data.status,
+    educationContent: data.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: data.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: data.faqs as FaqItem[] | undefined,
+    ugcVideos: data.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };
@@ -381,6 +429,10 @@ export const updateProduct = async (
         { meta_description: updateData.metaDescription }),
       ...(updateData.ogImage !== undefined && { og_image: updateData.ogImage }),
       ...(updateData.status && { status: updateData.status }),
+      ...(updateData.educationContent !== undefined && { education_content: updateData.educationContent }),
+      ...(updateData.clinicalResults !== undefined && { clinical_results: updateData.clinicalResults }),
+      ...(updateData.faqs !== undefined && { faqs: updateData.faqs }),
+      ...(updateData.ugcVideos !== undefined && { ugc_videos: updateData.ugcVideos }),
     })
     .eq("id", id)
     .select()
@@ -409,6 +461,10 @@ export const updateProduct = async (
     metaDescription: data.meta_description || undefined,
     ogImage: data.og_image || undefined,
     status: data.status,
+    educationContent: data.education_content as Record<string, EducationContentItem> | undefined,
+    clinicalResults: data.clinical_results as Record<string, ClinicalResultItem> | undefined,
+    faqs: data.faqs as FaqItem[] | undefined,
+    ugcVideos: data.ugc_videos as UgcVideoItem[] | undefined,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };

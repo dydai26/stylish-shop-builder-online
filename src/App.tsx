@@ -27,8 +27,6 @@ const TermsAndConditions = React.lazy(() => import("@/pages/TermsAndConditions")
 const PrivacyPolicy = React.lazy(() => import("@/pages/PrivacyPolicy"));
 const ReturnsAndRefundPolicy = React.lazy(() => import("@/pages/ReturnsAndRefundPolicy"));
 const ShippingAndDeliveryPolicy = React.lazy(() => import("@/pages/ShippingAndDeliveryPolicy"));
-const DeepHydratingShampooLanding = React.lazy(() => import('@/components/product/DeepHydratingShampooLanding'));
-
 // Create a client with optimized settings
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,9 +54,13 @@ const AppContent = () => {
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          {/* ── Legacy URL redirects (301-style) ── */}
+          <Route path="/product/-deep-hydrating-shampoo-ecovluu" element={<Navigate to="/product/deep-hydrating-shampoo" replace />} />
+          <Route path="/product/-deep-conditioning-mask-dry-damaged-hair-ecovluu" element={<Navigate to="/product/deep-conditioning-hair-mask" replace />} />
+          <Route path="/blog/Ecovluu – The Honest Beginning of a New​Haircare Era" element={<Navigate to="/blog/beginning-new-haircare-era" replace />} />
+          <Route path="/blog/Ecovluu%20%E2%80%93%20The%20Honest%20Beginning%20of%20a%20New%E2%80%A8Haircare%20Era" element={<Navigate to="/blog/beginning-new-haircare-era" replace />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/shampoo-demo" element={<DeepHydratingShampooLanding />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/reviews" element={<Reviews />} />

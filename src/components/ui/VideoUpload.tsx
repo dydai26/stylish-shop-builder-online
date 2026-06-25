@@ -1,24 +1,21 @@
 import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { X, Upload, Image as ImageIcon } from 'lucide-react';
-import { uploadImage, validateImageFile } from '@/lib/imageUploadService';
+import { X, Upload, Video as VideoIcon } from 'lucide-react';
+import { uploadVideo, validateVideoFile } from '@/lib/videoUploadService';
 import { useToast } from '@/hooks/use-toast';
 
-interface ImageUploadProps {
+interface VideoUploadProps {
   label: string;
   value: string;
   onChange: (url: string) => void;
-  placeholder?: string;
   required?: boolean;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({
+const VideoUpload: React.FC<VideoUploadProps> = ({
   label,
   value,
   onChange,
-  placeholder = "Upload an image",
   required = false
 }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -31,7 +28,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     if (!file) return;
 
     try {
-      validateImageFile(file);
+      validateVideoFile(file);
       setIsUploading(true);
 
       // Create preview
@@ -39,7 +36,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       setPreviewUrl(localUrl);
 
       // Upload to Supabase
-      const result = await uploadImage(file);
+      const result = await uploadVideo(file);
       onChange(result.url);
       setPreviewUrl(result.url);
 
@@ -48,13 +45,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
       toast({
         title: "Success",
-        description: "Image uploaded successfully!",
+        description: "Video uploaded successfully!",
       });
     } catch (error) {
       console.error('Upload error:', error);
       toast({
         title: "Upload Failed",
-        description: error instanceof Error ? error.message : "Failed to upload image",
+        description: error instanceof Error ? error.message : "Failed to upload video",
         variant: "destructive",
       });
       
@@ -69,7 +66,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const handleRemoveImage = () => {
+  const handleRemoveVideo = () => {
     onChange('');
     setPreviewUrl('');
     if (fileInputRef.current) {
@@ -77,27 +74,22 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const handleUrlChange = (url: string) => {
-    onChange(url);
-    setPreviewUrl(url);
-  };
-
   return (
     <div className="flex flex-col space-y-2">
       {/* Preview */}
       {previewUrl && (
-        <div className="relative inline-block w-32">
-          <img
+        <div className="relative inline-block w-full max-w-sm">
+          <video
             src={previewUrl}
-            alt="Preview"
-            className="w-32 h-32 object-cover rounded-md border"
+            controls
+            className="w-full h-auto max-h-48 rounded-md border bg-black"
           />
           <Button
             type="button"
             variant="destructive"
             size="sm"
-            className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
-            onClick={handleRemoveImage}
+            className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 z-10"
+            onClick={handleRemoveVideo}
           >
             <X className="h-3 w-3" />
           </Button>
@@ -125,15 +117,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           ) : (
             <>
               <Upload className="h-4 w-4" />
-              Upload Image
+              Upload Video
             </>
           )}
         </Button>
         
         {!previewUrl && (
           <div className="flex items-center text-muted-foreground">
-            <ImageIcon className="h-4 w-4 mr-1" />
-            <span className="text-xs">JPG, PNG, WebP, GIF (max 10MB)</span>
+            <VideoIcon className="h-4 w-4 mr-1" />
+            <span className="text-xs">MP4, WebM, MOV (max 100MB)</span>
           </div>
         )}
       </div>
@@ -142,7 +134,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="video/mp4,video/webm,video/quicktime"
         onChange={handleFileSelect}
         className="hidden"
         id={`${label}-upload`}
@@ -152,4 +144,4 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   );
 };
 
-export default ImageUpload;
+export default VideoUpload;
