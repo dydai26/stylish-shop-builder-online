@@ -237,6 +237,7 @@ const ProductsSection = () => {
   };
 
   const handleEditProduct = (product: Product) => {
+    setLocalFormData(product);
     setEditingProduct(product);
     setFormData({
       name: product.name,
@@ -390,35 +391,32 @@ const ProductsSection = () => {
     }
   };
 
-  const ProductForm = ({ isEdit = false }: { isEdit?: boolean }) => {
-    const [localFormData, setLocalFormData] = useState(formData);
-    const [activeTab, setActiveTab] = useState("basic");
-
-    useEffect(() => {
-      setLocalFormData(formData);
-    }, [formData]);
-
-    const handleChange = useCallback((field: string, value: any) => {
+  const renderProductForm = (isEdit: boolean = false) => {
+    
+    const handleChange = (field: string, value: any) => {
       setLocalFormData(prev => ({
         ...prev,
         [field]: value
       }));
-    }, []);
+    };
 
-    const handleBlur = useCallback(() => {
+    const handleBlur = () => {
       setFormData(localFormData);
-    }, [localFormData]);
+    };
 
-    const handleImageChange = useCallback((field: string, value: string) => {
+    const handleImageChange = (field: string, value: string) => {
       setLocalFormData(prev => ({ ...prev, [field]: value }));
       setFormData(prev => ({ ...prev, [field]: value }));
-    }, []);
+    };
 
+    
     // Helpers for JSON updates
-    const updateJsonField = (field: string, newValue: any) => {
+    const updateJsonField = (field: keyof typeof localFormData, newValue: any) => {
       setLocalFormData(prev => ({ ...prev, [field]: newValue }));
       setFormData(prev => ({ ...prev, [field]: newValue }));
     };
+
+
 
     return (
       <div className="max-h-[85vh] overflow-y-auto pr-2">
@@ -667,7 +665,37 @@ const ProductsSection = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-8 bg-muted rounded w-1/2 mb-2"></div>
-              </CardContent>
+                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEditProduct(product)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-5xl">
+                        <DialogHeader>
+                          <DialogTitle>Edit Product</DialogTitle>
+                        </DialogHeader>
+                        {renderProductForm(true)}
+                        <div className="flex justify-end space-x-2 pt-4 border-t">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setIsEditDialogOpen(false);
+                              setEditingProduct(null);
+                              resetForm();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                          <Button onClick={handleUpdateProduct}>Update Product</Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+        </CardContent>
             </Card>
           ))}
         </div>
@@ -751,7 +779,7 @@ const ProductsSection = () => {
             <DialogHeader>
               <DialogTitle>Add New Product</DialogTitle>
             </DialogHeader>
-            <ProductForm />
+            {renderProductForm()}
             <div className="flex justify-end space-x-2 pt-4 border-t">
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                 Cancel
@@ -829,36 +857,7 @@ const ProductsSection = () => {
                     className="w-24 h-24 object-cover rounded-md"
                   />
                   <div className="flex gap-2">
-                    <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleEditProduct(product)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-5xl">
-                        <DialogHeader>
-                          <DialogTitle>Edit Product</DialogTitle>
-                        </DialogHeader>
-                        <ProductForm isEdit />
-                        <div className="flex justify-end space-x-2 pt-4 border-t">
-                          <Button
-                            variant="outline"
-                            onClick={() => {
-                              setIsEditDialogOpen(false);
-                              setEditingProduct(null);
-                              resetForm();
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button onClick={handleUpdateProduct}>Update Product</Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <Button size="sm" variant="outline" onClick={() => handleEditProduct(product)}><Edit className="h-4 w-4" /></Button>
 
                     <AlertDialog>
   <AlertDialogTrigger asChild>
