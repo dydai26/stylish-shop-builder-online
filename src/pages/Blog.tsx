@@ -102,7 +102,7 @@ const Blog = () => {
         <link rel="canonical" href="https://www.ecovluu.com/blog" />
       </Helmet>
       <div className="container-custom py-12 md:py-16">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-12 md:mb-16">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-left mb-12 md:mb-16">
           Blog
         </h1>
 
