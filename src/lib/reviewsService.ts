@@ -6,7 +6,7 @@ export interface Review {
   text: string;
   rating: number;
   date?: string;
-  product_id?: string | null;
+  product_id?: number | null;
   created_at: string;
 }
 

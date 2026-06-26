@@ -381,7 +381,7 @@ export type Database = {
           email: string | null
           id: string
           name: string
-          product_id: string | null
+          product_id: number | null
           rating: number
           text: string
         }
@@ -391,7 +391,7 @@ export type Database = {
           email?: string | null
           id?: string
           name: string
-          product_id?: string | null
+          product_id?: number | null
           rating: number
           text: string
         }
@@ -401,7 +401,7 @@ export type Database = {
           email?: string | null
           id?: string
           name?: string
-          product_id?: string | null
+          product_id?: number | null
           rating?: number
           text?: string
         }
