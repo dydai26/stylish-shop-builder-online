@@ -2,6 +2,9 @@ User-agent: *
 Disallow: /cart
 Disallow: /checkout
 Disallow: /order-success
+Disallow: /auth-access
+Disallow: /admin
+Disallow: /ev-control-panel
 Allow: /
 
 # Sitemap
