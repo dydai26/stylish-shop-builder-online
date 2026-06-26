@@ -813,7 +813,7 @@ const ProductsSection = () => {
                   <div className="text-xl font-bold text-primary mb-2 text-left w-full">
                     €{product.price.toFixed(2)}
                   </div>
-                  <p className="text-muted-foreground text-sm line-clamp-2">
+                  <p className="text-muted-foreground text-sm line-clamp-2 text-left w-full">
                     {product.description}
                   </p>
                   <div className="flex items-center gap-2 mt-3">
