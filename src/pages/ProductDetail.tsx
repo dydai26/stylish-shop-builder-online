@@ -26,6 +26,7 @@ import Layout from "@/components/layout/Layout";
 import ProductCard from "@/components/ui/ProductCard";
 
 import { useCart, Product } from "@/context/CartContext";
+import { useReviews } from "@/context/ReviewsContext";
 import { getProductBySlug, getRelatedProducts } from "@/lib/api";
 import { useTikTokTracking } from "@/hooks/useTikTokTracking";
 import { useMetaTracking } from "@/hooks/useMetaTracking";
@@ -48,6 +49,14 @@ const ProductDetail = () => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   
   const { addToCart } = useCart();
+  const { reviews, addReview } = useReviews();
+  const productReviews = product ? reviews.filter(r => r.product_id === product.id) : [];
+
+  // Form state for reviews
+  const [reviewName, setReviewName] = useState("");
+  const [reviewEmail, setReviewEmail] = useState("");
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
   const { toast } = useToast();
   
   const { trackViewContent, trackAddToCart } = useTikTokTracking();
@@ -813,20 +822,22 @@ const ProductDetail = () => {
                <div className="mb-3 sm:mb-4 scale-110 sm:scale-125 flex justify-center w-full">
                  <StarRating rating={5} showReviewsCount={false} />
                </div>
-              <p className="text-gray-500 text-sm mb-4">Based on 3 reviews</p>
-              <div className="text-brand-orange font-bold text-lg">
-                100% recommend
-              </div>
+              <p className="text-gray-500 text-sm mb-4">Based on {productReviews.length} reviews</p>
+              {productReviews.length > 0 && (
+                <div className="text-brand-orange font-bold text-lg">
+                  100% recommend
+                </div>
+              )}
             </div>
             
             {/* Rating Bars */}
             <div className="md:col-span-7 lg:col-span-8 flex flex-col justify-center gap-3 sm:gap-4">
                {[
-                 { stars: 5, count: 3, percent: 100 },
-                 { stars: 4, count: 0, percent: 0 },
-                 { stars: 3, count: 0, percent: 0 },
-                 { stars: 2, count: 0, percent: 0 },
-                 { stars: 1, count: 0, percent: 0 }
+                 { stars: 5, count: productReviews.filter(r => r.rating === 5).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 5).length / productReviews.length) * 100 : 0 },
+                 { stars: 4, count: productReviews.filter(r => r.rating === 4).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 4).length / productReviews.length) * 100 : 0 },
+                 { stars: 3, count: productReviews.filter(r => r.rating === 3).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 3).length / productReviews.length) * 100 : 0 },
+                 { stars: 2, count: productReviews.filter(r => r.rating === 2).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 2).length / productReviews.length) * 100 : 0 },
+                 { stars: 1, count: productReviews.filter(r => r.rating === 1).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 1).length / productReviews.length) * 100 : 0 }
                ].map((bar) => (
                  <div key={bar.stars} className="flex items-center gap-3 sm:gap-4 text-sm sm:text-base font-medium">
                    <div className="w-10 sm:w-12 text-brand-brown">{bar.stars} ★</div>
@@ -861,76 +872,37 @@ const ProductDetail = () => {
             </div>
           </div>
           
-          {/* Filters */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 my-8 sm:my-10">
-             {reviewFilters.map(f => (
-               <button 
-                 key={f} 
-                 onClick={() => setActiveReviewFilter(f)}
-                 className={`px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm ${
-                   activeReviewFilter === f 
-                    ? 'bg-brand-orange text-white font-semibold'
-                    : 'bg-white border border-gray-300 text-gray-600 hover:border-brand-orange hover:text-brand-orange font-medium'
-                 }`}
-               >
-                 {f}
-               </button>
-             ))}
-          </div>
+           <div className="flex flex-wrap gap-2 sm:gap-3 my-8 sm:my-10">
+             <div className="px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm bg-brand-orange text-white font-semibold">
+                All ({productReviews.length})
+             </div>
+           </div>
           
           {/* Review List */}
           <div className="space-y-4 sm:space-y-6">
-            {[
-              {
-                name: "Hanan",
-                verified: true,
-                hairType: "Dry",
-                scalpCondition: "Sensitive",
-                date: "1 week ago",
-                rating: 5,
-                title: "5 Stars.",
-                text: "Literally the only product that does not irritate my skin. I've been dealing with sensitivity for years and this is the first product that actually works without making things worse."
-              },
-              {
-                name: "Elizabeth",
-                verified: true,
-                hairType: "Fine",
-                scalpCondition: "Oily",
-                date: "3 weeks ago",
-                rating: 5,
-                title: "Please make a larger size!",
-                text: "This is soothing for my itchy skin. Please make a larger size of it. I go through it so quickly because I genuinely love using it every day. Worth every cent."
-              },
-              {
-                name: "Brooke C.",
-                verified: true,
-                hairType: "Medium",
-                scalpCondition: "Dry",
-                date: "1 month ago",
-                rating: 5,
-                title: "I have never felt this good",
-                text: "I switched from a well-known salon brand and I honestly can't believe the difference. It feels so much softer and calmer. I was skeptical but this changed everything."
-              }
-            ].map((review, idx) => (
-              <div key={idx} className="bg-white p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
-                  <div>
-                    <h4 className="font-bold text-brand-brown text-base sm:text-lg flex items-center gap-2">
-                      {review.name}
-                      {review.verified && <span className="text-green-600 text-xs font-semibold bg-green-50 px-2 py-0.5 rounded-full">✓ Verified Buyer</span>}
-                    </h4>
+            {productReviews.length === 0 ? (
+              <p className="text-gray-500 italic text-center py-8">No reviews yet for this product. Be the first to leave one!</p>
+            ) : (
+              productReviews.map((review, idx) => (
+                <div key={idx} className="bg-white p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
+                    <div>
+                      <h4 className="font-bold text-brand-brown text-base sm:text-lg flex items-center gap-2">
+                        {review.name}
+                        <span className="text-green-600 text-xs font-semibold bg-green-50 px-2 py-0.5 rounded-full">✓ Verified Buyer</span>
+                      </h4>
+                    </div>
+                    <div className="text-left sm:text-right">
+                      <div className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">{review.date}</div>
+                      <StarRating rating={review.rating} showReviewsCount={false} />
+                    </div>
                   </div>
-                  <div className="text-left sm:text-right">
-                    <div className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">{review.date}</div>
-                    <StarRating rating={review.rating} showReviewsCount={false} />
-                  </div>
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                    {review.text}
+                  </p>
                 </div>
-                <h5 className="font-bold text-brand-brown mb-2 text-sm sm:text-base">{review.title}</h5>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  {review.text}
-                </p>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           <div className="mt-10 flex justify-center">
@@ -945,13 +917,33 @@ const ProductDetail = () => {
                   <DialogTitle className="text-2xl font-bold text-brand-brown mb-2">Write a Review</DialogTitle>
                 </DialogHeader>
                 <form 
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
-                    setIsReviewDialogOpen(false);
-                    toast({
-                      title: "Review Submitted",
-                      description: "Thank you for your feedback! Your review will be published shortly.",
-                    });
+                    if (product) {
+                      try {
+                        await addReview({
+                          name: reviewName,
+                          text: reviewText,
+                          rating: reviewRating,
+                          product_id: product.id,
+                        });
+                        setIsReviewDialogOpen(false);
+                        setReviewName("");
+                        setReviewEmail("");
+                        setReviewText("");
+                        setReviewRating(5);
+                        toast({
+                          title: "Review Submitted",
+                          description: "Thank you for your feedback! Your review has been added.",
+                        });
+                      } catch (err) {
+                        toast({
+                          title: "Error",
+                          description: "Failed to submit your review. Please try again later.",
+                          variant: "destructive"
+                        });
+                      }
+                    }
                   }}
                   className="space-y-4 pt-2"
                 >
@@ -959,7 +951,11 @@ const ProductDetail = () => {
                     <Label htmlFor="rating">Rating</Label>
                     <div className="flex gap-1 text-2xl cursor-pointer">
                       {[1, 2, 3, 4, 5].map((star) => (
-                        <span key={star} className="text-brand-orange">★</span>
+                        <span 
+                          key={star} 
+                          onClick={() => setReviewRating(star)}
+                          className={star <= reviewRating ? "text-brand-orange" : "text-gray-300"}
+                        >★</span>
                       ))}
                     </div>
                   </div>
@@ -967,17 +963,12 @@ const ProductDetail = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" placeholder="Your name" required />
+                      <Input id="name" placeholder="Your name" value={reviewName} onChange={e => setReviewName(e.target.value)} required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="Your email" required />
+                      <Input id="email" type="email" placeholder="Your email" value={reviewEmail} onChange={e => setReviewEmail(e.target.value)} required />
                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Review Title</Label>
-                    <Input id="title" placeholder="Summary of your experience" required />
                   </div>
 
                   <div className="space-y-2">
@@ -986,6 +977,8 @@ const ProductDetail = () => {
                       id="review" 
                       placeholder="Share your thoughts about this product..." 
                       rows={4}
+                      value={reviewText}
+                      onChange={e => setReviewText(e.target.value)}
                       required
                     />
                   </div>

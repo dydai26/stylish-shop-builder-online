@@ -6,6 +6,7 @@ export interface Review {
   text: string;
   rating: number;
   date?: string;
+  product_id?: string | null;
   created_at: string;
 }
 
@@ -36,6 +37,7 @@ export const addReview = async (review: Omit<Review, 'id' | 'created_at'>): Prom
         name: review.name,
         text: review.text,
         rating: review.rating,
+        product_id: review.product_id,
         date: review.date || new Date().toISOString()
       });
 
