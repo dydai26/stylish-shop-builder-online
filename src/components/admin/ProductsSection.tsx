@@ -555,7 +555,6 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
-              </div>
               </TabsContent>
 
               <TabsContent value="faqs" className="mt-0">
@@ -583,7 +582,6 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
-              </div>
               </TabsContent>
 
               <TabsContent value="results" className="mt-0">
@@ -628,7 +626,6 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
-              </div>
               </TabsContent>
               
               <TabsContent value="ugc" className="mt-0">
@@ -659,7 +656,6 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
-              </div>
               </TabsContent>
             </Tabs>
           </TabsContent>
