@@ -770,10 +770,20 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
             {ugcContent.map((ugc: any, i: number) => (
               <div key={i} className="flex flex-col bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
-                <div className="aspect-[9/16] bg-gray-100 relative mb-4 rounded-lg flex items-center justify-center group cursor-pointer overflow-hidden">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-brand-orange text-white rounded-full flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
-                    <Play className="w-5 h-5 sm:w-6 sm:h-6 ml-1 fill-current" />
-                  </div>
+                <div className="aspect-[9/16] bg-gray-100 relative mb-4 rounded-lg flex items-center justify-center group overflow-hidden">
+                  {ugc.videoUrl ? (
+                    <video 
+                      src={ugc.videoUrl} 
+                      className="w-full h-full object-cover" 
+                      controls 
+                      playsInline 
+                      preload="metadata"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-brand-orange text-white rounded-full flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 cursor-pointer">
+                      <Play className="w-5 h-5 sm:w-6 sm:h-6 ml-1 fill-current" />
+                    </div>
+                  )}
                 </div>
                 <p className="text-sm sm:text-base text-brand-brown font-medium italic mb-3">
                   {ugc.quote}
