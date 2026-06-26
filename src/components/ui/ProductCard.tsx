@@ -26,8 +26,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <div className={`group border border-gray-200 rounded-md overflow-hidden transition-all duration-300 ${isInactive ? 'grayscale opacity-75' : ''}`}>
-      <div className="relative overflow-hidden">
+    <div className={`group flex flex-col h-full border border-gray-200 rounded-md overflow-hidden transition-all duration-300 ${isInactive ? 'grayscale opacity-75' : ''}`}>
+      <div className="relative overflow-hidden shrink-0">
         <Link to={`/product/${product.slug}`}>
           <OptimizedImage
             src={product.images ? product.images[0] : product.image}
@@ -49,11 +49,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </Link>
       </div>
       
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         <Link to={`/product/${product.slug}`}>
           <h3 className="font-medium text-lg mb-1 text-black">{product.name}</h3>
         </Link>
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-auto pt-4">
           <span className="font-bold text-lg">€{product.price.toFixed(2)}</span>
           <Button 
             onClick={handleAddToCart}
