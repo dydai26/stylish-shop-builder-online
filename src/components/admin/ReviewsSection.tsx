@@ -299,19 +299,19 @@ export const ReviewsSection = () => {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-medium">{review.name}</h3>
+                      <h3 className="font-medium text-left w-full">{review.name}</h3>
                       {renderStars(review.rating)}
                       <div variant="outline">
                         {review.rating} star{review.rating !== 1 ? 's' : ''}
                       </div>
                     </div>
-                    <p className="text-muted-foreground mb-3">{review.text}</p>
+                    <p className="text-muted-foreground mb-3 text-left w-full">{review.text}</p>
                     {review.email && (
-                      <p className="text-sm text-muted-foreground mb-2">
+                      <p className="text-sm text-muted-foreground mb-2 text-left w-full">
                         <strong>Email:</strong> {review.email}
                       </p>
                     )}
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground text-left w-full justify-start">
                       <Calendar className="h-4 w-4" />
                       <span>{formatDate(review.created_at)}</span>
                     </div>

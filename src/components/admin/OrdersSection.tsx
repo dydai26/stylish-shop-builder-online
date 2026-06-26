@@ -369,7 +369,7 @@ const OrdersSection = () => {
                         Quantity: {item.quantity || 1} × €{(item.product?.price || 0).toFixed(2)}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left w-full flex flex-col items-start">
                       <p className="font-medium">€{((item.quantity || 1) * (item.product?.price || 0)).toFixed(2)}</p>
                     </div>
                   </div>
@@ -777,8 +777,8 @@ const OrdersSection = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-4">
                       <div>
-                        <h3 className="font-medium">{order.order_id}</h3>
-                        <p className="text-sm text-muted-foreground">
+                        <h3 className="font-medium text-left w-full">{order.order_id}</h3>
+                        <p className="text-sm text-muted-foreground text-left w-full">
                           {order.customer_first_name} {order.customer_last_name} • {order.customer_email}
                         </p>
                       </div>
@@ -787,7 +787,7 @@ const OrdersSection = () => {
                   
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <p className="font-medium">€{order.total.toFixed(2)}</p>
+                      <p className="font-medium text-left w-full">€{order.total.toFixed(2)}</p>
                       <p className="text-sm text-muted-foreground">
                         {formatDate(order.order_date)}
                       </p>

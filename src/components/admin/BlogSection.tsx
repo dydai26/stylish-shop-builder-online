@@ -370,15 +370,15 @@ const BlogSection = () => {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-xl font-bold">{post.title}</h3>
+                    <h3 className="text-xl font-bold text-left w-full">{post.title}</h3>
                     {post.is_published ? (
                       <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Published</span>
                     ) : (
                       <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded">Draft</span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">/{post.slug}</p>
-                  <p className="text-sm text-gray-700 line-clamp-2">{post.content}</p>
+                  <p className="text-sm text-gray-600 mb-2 text-left w-full">/{post.slug}</p>
+                  <p className="text-sm text-gray-700 line-clamp-2 text-left w-full">{post.content}</p>
                   {post.image && (
                     <img src={post.image} alt={post.title} className="mt-3 w-32 h-20 object-cover rounded" />
                   )}
