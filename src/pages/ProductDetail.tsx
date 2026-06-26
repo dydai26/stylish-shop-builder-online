@@ -696,7 +696,7 @@ const ProductDetail = () => {
       <section className="py-12 sm:py-16 lg:py-24 bg-white">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-4 text-left">
                <h2 className="text-brand-orange font-semibold tracking-widest text-xs sm:text-sm mb-2 sm:mb-3 uppercase">Education</h2>
                <h3 className="text-2xl sm:text-3xl font-bold text-brand-brown mb-6 sm:mb-8 lg:pr-4">
                  Addressing Hair & Scalp Health at the Root
@@ -725,7 +725,7 @@ const ProductDetail = () => {
                </div>
             </div>
             
-            <div className="lg:col-span-8 lg:pl-12 flex flex-col justify-center animate-fade-in" key={activeEducationTab}>
+            <div className="lg:col-span-8 lg:pl-12 flex flex-col justify-center animate-fade-in text-left" key={activeEducationTab}>
                <h4 className="text-xl sm:text-2xl font-bold text-brand-brown mb-4 sm:mb-6">{educationContent[activeEducationTab].title}</h4>
                <div className="text-gray-600 text-sm sm:text-base leading-relaxed space-y-4 mb-6 sm:mb-8">
                  <p>{educationContent[activeEducationTab].text1}</p>
