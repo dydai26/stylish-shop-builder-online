@@ -851,27 +851,29 @@ const ProductDetail = () => {
                  </div>
                ))}
                
-               {/* Photo Reviews Gallery placeholder */}
-               <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-6 overflow-x-auto pb-2 scrollbar-hide">
-                 {[1,2,3,4,5].map(i => (
-                   <Dialog key={i}>
-                     <DialogTrigger asChild>
-                       <button className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center text-xl sm:text-2xl text-gray-400 cursor-pointer border-2 border-transparent hover:border-brand-orange transition-colors">
-                         📸
-                       </button>
-                     </DialogTrigger>
-                     <DialogContent className="sm:max-w-md flex flex-col items-center justify-center p-6">
-                       <DialogHeader>
-                         <DialogTitle>Customer Photo</DialogTitle>
-                       </DialogHeader>
-                       <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center mt-2 border border-gray-200 shadow-inner">
-                         <span className="text-6xl text-gray-400">📸</span>
-                       </div>
-                       <p className="text-gray-500 mt-2 text-center text-sm">Review photo uploaded by customer.</p>
-                     </DialogContent>
-                   </Dialog>
-                 ))}
-               </div>
+               {/* Photo Reviews Gallery */}
+               {(() => {
+                 const allReviewImages = productReviews
+                   .filter(review => review.image_urls && Array.isArray(review.image_urls))
+                   .flatMap(review => review.image_urls);
+                 
+                 if (allReviewImages.length === 0) return null;
+                 
+                 return (
+                   <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-6 overflow-x-auto pb-2 scrollbar-hide">
+                     {allReviewImages.map((url, i) => (
+                       <Dialog key={i}>
+                         <DialogTrigger asChild>
+                           <img src={url} alt={`Customer review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0 cursor-pointer border-2 border-transparent hover:border-brand-orange transition-colors" />
+                         </DialogTrigger>
+                         <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                           <img src={url} alt={`Customer review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
+                         </DialogContent>
+                       </Dialog>
+                     ))}
+                   </div>
+                 );
+               })()}
             </div>
           </div>
           
