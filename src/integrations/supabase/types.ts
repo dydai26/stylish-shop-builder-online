@@ -380,6 +380,7 @@ export type Database = {
           date: string | null
           email: string | null
           id: string
+          image_urls: Json | null
           name: string
           product_id: number | null
           rating: number
@@ -390,6 +391,7 @@ export type Database = {
           date?: string | null
           email?: string | null
           id?: string
+          image_urls?: Json | null
           name: string
           product_id?: number | null
           rating: number
@@ -400,6 +402,7 @@ export type Database = {
           date?: string | null
           email?: string | null
           id?: string
+          image_urls?: Json | null
           name?: string
           product_id?: number | null
           rating?: number

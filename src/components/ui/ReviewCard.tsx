@@ -1,6 +1,7 @@
 
 import { Review } from "@/context/ReviewsContext";
 import { Star, StarHalf } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface ReviewCardProps {
   review: Review;
@@ -29,19 +30,34 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md flex flex-col h-full">
       <div className="flex items-center mb-4">
         <div className="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-gray-700 font-medium mr-3">
-          {review.name.charAt(0)}
+          {review.name.charAt(0).toUpperCase()}
         </div>
         <div>
           <h4 className="font-medium">{review.name}</h4>
-          <div className="flex">
+          <div className="flex mt-1">
             {renderStars(review.rating)}
           </div>
         </div>
       </div>
-      <p className="text-gray-700 text-left">{review.text}</p>
+      <p className="text-gray-700 text-left flex-grow">{review.text}</p>
+      
+      {review.image_urls && Array.isArray(review.image_urls) && review.image_urls.length > 0 && (
+        <div className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {review.image_urls.map((url, i) => (
+            <Dialog key={i}>
+              <DialogTrigger asChild>
+                <img src={url} alt={`Review photo ${i+1}`} className="w-16 h-16 object-cover rounded-md cursor-pointer border border-gray-200 hover:border-brand-orange transition-colors flex-shrink-0" />
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                <img src={url} alt={`Review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
+              </DialogContent>
+            </Dialog>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

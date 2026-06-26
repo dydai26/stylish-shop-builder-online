@@ -27,6 +27,7 @@ import ProductCard from "@/components/ui/ProductCard";
 
 import { useCart, Product } from "@/context/CartContext";
 import { useReviews } from "@/context/ReviewsContext";
+import { uploadMultipleImages } from "@/lib/imageUploadService";
 import { getProductBySlug, getRelatedProducts } from "@/lib/api";
 import { useTikTokTracking } from "@/hooks/useTikTokTracking";
 import { useMetaTracking } from "@/hooks/useMetaTracking";
@@ -57,6 +58,8 @@ const ProductDetail = () => {
   const [reviewEmail, setReviewEmail] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
+  const [reviewFiles, setReviewFiles] = useState<File[]>([]);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const { toast } = useToast();
   
   const { trackViewContent, trackAddToCart } = useTikTokTracking();
@@ -900,6 +903,20 @@ const ProductDetail = () => {
                   <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
                     {review.text}
                   </p>
+                  {review.image_urls && Array.isArray(review.image_urls) && review.image_urls.length > 0 && (
+                    <div className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                      {review.image_urls.map((url, i) => (
+                        <Dialog key={i}>
+                          <DialogTrigger asChild>
+                            <img src={url} alt={`Review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md cursor-pointer border border-gray-200 hover:border-brand-orange transition-colors" />
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                            <img src={url} alt={`Review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -920,18 +937,27 @@ const ProductDetail = () => {
                   onSubmit={async (e) => {
                     e.preventDefault();
                     if (product) {
+                      setIsSubmittingReview(true);
                       try {
+                        let uploadedUrls: string[] = [];
+                        if (reviewFiles.length > 0) {
+                          const uploadResults = await uploadMultipleImages(reviewFiles, "reviews");
+                          uploadedUrls = uploadResults.map(r => r.url);
+                        }
+
                         await addReview({
                           name: reviewName,
                           text: reviewText,
                           rating: reviewRating,
                           product_id: product.id,
+                          image_urls: uploadedUrls.length > 0 ? uploadedUrls : null,
                         });
                         setIsReviewDialogOpen(false);
                         setReviewName("");
                         setReviewEmail("");
                         setReviewText("");
                         setReviewRating(5);
+                        setReviewFiles([]);
                         toast({
                           title: "Review Submitted",
                           description: "Thank you for your feedback! Your review has been added.",
@@ -942,6 +968,8 @@ const ProductDetail = () => {
                           description: "Failed to submit your review. Please try again later.",
                           variant: "destructive"
                         });
+                      } finally {
+                        setIsSubmittingReview(false);
                       }
                     }
                   }}
@@ -993,6 +1021,11 @@ const ProductDetail = () => {
                         type="file" 
                         accept="image/*" 
                         multiple 
+                        onChange={(e) => {
+                          if (e.target.files) {
+                            setReviewFiles(Array.from(e.target.files));
+                          }
+                        }}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
                       />
                       <div className="text-gray-500 text-center pointer-events-none flex flex-col items-center">
@@ -1003,13 +1036,18 @@ const ProductDetail = () => {
                         </div>
                         <div><span className="text-brand-orange font-medium">Click to upload</span> or drag and drop</div>
                         <p className="text-xs text-gray-400 mt-1">PNG, JPG, GIF up to 5MB</p>
+                        {reviewFiles.length > 0 && (
+                          <div className="mt-3 text-sm text-green-600 font-medium bg-green-50 px-3 py-1 rounded-full">
+                            {reviewFiles.length} file(s) selected
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-4 flex justify-end">
-                    <Button type="submit" className="bg-brand-orange hover:bg-brand-orange/90 text-white px-8">
-                      Submit Review
+                    <Button type="submit" disabled={isSubmittingReview} className="bg-brand-orange hover:bg-brand-orange/90 text-white px-8">
+                      {isSubmittingReview ? "Submitting..." : "Submit Review"}
                     </Button>
                   </div>
                 </form>
