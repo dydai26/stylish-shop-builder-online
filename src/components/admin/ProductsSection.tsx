@@ -152,10 +152,14 @@ const ProductsSection = () => {
   }, []);
 
   useEffect(() => {
-    if (formData.name) {
+    if (formData.name && !editingProduct) {
       const debounceSlug = setTimeout(() => {
         const newSlug = generateSlug(formData.name);
         setFormData(prev => ({
+          ...prev,
+          slug: newSlug,
+        }));
+        setLocalFormData(prev => ({
           ...prev,
           slug: newSlug,
         }));
@@ -163,7 +167,7 @@ const ProductsSection = () => {
 
       return () => clearTimeout(debounceSlug);
     }
-  }, [formData.name]);
+  }, [formData.name, editingProduct]);
 
   const handleAddProduct = async () => {
     // Validation
@@ -246,9 +250,7 @@ const ProductsSection = () => {
   };
 
   const handleEditProduct = (product: Product) => {
-    setLocalFormData(product);
-    setEditingProduct(product);
-    setFormData({
+    const formattedData = {
       name: product.name,
       slug: product.slug,
       price: product.price.toString(),
@@ -269,7 +271,10 @@ const ProductsSection = () => {
       clinicalResults: product.clinicalResults || {},
       faqs: product.faqs || [],
       ugcVideos: product.ugcVideos || [],
-    });
+    };
+    setEditingProduct(product);
+    setLocalFormData(formattedData as any);
+    setFormData(formattedData as any);
     setIsEditDialogOpen(true);
   };
 
@@ -277,7 +282,7 @@ const ProductsSection = () => {
     if (!editingProduct) return;
 
     // Validation
-    if (!formData.name.trim()) {
+    if (!localFormData.name.trim()) {
       toast({
         title: "Validation Error",
         description: "Product name is required.",
@@ -286,7 +291,7 @@ const ProductsSection = () => {
       return;
     }
 
-    if (!formData.image.trim()) {
+    if (!localFormData.image || typeof localFormData.image !== 'string' || !localFormData.image.trim()) {
       toast({
         title: "Validation Error", 
         description: "Main image is required.",
@@ -295,7 +300,7 @@ const ProductsSection = () => {
       return;
     }
 
-    if (!formData.price || parseFloat(formData.price) <= 0) {
+    if (!localFormData.price || parseFloat(localFormData.price.toString()) <= 0) {
       toast({
         title: "Validation Error",
         description: "Valid price is required.",
@@ -304,7 +309,7 @@ const ProductsSection = () => {
       return;
     }
 
-    if (!formData.category) {
+    if (!localFormData.category) {
       toast({
         title: "Validation Error",
         description: "Category is required.",
@@ -316,26 +321,26 @@ const ProductsSection = () => {
     try {
       const updateData: UpdateProductData = {
         id: editingProduct.id,
-        name: formData.name,
-        slug: formData.slug,
-        price: parseFloat(formData.price),
-        image: formData.image,
-        images: formData.images ? formData.images.split(",").map(img => img.trim()).filter(img => img.length > 0) : [],
-        description: formData.description,
-        category: formData.category,
-        sku: formData.sku,
-        tags: formData.tags ? formData.tags.split(",").map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
-        benefits: formData.benefits ? formData.benefits.split("\n").filter(b => b.trim()) : [],
-        usage: formData.usage,
-        ingredients: formData.ingredients,
-        metaTitle: formData.metaTitle,
-        metaDescription: formData.metaDescription,
-        ogImage: formData.ogImage,
-        status: formData.status,
-        educationContent: formData.educationContent,
-        clinicalResults: formData.clinicalResults,
-        faqs: formData.faqs,
-        ugcVideos: formData.ugcVideos,
+        name: localFormData.name,
+        slug: localFormData.slug,
+        price: parseFloat(localFormData.price.toString()),
+        image: localFormData.image,
+        images: localFormData.images && typeof localFormData.images === 'string' ? localFormData.images.split(",").map((img: string) => img.trim()).filter((img: string) => img.length > 0) : Array.isArray(localFormData.images) ? localFormData.images : [],
+        description: localFormData.description,
+        category: localFormData.category,
+        sku: localFormData.sku,
+        tags: localFormData.tags && typeof localFormData.tags === 'string' ? localFormData.tags.split(",").map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : Array.isArray(localFormData.tags) ? localFormData.tags : [],
+        benefits: localFormData.benefits && typeof localFormData.benefits === 'string' ? localFormData.benefits.split("\n").filter((b: string) => b.trim()) : Array.isArray(localFormData.benefits) ? localFormData.benefits : [],
+        usage: localFormData.usage,
+        ingredients: localFormData.ingredients,
+        metaTitle: localFormData.metaTitle,
+        metaDescription: localFormData.metaDescription,
+        ogImage: localFormData.ogImage,
+        status: localFormData.status,
+        educationContent: localFormData.educationContent,
+        clinicalResults: localFormData.clinicalResults,
+        faqs: localFormData.faqs,
+        ugcVideos: localFormData.ugcVideos,
       };
 
       await updateProduct(updateData);
