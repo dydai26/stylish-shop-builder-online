@@ -185,85 +185,23 @@ const ProductDetail = () => {
     };
   };
 
-  // --- CONTENT MAPPING FOR TABS (Hardcoded examples as requested for now) ---
-  const FALLBACK_EDUCATION_CONTENT: Record<string, { title: string, text1: string, text2: string, fact: string }> = {
-    "Hydration": {
-      title: "Why Hair Hydration Matters",
-      text1: "Hair is approximately 95% protein — but without adequate moisture, even healthy protein bonds can become brittle and prone to breakage. Dry hair has a disrupted cuticle layer that allows moisture to escape and makes hair look dull, feel rough, and tangle easily.",
-      text2: "True hydration isn't just about surface coating — it requires ingredients that penetrate the cortex and bind water molecules within the shaft. Ecovluu's Deep Hydrating Shampoo uses humectants like Sodium Lactate and Panthenol alongside Sodium Lauroamphoacetate to cleanse and replenish simultaneously, ensuring hair never loses more than it gains from each wash.",
-      fact: "Hair can absorb up to 30% of its own weight in water. When it can't retain moisture, it becomes brittle — not just dry."
-    },
-    "Scalp Health": {
-      title: "The Foundation of Great Hair",
-      text1: "A healthy scalp is essential for healthy hair growth. Irritation, flakiness, and excess oil can clog follicles and impede the natural growth cycle.",
-      text2: "By using gentle, non-stripping cleansers and soothing botanicals like Chamomile, you maintain the scalp's delicate microbiome. This creates the optimal environment for strong, resilient hair from root to tip.",
-      fact: "Your scalp ages 6 times faster than the skin on your face, making proper care absolutely critical."
-    },
-    "Heat & Damage": {
-      title: "Protecting Against Daily Stress",
-      text1: "Constant styling, UV exposure, and environmental pollutants constantly break down hair's protective barriers.",
-      text2: "Our hydrating formula helps repair this barrier by infusing moisture back into the hair cuticle, acting as a buffer against future damage and restoring natural elasticity.",
-      fact: "Hair loses elasticity when damaged. Healthy, hydrated hair can stretch up to 30% of its length without breaking."
-    },
-    "Nutrition": {
-      title: "Feeding Your Hair from the Outside In",
-      text1: "While diet is important, topical nutrition directly benefits the hair shaft and scalp.",
-      text2: "Ingredients like Aloe Vera deliver essential vitamins (A, C, and E) directly to where they are needed most, promoting cellular turnover and healthy hair growth.",
-      fact: "Aloe Vera contains 75 potentially active constituents: vitamins, enzymes, minerals, sugars, and amino acids."
-    },
-    "Stress & Lifestyle": {
-      title: "Managing Modern Hair Challenges",
-      text1: "Stress hormones can directly impact the hair follicle, pushing it into a resting phase that causes shedding and dullness.",
-      text2: "A soothing wash routine not only cleanses but acts as a daily ritual to reduce tension. Aromatherapy benefits from Lemongrass oil help calm both the scalp and the mind.",
-      fact: "Massage during washing increases blood flow to the scalp by up to 20%, bringing more nutrients to the hair follicles."
-    }
-  };
-
-  const FALLBACK_RESULTS_CONTENT: Record<string, { percent1: string, desc1: string, percent2: string, desc2: string }> = {
-    "Dry Hair": {
-      percent1: "92%", desc1: "reported softer, smoother hair after first wash",
-      percent2: "88%", desc2: "noticed reduced scalp irritation within one week",
-    },
-    "Sensitive Scalp": {
-      percent1: "95%", desc1: "experienced no itching or redness after use",
-      percent2: "90%", desc2: "felt their scalp was deeply calmed and balanced",
-    },
-    "Fine Hair": {
-      percent1: "89%", desc1: "said hair felt hydrated without being weighed down",
-      percent2: "85%", desc2: "noticed improved volume and bounce",
-    },
-    "Curly Hair": {
-      percent1: "94%", desc1: "saw more defined, frizz-free curls",
-      percent2: "91%", desc2: "reported significantly less breakage when detangling",
-    }
-  };
-
-  const reviewFilters = ["All (3)", "Dry Hair", "Fine Hair", "Oily Scalp", "Sensitive Scalp", "With Photos"];
-
   const educationContent = product?.educationContent && Object.keys(product.educationContent).length > 0 
     ? product.educationContent 
-    : (FALLBACK_EDUCATION_CONTENT as any);
+    : {};
     
   const resultsContent = product?.clinicalResults && Object.keys(product.clinicalResults).length > 0 
     ? product.clinicalResults 
-    : (FALLBACK_RESULTS_CONTENT as any);
+    : {};
     
   const faqContent = product?.faqs && product.faqs.length > 0 
     ? product.faqs 
-    : [
-      { question: "IS THIS SUITABLE FOR SENSITIVE SKIN/HAIR?", answer: "Yes, all our formulas are designed to be gentle and effective." },
-      { question: "HOW OFTEN SHOULD I USE THIS PRODUCT?", answer: "For best results, use 2-3 times a week." },
-      { question: "WHAT'S THE DIFFERENCE BETWEEN THIS AND A REGULAR DRUGSTORE PRODUCT?", answer: "We use high quality natural ingredients without harsh chemicals." },
-      { question: "IS ECOVLUU CRUELTY-FREE AND VEGAN?", answer: "Yes, all our products are cruelty-free and vegan." }
-    ];
+    : [];
     
+  const reviewFilters = ["All (3)", "Dry Hair", "Fine Hair", "Oily Scalp", "Sensitive Scalp", "With Photos"];
+
   const ugcContent = product?.ugcVideos && product.ugcVideos.length > 0
     ? product.ugcVideos
-    : [
-      { quote: "\"Literally the only product that does not irritate my skin.\"", author: "@hanan · Verified Buyer" },
-      { quote: "\"This product is so soothing. Please make a larger size of it.\"", author: "@elizabeth · Verified Buyer" },
-      { quote: "\"My skin has never felt this good. I've tried so many but nothing compares.\"", author: "@brooke_c · Verified Buyer" }
-    ];
+    : [];
 
   if (loading) {
     return (
