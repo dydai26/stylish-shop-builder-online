@@ -23,6 +23,8 @@ interface BlogPost {
   is_published: boolean;
   display_order: number;
   created_at: string;
+  meta_title: string | null;
+  meta_description: string | null;
 }
 
 const BlogSection = () => {
@@ -43,6 +45,8 @@ const BlogSection = () => {
     author: "Ecovluu",
     is_published: false,
     display_order: 0,
+    meta_title: "",
+    meta_description: "",
   });
 
   useEffect(() => {
@@ -145,6 +149,8 @@ const BlogSection = () => {
       author: post.author,
       is_published: post.is_published,
       display_order: post.display_order,
+      meta_title: post.meta_title || "",
+      meta_description: post.meta_description || "",
     });
     setShowForm(true);
   };
@@ -238,6 +244,8 @@ const BlogSection = () => {
       author: "Ecovluu",
       is_published: false,
       display_order: 0,
+      meta_title: "",
+      meta_description: "",
     });
     setEditingPost(null);
     setShowForm(false);
@@ -307,6 +315,57 @@ const BlogSection = () => {
                   placeholder="Short description (optional)"
                   rows={3}
                 />
+              </div>
+
+              <div className="bg-muted/30 p-4 rounded-lg space-y-4 border border-border">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-semibold">SEO Meta Tags</h3>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      setFormData(prev => ({
+                        ...prev,
+                        meta_title: prev.title,
+                        meta_description: prev.content.slice(0, 160)
+                      }));
+                      toast({
+                        title: "Generated automatically",
+                        description: "Meta tags have been populated from title and content.",
+                      });
+                    }}
+                  >
+                    Auto-generate from Content
+                  </Button>
+                </div>
+                <div>
+                  <Label htmlFor="meta_title">Meta Title</Label>
+                  <Input
+                    id="meta_title"
+                    value={formData.meta_title}
+                    onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                    placeholder="SEO Title (recommended 50-60 characters)"
+                    maxLength={60}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.meta_title.length}/60 characters
+                  </p>
+                </div>
+                <div>
+                  <Label htmlFor="meta_description">Meta Description</Label>
+                  <Textarea
+                    id="meta_description"
+                    value={formData.meta_description}
+                    onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                    placeholder="SEO Description (recommended 150-160 characters)"
+                    rows={2}
+                    maxLength={160}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.meta_description.length}/160 characters
+                  </p>
+                </div>
               </div>
 
               <div>

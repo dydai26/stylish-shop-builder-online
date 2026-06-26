@@ -16,6 +16,8 @@ interface BlogPost {
   author: string;
   is_published: boolean;
   created_at: string;
+  meta_title: string | null;
+  meta_description: string | null;
 }
 
 const BlogPost = () => {
@@ -108,17 +110,18 @@ const BlogPost = () => {
 
   const articleUrl = `${BASE_URL}/blog/${post.slug}`;
   const imageUrl = post.image.startsWith('http') ? post.image : `${BASE_URL}${post.image}`;
-  const description = post.excerpt || post.content.slice(0, 160);
+  const description = post.meta_description || post.excerpt || post.content.slice(0, 160);
+  const title = post.meta_title || post.title;
 
   return (
     <Layout>
       <Helmet>
-        <title>{post.title} | ECOVLUU Blog</title>
+        <title>{title} | ECOVLUU Blog</title>
         <meta name="description" content={description} />
 
         {/* Open Graph */}
         <meta property="og:type" content="article" />
-        <meta property="og:title" content={post.title} />
+        <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:url" content={articleUrl} />
@@ -126,7 +129,7 @@ const BlogPost = () => {
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
 

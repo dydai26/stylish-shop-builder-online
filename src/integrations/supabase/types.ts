@@ -62,6 +62,8 @@ export type Database = {
           is_published: boolean
           slug: string
           title: string
+          meta_title: string | null
+          meta_description: string | null
           updated_at: string
         }
         Insert: {
@@ -75,6 +77,8 @@ export type Database = {
           is_published?: boolean
           slug: string
           title: string
+          meta_title?: string | null
+          meta_description?: string | null
           updated_at?: string
         }
         Update: {
@@ -88,6 +92,8 @@ export type Database = {
           is_published?: boolean
           slug?: string
           title?: string
+          meta_title?: string | null
+          meta_description?: string | null
           updated_at?: string
         }
         Relationships: []
