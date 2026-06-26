@@ -8,6 +8,8 @@ export interface Review {
   rating: number;
   text: string;
   date: string;
+  product_id?: number | null;
+  image_urls?: any;
 }
 
 interface ReviewsContextType {

@@ -7,7 +7,7 @@ export interface Review {
   rating: number;
   date?: string;
   product_id?: number | null;
-  image_urls?: string[] | null;
+  image_urls?: any;
   created_at: string;
 }
 
