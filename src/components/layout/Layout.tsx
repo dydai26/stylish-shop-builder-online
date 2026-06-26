@@ -1,12 +1,16 @@
 import { ReactNode, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const location = useLocation();
+
   useEffect(() => {
     // Add scroll animation effect with improved timing
     const observerOptions = {
@@ -44,8 +48,37 @@ const Layout = ({ children }: LayoutProps) => {
     };
   }, []);
 
+  // Generate dynamic breadcrumbs based on current path
+  const generateBreadcrumbs = () => {
+    const paths = location.pathname.split('/').filter(p => p);
+    
+    const items = [
+      { name: "Home", url: "/" }
+    ];
+    
+    let currentPath = "";
+    paths.forEach((path, index) => {
+      currentPath += `/${path}`;
+      
+      // Format the name: capitalize first letter, replace hyphens with spaces
+      let name = path.replace(/-/g, ' ');
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      
+      // Handle specific routes for better names
+      if (path === 'product' && index === 0) name = 'Products';
+      
+      items.push({
+        name: name,
+        url: currentPath
+      });
+    });
+    
+    return items;
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <BreadcrumbSchema items={generateBreadcrumbs()} />
       <header className="sticky top-0 z-50">
         <Navbar />
       </header>

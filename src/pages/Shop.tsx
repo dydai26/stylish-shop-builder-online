@@ -45,8 +45,8 @@ const Shop = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Shop Natural Hair Care Products | ECOVLUU</title>
-        <meta name="description" content="Browse our collection of natural hair care products including shampoos and masks. Deep hydrating solutions with natural ingredients for healthy, shiny hair." />
+        <title>Natural Hydrating Shampoo & Best Hair Mask Buy At Best Deals</title>
+        <meta name="description" content="Healthy, gorgeous hair is just awash away! Our best hair care shampoo and hair repair mask are made to restore, hydrate & revive every single strand. Shop now!" />
         <meta name="keywords" content="natural hair care, hair products, organic shampoo, hair mask, deep hydrating, ECOVLUU" />
         <link rel="canonical" href="https://www.ecovluu.com/shop" />
       </Helmet>

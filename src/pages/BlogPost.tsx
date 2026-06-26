@@ -5,6 +5,7 @@ import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ArrowLeft } from "lucide-react";
 import ShareButtons from "@/components/blog/ShareButtons";
+import { BlogArticleSchema } from "@/components/seo/BlogArticleSchema";
 
 interface BlogPost {
   id: string;
@@ -115,6 +116,14 @@ const BlogPost = () => {
 
   return (
     <Layout>
+      <BlogArticleSchema 
+        title={title}
+        url={`/blog/${post.slug}`}
+        datePublished={post.created_at}
+        imageUrl={imageUrl}
+        authorName={post.author}
+        description={description}
+      />
       <Helmet>
         <title>{title} | ECOVLUU Blog</title>
         <meta name="description" content={description} />

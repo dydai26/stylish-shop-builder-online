@@ -272,6 +272,17 @@ const ProductDetail = () => {
     setActiveMedia((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
   };
 
+  let metaTitle = `${product.name} - ECOVLUU`;
+  let metaDescription = product.metaDescription || product.description;
+
+  if (product.slug === 'deep-hydrating-shampoo') {
+    metaTitle = "Best Moisturising Shampoo for Deep Hydrating Results | EcoVluu";
+    metaDescription = "Gorgeous, hydrated hair is finally here! EcoVluu's hydrating shampoo delivers the deep moisture your hair craves. Shop the best moisturising shampoo today!";
+  } else if (product.slug === 'deep-conditioning-hair-mask') {
+    metaTitle = "Best Hair Mask for Dry & Damaged Hair – Try EcoVluu Today";
+    metaDescription = "Your damaged hair deserves better! EcoVluu's deep conditioning mask is the best natural hair mask for dry damaged hair. Try it once and never look back!";
+  }
+
   return (
     <Layout>
     {productJsonLd && (
@@ -284,8 +295,8 @@ const ProductDetail = () => {
     
     <div className="w-full bg-background animate-fade-in font-sans text-foreground">
       <Helmet>
-        <title>{product.name} - ECOVLUU</title>
-        {product.metaDescription && <meta name="description" content={product.metaDescription} />}
+        <title>{metaTitle}</title>
+        {metaDescription && <meta name="description" content={metaDescription} />}
       </Helmet>
 
       <div className="container-custom py-4 sm:py-8 lg:py-12">

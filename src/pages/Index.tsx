@@ -55,6 +55,8 @@ const Index = () => {
   return (
     <Layout>
       <Helmet>
+        <title>Total Hair Care - Restore, Hydrate & Strengthen | EcoVluu</title>
+        <meta name="description" content="Why settle for dull hair? Our best shampoo products and hair mask with kerotin hair care give salon results at home. Shop the best hair care products today." />
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}
         </script>
