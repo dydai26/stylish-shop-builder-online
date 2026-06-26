@@ -966,8 +966,8 @@ const ProductDetail = () => {
                       <Input id="name" placeholder="Your name" value={reviewName} onChange={e => setReviewName(e.target.value)} required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="Your email" value={reviewEmail} onChange={e => setReviewEmail(e.target.value)} required />
+                      <Label htmlFor="email">Email <span className="text-gray-400 font-normal text-xs">(optional)</span></Label>
+                      <Input id="email" type="email" placeholder="Your email" value={reviewEmail} onChange={e => setReviewEmail(e.target.value)} />
                     </div>
                   </div>
 
@@ -984,10 +984,27 @@ const ProductDetail = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="photos" className="flex items-center gap-2">
-                      <span className="text-lg">📸</span> Upload Photos (Optional)
+                    <Label htmlFor="photos" className="flex items-center gap-2 mb-2">
+                      <span className="text-lg">📸</span> Upload Photos <span className="text-gray-400 font-normal text-xs">(optional)</span>
                     </Label>
-                    <Input id="photos" type="file" accept="image/*" multiple className="cursor-pointer file:text-brand-orange file:bg-brand-beige file:border-0 file:mr-4 file:py-1 file:px-4 file:rounded-md hover:file:bg-brand-orange/20" />
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer relative group">
+                      <Input 
+                        id="photos" 
+                        type="file" 
+                        accept="image/*" 
+                        multiple 
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                      />
+                      <div className="text-gray-500 text-center pointer-events-none flex flex-col items-center">
+                        <div className="bg-white p-3 rounded-full shadow-sm mb-3 group-hover:scale-105 transition-transform">
+                          <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                          </svg>
+                        </div>
+                        <div><span className="text-brand-orange font-medium">Click to upload</span> or drag and drop</div>
+                        <p className="text-xs text-gray-400 mt-1">PNG, JPG, GIF up to 5MB</p>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="pt-4 flex justify-end">
