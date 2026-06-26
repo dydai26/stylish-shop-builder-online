@@ -523,8 +523,17 @@ const ProductsSection = () => {
           </TabsContent>
 
           <TabsContent value="rich" className="space-y-6">
-            {/* Education Content */}
-            <div className="border p-4 rounded-md">
+            <Tabs defaultValue="education" className="w-full">
+              <TabsList className="grid grid-cols-1 sm:grid-cols-4 mb-4 h-auto">
+                <TabsTrigger value="education" className="py-2">Education</TabsTrigger>
+                <TabsTrigger value="faqs" className="py-2">FAQs</TabsTrigger>
+                <TabsTrigger value="results" className="py-2">Results</TabsTrigger>
+                <TabsTrigger value="ugc" className="py-2">UGC Videos</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="education" className="mt-0">
+                {/* Education Content */}
+                <div className="border p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h4 className="font-bold">Education Tabs</h4>
                 <Button type="button" variant="outline" size="sm" onClick={() => {
@@ -546,9 +555,12 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
+              </div>
+              </TabsContent>
 
-            {/* FAQs */}
-            <div className="border p-4 rounded-md">
+              <TabsContent value="faqs" className="mt-0">
+                {/* FAQs */}
+                <div className="border p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h4 className="font-bold">FAQs</h4>
                 <Button type="button" variant="outline" size="sm" onClick={() => {
@@ -571,9 +583,12 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
+              </div>
+              </TabsContent>
 
-            {/* Results */}
-            <div className="border p-4 rounded-md">
+              <TabsContent value="results" className="mt-0">
+                {/* Results */}
+                <div className="border p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h4 className="font-bold">Clinical Results Tabs</h4>
                 <Button type="button" variant="outline" size="sm" onClick={() => {
@@ -613,9 +628,12 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
-            
-            {/* UGC Videos */}
-            <div className="border p-4 rounded-md">
+              </div>
+              </TabsContent>
+              
+              <TabsContent value="ugc" className="mt-0">
+                {/* UGC Videos */}
+                <div className="border p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h4 className="font-bold">UGC Quotes/Videos</h4>
                 <Button type="button" variant="outline" size="sm" onClick={() => {
@@ -641,6 +659,9 @@ const ProductsSection = () => {
                 </div>
               ))}
             </div>
+              </div>
+              </TabsContent>
+            </Tabs>
           </TabsContent>
         </Tabs>
       </div>
