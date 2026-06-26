@@ -132,7 +132,7 @@ const Blog = () => {
 
                       {/* Text wrapping around image */}
                       <div>
-                        <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
+                        <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-center">
                           <Link to={`/blog/${post.slug}`} className="hover:text-brand-brown transition-colors">
                             {post.title}
                           </Link>
@@ -141,18 +141,20 @@ const Blog = () => {
                           {formatContent(post.content, 3)}
                         </div>
                         {post.author && (
-                          <p className="mt-6 text-sm text-gray-600 italic">
+                          <p className="mt-6 text-sm text-gray-600 italic text-center">
                             By {post.author}
                           </p>
                         )}
                         
                         {/* Read more link - always show since full content is on BlogPost */}
-                        <Link 
-                          to={`/blog/${post.slug}`} 
-                          className=" inline-block mt-4 text-brand-orange hover:underline font-medium"
-                        >
-                          Read more →
-                        </Link>
+                        <div className="text-center">
+                          <Link 
+                            to={`/blog/${post.slug}`} 
+                            className=" inline-block mt-4 text-brand-orange hover:underline font-medium"
+                          >
+                            Read more →
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </article>
