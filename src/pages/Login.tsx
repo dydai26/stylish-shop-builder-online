@@ -10,13 +10,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
-  const [activeTab, setActiveTab] = useState<'login' | 'register' | 'recovery'>('login');
+  const [activeTab, setActiveTab] = useState<'login' | 'recovery'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { isAuthenticated, login, register, resetPassword } = useAdmin();
+  const { isAuthenticated, login, resetPassword } = useAdmin();
   const { toast } = useToast();
 
   // Redirect if already authenticated
@@ -29,21 +29,7 @@ const Login = () => {
     setLoading(true);
     
     try {
-      if (activeTab === 'register') {
-        const { error } = await register(email, password, name);
-        if (error) {
-          toast({
-            title: "Registration Error",
-            description: error,
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Registration Successful",
-            description: "Please check your email to confirm your account",
-          });
-        }
-      } else if (activeTab === 'recovery') {
+      if (activeTab === 'recovery') {
         const { error } = await resetPassword(email);
         if (error) {
           toast({
@@ -94,7 +80,7 @@ const Login = () => {
             Admin Panel
           </CardTitle>
           <p className="text-muted-foreground">
-            Sign in or create a new account
+            Sign in to access your dashboard
           </p>
         </CardHeader>
         
@@ -114,17 +100,6 @@ const Login = () => {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('register')}
-              className={`flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all ${
-                activeTab === 'register'
-                  ? 'bg-card text-primary shadow-md'
-                  : 'text-muted-foreground hover:text-primary'
-              }`}
-            >
-              Register
-            </button>
-            <button
-              type="button"
               onClick={() => setActiveTab('recovery')}
               className={`flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all ${
                 activeTab === 'recovery'
@@ -137,22 +112,6 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {activeTab === 'register' && (
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium text-foreground">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Enter your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="h-12 border-border focus:border-accent bg-muted/30 rounded-xl"
-                />
-              </div>
-            )}
             
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-foreground">
@@ -208,7 +167,6 @@ const Login = () => {
               ) : (
                 <>
                   {activeTab === 'login' && 'Sign In'}
-                  {activeTab === 'register' && 'Create Account'}
                   {activeTab === 'recovery' && 'Reset Password'}
                 </>
               )}
