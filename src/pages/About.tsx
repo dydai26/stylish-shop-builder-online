@@ -9,6 +9,7 @@ const AboutPage = () => {
   const [banner, setBanner] = useState<Banner | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     // Load banner data
     const loadBanner = async () => {
       try {

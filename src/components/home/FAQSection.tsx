@@ -52,22 +52,48 @@ const FAQSection = () => {
           {JSON.stringify(schemaMarkup)}
         </script>
       </Helmet>
-      <div className="container-custom max-w-3xl">
+      <div className="container-custom">
+        {/* Header Section */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-          <p className="text-gray-600">Find answers to the most common questions about our natural hair care products.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-brown">
+            Frequently asked questions
+          </h2>
+          <p className="text-gray-600">
+            Find answers to the most common questions about our natural hair care products.
+          </p>
         </div>
         
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-lg text-left">{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-gray-600 text-base leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        {/* Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          {/* Left Column: Accordion */}
+          <div className="w-full">
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-base sm:text-lg text-left text-brand-brown font-semibold hover:no-underline">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+
+          {/* Right Column: Image */}
+          <div className="w-full" data-animate>
+            <div className="rounded-xl overflow-hidden shadow-md aspect-[4/3] w-full bg-brand-brown/10">
+              <img
+                src="/image container.jpg"
+                alt="Frequently asked questions - EcoVluu"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

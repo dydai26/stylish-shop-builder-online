@@ -6,6 +6,7 @@ import Hero from "@/components/home/Hero";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import Benefits from "@/components/home/Benefits";
 import AboutSection from "@/components/home/AboutSection";
+import AboutEcovluu from "@/components/home/AboutEcovluu";
 import ReviewsSection from "@/components/home/ReviewsSection";
 import ConsultationSection from "@/components/home/ConsultationSection";
 import FAQSection from "@/components/home/FAQSection";
@@ -72,6 +73,9 @@ const Index = () => {
         </div>
         <div className="transition-opacity duration-1000 transform">
           <AboutSection />
+        </div>
+        <div className="transition-opacity duration-1000 transform">
+          <AboutEcovluu />
         </div>
         <div className="transition-opacity duration-1000 transform">
           <ReviewsSection />
