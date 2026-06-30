@@ -52,6 +52,7 @@ const Shop = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const loadProducts = async () => {
       setLoading(true);
       try {
