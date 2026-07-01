@@ -231,7 +231,7 @@
 .blog-content p {
   margin-bottom: 1.25rem;
   line-height: 1.8;
-  text-align: left;
+  text-align: justify;
 }
 
 .blog-content ul {

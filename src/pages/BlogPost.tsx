@@ -151,13 +151,13 @@ const BlogPost = () => {
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-left">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-center">
             {post.title}
           </h1>
 
           {/* Content */}
           <div 
-            className="mt-8 text-gray-900 leading-relaxed blog-content text-left w-full"
+            className="mt-8 text-gray-900 leading-relaxed blog-content text-justify w-full"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
