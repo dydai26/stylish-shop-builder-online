@@ -60,6 +60,40 @@ const BlogPost = () => {
     }
   };
 
+  const isHtml = (str: string) => {
+    return /<\/?[a-z][\s\S]*>/i.test(str);
+  };
+
+  const formatContent = (content: string) => {
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+
+    return content.split('\n\n').map((paragraph, index) => {
+      const parts = paragraph.split(urlPattern);
+
+      return (
+        <p key={index} className="mb-4 text-base leading-relaxed text-justify">
+          {parts.map((part, i) => {
+            if (urlPattern.test(part)) {
+              urlPattern.lastIndex = 0;
+              return (
+                <a
+                  key={i}
+                  href={part}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-orange hover:underline break-all font-medium"
+                >
+                  {part}
+                </a>
+              );
+            }
+            return part;
+          })}
+        </p>
+      );
+    });
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -156,10 +190,13 @@ const BlogPost = () => {
           </h1>
 
           {/* Content */}
-          <div 
-            className="mt-8 text-gray-900 leading-relaxed blog-content text-justify w-full"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <div className="mt-8 text-gray-900 leading-relaxed blog-content text-justify w-full">
+            {isHtml(post.content) ? (
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            ) : (
+              formatContent(post.content)
+            )}
+          </div>
 
           {/* Author */}
           {post.author && (
