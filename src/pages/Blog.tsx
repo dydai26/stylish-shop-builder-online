@@ -43,44 +43,14 @@ const Blog = () => {
     }
   };
 
-  const formatContent = (content: string, limit?: number) => {
-    // URL regex pattern
-    const urlPattern = /(https?:\/\/[^\s]+)/g;
+  const getExcerpt = (post: BlogPost) => {
+    if (post.excerpt) return post.excerpt;
     
-    const paragraphs = content.split('\n\n');
-    const displayParagraphs = limit ? paragraphs.slice(0, limit) : paragraphs;
-    
-    return displayParagraphs.map((paragraph, index) => {
-      // Split paragraph by URLs and create elements
-      const parts = paragraph.split(urlPattern);
-      
-      return (
-        <p key={index} className="mb-4 text-base leading-relaxed">
-          {parts.map((part, i) => {
-            if (urlPattern.test(part)) {
-              // Reset regex lastIndex
-              urlPattern.lastIndex = 0;
-              return (
-                <a
-                  key={i}
-                  href={part}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand-brown hover:underline break-all"
-                >
-                  {part}
-                </a>
-              );
-            }
-            return part;
-          })}
-        </p>
-      );
-    });
-  };
-
-  const hasMoreContent = (content: string, limit: number) => {
-    return content.split('\n\n').length > limit;
+    // Strip HTML from content and truncate
+    const tmp = document.createElement("div");
+    tmp.innerHTML = post.content;
+    const plainText = tmp.textContent || tmp.innerText || "";
+    return plainText.length > 250 ? plainText.slice(0, 250) + "..." : plainText;
   };
 
   if (loading) {
@@ -138,7 +108,7 @@ const Blog = () => {
                           </Link>
                         </h2>
                         <div className="text-gray-900 space-y-4 text-justify leading-relaxed">
-                          {formatContent(post.content, 3)}
+                          <p>{getExcerpt(post)}</p>
                         </div>
                         {post.author && (
                           <p className="mt-6 text-sm text-gray-600 italic text-left">
