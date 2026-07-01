@@ -10,6 +10,7 @@ interface ImageUploadProps {
   label: string;
   value: string;
   onChange: (url: string) => void;
+  onUploadSuccess?: (fileName: string) => void;
   placeholder?: string;
   required?: boolean;
 }
@@ -18,6 +19,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   label,
   value,
   onChange,
+  onUploadSuccess,
   placeholder = "Upload an image",
   required = false
 }) => {
@@ -42,6 +44,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       const result = await uploadImage(file);
       onChange(result.url);
       setPreviewUrl(result.url);
+
+      if (onUploadSuccess) {
+        onUploadSuccess(file.name);
+      }
 
       // Clean up local URL
       URL.revokeObjectURL(localUrl);

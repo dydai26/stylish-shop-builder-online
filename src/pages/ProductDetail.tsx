@@ -33,6 +33,44 @@ import { useTikTokTracking } from "@/hooks/useTikTokTracking";
 import { useMetaTracking } from "@/hooks/useMetaTracking";
 import { useGoogleTracking } from "@/hooks/useGoogleTracking";
 
+const checkPincodeDelivery = (code: string): { available: boolean; country?: string } => {
+  const clean = code.trim().replace(/[\s-]/g, '').toUpperCase();
+  
+  // 1. Ireland (IE) - 7 characters alphanumeric
+  if (/^[A-Z0-9]{7}$/.test(clean)) {
+    if (/^[A-Z][0-9A-Z]{2}[0-9A-Z]{4}$/.test(clean)) {
+      return { available: true, country: "Ireland" };
+    }
+  }
+  
+  // 2. Netherlands (NL) - 4 digits + 2 letters
+  if (/^\d{4}[A-Z]{2}$/.test(clean)) {
+    return { available: true, country: "Netherlands" };
+  }
+  
+  // 3. Portugal (PT) - 7 digits
+  if (/^\d{7}$/.test(clean)) {
+    return { available: true, country: "Portugal" };
+  }
+  
+  // 4. Romania (RO) - 6 digits
+  if (/^\d{6}$/.test(clean)) {
+    return { available: true, country: "Romania" };
+  }
+  
+  // 5. 5 digits - Germany, France, Spain, Italy, Finland, Poland, Greece, Sweden
+  if (/^\d{5}$/.test(clean)) {
+    return { available: true, country: "Europe (DE, FR, ES, IT, PL, FI, SE, GR)" };
+  }
+  
+  // 6. 4 digits - Belgium, Switzerland, Austria, Denmark, Norway, Latvia
+  if (/^\d{4}$/.test(clean)) {
+    return { available: true, country: "Europe (BE, CH, AT, DK, NO, LV)" };
+  }
+
+  return { available: false };
+};
+
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const [product, setProduct] = useState<Product | null>(null);
@@ -47,6 +85,7 @@ const ProductDetail = () => {
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
   const [pincode, setPincode] = useState("");
   const [deliveryStatus, setDeliveryStatus] = useState<"idle" | "checking" | "available" | "unavailable">("idle");
+  const [detectedCountry, setDetectedCountry] = useState("");
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   
   const { addToCart } = useCart();
@@ -115,6 +154,31 @@ const ProductDetail = () => {
     setQuantity(1);
   }, [slug]);
 
+  // Real-time debounced pincode check
+  useEffect(() => {
+    const trimmed = pincode.trim();
+    if (!trimmed) {
+      setDeliveryStatus("idle");
+      setDetectedCountry("");
+      return;
+    }
+
+    setDeliveryStatus("checking");
+
+    const timer = setTimeout(() => {
+      const checkResult = checkPincodeDelivery(trimmed);
+      if (checkResult.available) {
+        setDeliveryStatus("available");
+        setDetectedCountry(checkResult.country || "");
+      } else {
+        setDeliveryStatus("unavailable");
+        setDetectedCountry("");
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [pincode]);
+
   const handleDecreaseQuantity = () => {
     if (quantity > 1) setQuantity(prev => prev - 1);
   };
@@ -143,15 +207,19 @@ const ProductDetail = () => {
 
   const handleCheckPincode = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pincode.trim()) return;
+    const trimmed = pincode.trim();
+    if (!trimmed) return;
     setDeliveryStatus("checking");
     setTimeout(() => {
-      if (pincode.length >= 4) {
+      const checkResult = checkPincodeDelivery(trimmed);
+      if (checkResult.available) {
         setDeliveryStatus("available");
+        setDetectedCountry(checkResult.country || "");
       } else {
         setDeliveryStatus("unavailable");
+        setDetectedCountry("");
       }
-    }, 800);
+    }, 200);
   };
 
   const getAllImages = (): string[] => {
@@ -469,14 +537,26 @@ const ProductDetail = () => {
                   {deliveryStatus === 'checking' ? 'Checking...' : 'Check'}
                 </Button>
               </form>
+              {deliveryStatus === 'checking' && (
+                <div className="flex items-center gap-2 mt-3 text-sm text-gray-500 bg-gray-100/50 p-2 rounded-md border border-gray-200">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-brand-orange border-t-transparent"></div>
+                  Checking delivery availability for "{pincode}"...
+                </div>
+              )}
               {deliveryStatus === 'available' && (
                 <div className="flex items-center gap-2 mt-3 text-sm text-green-600 bg-green-50 p-2 rounded-md border border-green-100">
-                  <CheckCircle2 size={16} /> Delivery is available for {pincode}.
+                  <CheckCircle2 size={16} className="shrink-0" />
+                  <span>
+                    Delivery is available to <strong>{detectedCountry}</strong> ({pincode}).
+                  </span>
                 </div>
               )}
               {deliveryStatus === 'unavailable' && (
                 <div className="flex items-center gap-2 mt-3 text-sm text-red-600 bg-red-50 p-2 rounded-md border border-red-100">
-                  <XCircle size={16} /> Delivery is not available for {pincode}.
+                  <XCircle size={16} className="shrink-0" />
+                  <span>
+                    Delivery is not available for "{pincode}". Please enter a valid EU or Ireland postcode.
+                  </span>
                 </div>
               )}
             </div>

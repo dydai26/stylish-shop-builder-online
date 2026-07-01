@@ -19,6 +19,10 @@ interface BlogPost {
   created_at: string;
   meta_title: string | null;
   meta_description: string | null;
+  canonical_url?: string | null;
+  noindex?: boolean;
+  nofollow?: boolean;
+  author_avatar?: string | null;
 }
 
 const BlogPost = () => {
@@ -54,36 +58,6 @@ const BlogPost = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const formatContent = (content: string) => {
-    const urlPattern = /(https?:\/\/[^\s]+)/g;
-
-    return content.split('\n\n').map((paragraph, index) => {
-      const parts = paragraph.split(urlPattern);
-
-      return (
-        <p key={index} className="mb-4 text-base leading-relaxed">
-          {parts.map((part, i) => {
-            if (urlPattern.test(part)) {
-              urlPattern.lastIndex = 0;
-              return (
-                <a
-                  key={i}
-                  href={part}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand-brown hover:underline break-all"
-                >
-                  {part}
-                </a>
-              );
-            }
-            return part;
-          })}
-        </p>
-      );
-    });
   };
 
   if (loading) {
@@ -128,6 +102,14 @@ const BlogPost = () => {
         <title>{title} | ECOVLUU Blog</title>
         <meta name="description" content={description} />
 
+        {/* Robots Directives */}
+        {(post.noindex || post.nofollow) && (
+          <meta 
+            name="robots" 
+            content={`${post.noindex ? 'noindex' : 'index'}, ${post.nofollow ? 'nofollow' : 'follow'}`} 
+          />
+        )}
+
         {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={title} />
@@ -145,7 +127,7 @@ const BlogPost = () => {
         {/* Pinterest */}
         <meta name="pinterest-rich-pin" content="true" />
 
-        <link rel="canonical" href={articleUrl} />
+        <link rel="canonical" href={post.canonical_url || articleUrl} />
       </Helmet>
 
       <div className="container-custom py-12 md:py-16">
@@ -173,18 +155,31 @@ const BlogPost = () => {
             {post.title}
           </h1>
 
-
-
           {/* Content */}
-          <div className="mt-8 text-gray-900 space-y-4 text-justify leading-relaxed">
-            {formatContent(post.content)}
-          </div>
+          <div 
+            className="mt-8 text-gray-900 leading-relaxed blog-content"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
           {/* Author */}
           {post.author && (
-            <p className="mt-8 text-sm text-gray-600 italic">
-              By {post.author}
-            </p>
+            <div className="flex items-center gap-3 mt-8 pt-6 border-t border-gray-200">
+              {post.author_avatar ? (
+                <img
+                  src={post.author_avatar}
+                  alt={post.author}
+                  className="w-10 h-10 rounded-full object-cover border"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange font-bold text-sm">
+                  {post.author.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="text-left">
+                <p className="text-sm font-semibold text-gray-800">Written by</p>
+                <p className="text-sm text-gray-600">{post.author}</p>
+              </div>
+            </div>
           )}
 
           {/* Bottom share buttons */}
