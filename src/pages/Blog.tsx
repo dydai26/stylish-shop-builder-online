@@ -50,7 +50,7 @@ const Blog = () => {
     const tmp = document.createElement("div");
     tmp.innerHTML = post.content;
     const plainText = tmp.textContent || tmp.innerText || "";
-    return plainText.length > 250 ? plainText.slice(0, 250) + "..." : plainText;
+    return plainText.length > 700 ? plainText.slice(0, 700) + "..." : plainText;
   };
 
   if (loading) {

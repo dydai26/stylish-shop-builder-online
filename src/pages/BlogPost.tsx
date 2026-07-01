@@ -157,7 +157,7 @@ const BlogPost = () => {
 
           {/* Content */}
           <div 
-            className="mt-8 text-gray-900 leading-relaxed blog-content"
+            className="mt-8 text-gray-900 leading-relaxed blog-content text-left w-full"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
