@@ -43,14 +43,32 @@ const Blog = () => {
     }
   };
 
-  const getExcerpt = (post: BlogPost) => {
-    if (post.excerpt) return post.excerpt;
+  const getExcerptParagraphs = (content: string, maxParagraphs: number = 3) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = content;
     
-    // Strip HTML from content and truncate
-    const tmp = document.createElement("div");
-    tmp.innerHTML = post.content;
-    const plainText = tmp.textContent || tmp.innerText || "";
-    return plainText.length > 700 ? plainText.slice(0, 700) + "..." : plainText;
+    // Get all paragraph elements
+    const paragraphs = Array.from(temp.querySelectorAll("p"));
+    
+    // Fallback if there are no <p> tags (e.g. old plain text posts)
+    if (paragraphs.length === 0) {
+      const plainText = temp.textContent || temp.innerText || "";
+      const lines = plainText.split("\n\n").map(l => l.trim()).filter(Boolean);
+      return lines.slice(0, maxParagraphs).map((p, idx) => (
+        <p key={idx} className="mb-4 text-base leading-relaxed text-justify">
+          {p}
+        </p>
+      ));
+    }
+    
+    return paragraphs.slice(0, maxParagraphs).map((p, idx) => {
+      const text = p.textContent || p.innerText || "";
+      return (
+        <p key={idx} className="mb-4 text-base leading-relaxed text-justify">
+          {text}
+        </p>
+      );
+    });
   };
 
   if (loading) {
@@ -108,7 +126,7 @@ const Blog = () => {
                           </Link>
                         </h2>
                         <div className="text-gray-900 space-y-4 text-justify leading-relaxed">
-                          <p>{getExcerpt(post)}</p>
+                          {getExcerptParagraphs(post.content, 3)}
                         </div>
                         {post.author && (
                           <p className="mt-6 text-sm text-gray-600 italic text-left">
