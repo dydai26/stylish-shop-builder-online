@@ -8,7 +8,6 @@ import Benefits from "@/components/home/Benefits";
 import AboutSection from "@/components/home/AboutSection";
 import AboutEcovluu from "@/components/home/AboutEcovluu";
 import ReviewsSection from "@/components/home/ReviewsSection";
-import ConsultationSection from "@/components/home/ConsultationSection";
 import FAQSection from "@/components/home/FAQSection";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import IntroAnimation from "@/components/intro/IntroAnimation";
@@ -58,6 +57,7 @@ const Index = () => {
       <Helmet>
         <title>Total Hair Care - Restore, Hydrate & Strengthen | EcoVluu</title>
         <meta name="description" content="Why settle for dull hair? Our best shampoo products and hair mask with kerotin hair care give salon results at home. Shop the best hair care products today." />
+        <link rel="canonical" href="https://www.ecovluu.com/" />
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}
         </script>
@@ -79,9 +79,6 @@ const Index = () => {
         </div>
         <div className="transition-opacity duration-1000 transform">
           <ReviewsSection />
-        </div>
-        <div className="transition-opacity duration-1000 transform">
-          <ConsultationSection />
         </div>
         <div className="transition-opacity duration-1000 transform">
           <FAQSection />

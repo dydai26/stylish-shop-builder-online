@@ -290,3 +290,21 @@
   font-style: italic;
   color: hsl(20, 15%, 40%);
 }
+
+/* WhatsApp Floating Button Pulse Animation */
+@keyframes whatsapp-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.whatsapp-float-btn {
+  animation: whatsapp-pulse 2s infinite;
+}
+

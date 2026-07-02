@@ -33,6 +33,7 @@ const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const searchQuery = searchParams.get("search");
   
   const categories = ["shampoo", "mask"];
@@ -95,17 +96,23 @@ const Shop = () => {
           <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center sm:text-left text-brand-brown">Shop Our Products</h1>
           
           {/* Brand Philosophy Box */}
-          <div className="bg-[#FAF5F0] p-5 sm:p-6 rounded-xl mb-6 text-left shadow-sm border border-brand-brown/5">
+          <div className="bg-[#FAF5F0] p-5 sm:p-6 rounded-xl mb-6 text-left shadow-sm border border-brand-brown/5 transition-all duration-300">
             <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
-              At Ecovluu, we craft hair care made for real results — deeply nourishing, sulfate-free formulas designed for dry, damaged, and color-treated hair. Every product is recommended by professionals and made with ingredients that restore strength, shine, and softness from root to tip.
+              At Ecovluu, we craft hair care made for real results — deeply nourishing, sulfate-free formulas designed for dry, damaged, and color-treated hair.
+              {isExpanded ? (
+                <span>
+                  {" "}Every product is recommended by professionals and made with ingredients that restore strength, shine, and softness from root to tip. Our formulations combine clean chemistry with premium botanical oils to revive your hair and scalp.
+                </span>
+              ) : (
+                <span>...</span>
+              )}
             </p>
-            <Link
-              to="/about"
-              onClick={() => window.scrollTo(0, 0)}
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
               className="inline-block mt-3 text-brand-orange hover:text-brand-orange/80 font-semibold text-sm sm:text-base transition-colors"
             >
-              Read more
-            </Link>
+              {isExpanded ? "Read less" : "Read more"}
+            </button>
           </div>
           
           {searchQuery && (

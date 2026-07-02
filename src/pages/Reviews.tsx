@@ -3,6 +3,7 @@ import Layout from "@/components/layout/Layout";
 import { useReviews } from "@/context/ReviewsContext";
 import ReviewCard from "@/components/ui/ReviewCard";
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Star } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -82,6 +83,11 @@ const Reviews = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Customer Reviews & Feedback | ECOVLUU</title>
+        <meta name="description" content="Read reviews and testimonials from our customers about ECOVLUU natural hair care products. Find out why they love our deep hydrating shampoo and restoring mask." />
+        <link rel="canonical" href="https://www.ecovluu.com/reviews" />
+      </Helmet>
       <div className="bg-gray-50 py-16">
         <div className="container-custom">
           <h1 className="text-3xl font-bold mb-4 text-center text-black">Customer Reviews</h1>

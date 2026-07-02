@@ -1,9 +1,15 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Layout from "@/components/layout/Layout";
 
 const ReturnsAndRefundPolicy = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>Return & Refund Policy | ECOVLUU</title>
+        <meta name="description" content="Read the Return & Refund Policy of ECOVLUU. Learn about your right of withdrawal, refunds, and how to return your hair care products." />
+        <link rel="canonical" href="https://www.ecovluu.com/returns" />
+      </Helmet>
       <div className="bg-gray-50 py-6 sm:py-12">
         <div className="container-custom px-2 sm:px-3">
           <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">RETURN & REFUND POLICY</h1>

@@ -36,9 +36,15 @@
   ExpiresByType font/otf "access plus 1 year"
 </IfModule>
 
-# Забезпечити HTTPS 
+# Забезпечити HTTPS та редирект на WWW
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  
+  # Redirect non-WWW to WWW
+  RewriteCond %{HTTP_HOST} ^ecovluu\.com [NC]
+  RewriteRule ^(.*)$ https://www.ecovluu.com/$1 [L,R=301]
+  
+  # Ensure HTTPS
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>

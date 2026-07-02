@@ -59,6 +59,9 @@ const AppContent = () => {
           <Route path="/product/-deep-conditioning-mask-dry-damaged-hair-ecovluu" element={<Navigate to="/product/deep-conditioning-hair-mask" replace />} />
           <Route path="/blog/Ecovluu – The Honest Beginning of a New​Haircare Era" element={<Navigate to="/blog/beginning-new-haircare-era" replace />} />
           <Route path="/blog/Ecovluu%20%E2%80%93%20The%20Honest%20Beginning%20of%20a%20New%E2%80%A8Haircare%20Era" element={<Navigate to="/blog/beginning-new-haircare-era" replace />} />
+          <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
+          <Route path="/terms-and-conditions" element={<Navigate to="/terms" replace />} />
+          <Route path="/returns-and-refund-policy" element={<Navigate to="/returns" replace />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />

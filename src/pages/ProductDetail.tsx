@@ -365,6 +365,7 @@ const ProductDetail = () => {
       <Helmet>
         <title>{metaTitle}</title>
         {metaDescription && <meta name="description" content={metaDescription} />}
+        <link rel="canonical" href={`https://www.ecovluu.com/product/${product.slug}`} />
       </Helmet>
 
       <div className="container-custom py-4 sm:py-8 lg:py-12">

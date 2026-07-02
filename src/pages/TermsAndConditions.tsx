@@ -1,9 +1,15 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Layout from "@/components/layout/Layout";
 
 const TermsAndConditions = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>Terms & Conditions | ECOVLUU</title>
+        <meta name="description" content="Read the Terms & Conditions of ECOVLUU. These terms govern your use of our website and the purchase of our natural hair care products." />
+        <link rel="canonical" href="https://www.ecovluu.com/terms" />
+      </Helmet>
       <div className="bg-gray-50 py-6 sm:py-12">
         <div className="container-custom px-2 sm:px-3">
           <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-left uppercase">TERMS & CONDITIONS</h1>

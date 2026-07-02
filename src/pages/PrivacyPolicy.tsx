@@ -1,9 +1,15 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Layout from "@/components/layout/Layout";
 
 const PrivacyPolicy = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>Privacy Policy | ECOVLUU</title>
+        <meta name="description" content="Read the Privacy Policy of ECOVLUU. Learn how we collect, use, and protect your personal information when you use our website." />
+        <link rel="canonical" href="https://www.ecovluu.com/privacy" />
+      </Helmet>
       <div className="bg-gray-50 py-6 sm:py-12">
         <div className="container-custom px-2 sm:px-3">
           <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-left uppercase">PRIVACY POLICY</h1>

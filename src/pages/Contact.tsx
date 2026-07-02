@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin } from "lucide-react";
@@ -113,6 +114,11 @@ const Contact = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Contact Us - Get in Touch | ECOVLUU</title>
+        <meta name="description" content="Have questions about our natural hair care products? Contact the ECOVLUU team. We are here to help you restore and care for your hair." />
+        <link rel="canonical" href="https://www.ecovluu.com/contact" />
+      </Helmet>
       <div className="bg-gray-50 py-6 sm:py-8 md:py-12">
         <div className="container-custom">
           <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-black text-center">Contact Us</h1>
