@@ -25,9 +25,9 @@ const AboutPage = () => {
   }, []);
 
   const slides = [
-    { id: 1, image: "/1.png", alt: "Product 1" },
+    { id: 1, image: "/1.jpg", alt: "Product 1" },
     { id: 2, image: "/_DSC8542.jpg", alt: "Product 2" },
-    { id: 3, image: "/2.png", alt: "Product 3" },
+    { id: 3, image: "/2.jpg", alt: "Product 3" },
     { id: 4, image: "/_DSC8533.jpg", alt: "Product 4" },
   ];
 

@@ -20,7 +20,7 @@ const AboutEcovluu = () => {
           <div className="w-full" data-animate>
             <div className="rounded-xl overflow-hidden shadow-md aspect-[4/3] w-full bg-brand-brown/10">
               <img
-                src="/2.png"
+                src="/2.jpg"
                 alt="About Ecovluu - Our story"
                 loading="lazy"
                 decoding="async"
