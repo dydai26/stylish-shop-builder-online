@@ -39,7 +39,7 @@ const Layout = ({ children }: LayoutProps) => {
     animateElements.forEach((el, index) => {
       el.classList.add('opacity-0');
       // Add a data-delay attribute with staggered delays
-      el.setAttribute('data-delay', (index * 120).toString());
+      el.setAttribute('data-delay', (index * 40).toString());
       observer.observe(el);
     });
 
