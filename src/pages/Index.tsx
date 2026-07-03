@@ -11,10 +11,15 @@ import ReviewsSection from "@/components/home/ReviewsSection";
 import FAQSection from "@/components/home/FAQSection";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import IntroAnimation from "@/components/intro/IntroAnimation";
+import { getAboutContent } from "@/lib/aboutService";
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [hasShownIntro, setHasShownIntro] = useState(false);
+  const [seoData, setSeoData] = useState({
+    title: "Total Hair Care - Restore, Hydrate & Strengthen | EcoVluu",
+    description: "Why settle for dull hair? Our best shampoo products and hair mask with kerotin hair care give salon results at home. Shop the best hair care products today."
+  });
 
   useEffect(() => {
     const introShown = sessionStorage.getItem('introShown');
@@ -22,6 +27,23 @@ const Index = () => {
       setShowIntro(false);
       setHasShownIntro(true);
     }
+  }, []);
+
+  useEffect(() => {
+    const loadSeo = async () => {
+      try {
+        const data = await getAboutContent('home_philosophy');
+        if (data) {
+          setSeoData({
+            title: data.meta_title || "Total Hair Care - Restore, Hydrate & Strengthen | EcoVluu",
+            description: data.meta_description || "Why settle for dull hair? Our best shampoo products and hair mask with kerotin hair care give salon results at home. Shop the best hair care products today."
+          });
+        }
+      } catch (err) {
+        console.error("Error loading home page SEO:", err);
+      }
+    };
+    loadSeo();
   }, []);
 
   const handleAnimationComplete = () => {
@@ -55,8 +77,8 @@ const Index = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Total Hair Care - Restore, Hydrate & Strengthen | EcoVluu</title>
-        <meta name="description" content="Why settle for dull hair? Our best shampoo products and hair mask with kerotin hair care give salon results at home. Shop the best hair care products today." />
+        <title>{seoData.title}</title>
+        <meta name="description" content={seoData.description} />
         <link rel="canonical" href="https://www.ecovluu.com/" />
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}

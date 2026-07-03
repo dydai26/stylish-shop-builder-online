@@ -32,7 +32,22 @@ const AboutSection: React.FC = () => {
       const homeData = await getAboutContent('home_philosophy');
       const aboutData = await getAboutContent('about_page');
       
-      if (homeData) setHomePhilosophy(homeData);
+      if (homeData) {
+        const meta_title = homeData.meta_title || (homeData.title ? `${homeData.title} - Restore, Hydrate & Strengthen | EcoVluu` : "");
+        let meta_description = homeData.meta_description;
+        if (!meta_description && homeData.description) {
+          const textOnly = homeData.description.replace(/<[^>]*>/g, "");
+          meta_description = textOnly.slice(0, 150).trim();
+          if (textOnly.length > 150) {
+            meta_description += "...";
+          }
+        }
+        setHomePhilosophy({
+          ...homeData,
+          meta_title,
+          meta_description: meta_description || ""
+        });
+      }
       if (aboutData) {
         const meta_title = aboutData.meta_title || (aboutData.title ? `${aboutData.title} | ECOVLUU` : "");
         let meta_description = aboutData.meta_description;
@@ -68,6 +83,8 @@ const AboutSection: React.FC = () => {
         title: homePhilosophy.title,
         description: homePhilosophy.description,
         images: homePhilosophy.images,
+        meta_title: homePhilosophy.meta_title,
+        meta_description: homePhilosophy.meta_description,
       });
 
       if (success) {
@@ -260,6 +277,27 @@ const AboutSection: React.FC = () => {
                       label="Фото блоку"
                       value={homePhilosophy.images?.[0] || '/2.jpg'}
                       onChange={(url) => setHomePhilosophy({ ...homePhilosophy, images: [url] })}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+                  <div className="space-y-2">
+                    <Label htmlFor="home-meta-title">SEO Title (Авто / Вручну)</Label>
+                    <Input
+                      id="home-meta-title"
+                      value={homePhilosophy.meta_title || ''}
+                      onChange={(e) => setHomePhilosophy({ ...homePhilosophy, meta_title: e.target.value })}
+                      placeholder="Залиште порожнім для автогенерації"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="home-meta-desc">SEO Description (Авто / Вручну)</Label>
+                    <Input
+                      id="home-meta-desc"
+                      value={homePhilosophy.meta_description || ''}
+                      onChange={(e) => setHomePhilosophy({ ...homePhilosophy, meta_description: e.target.value })}
+                      placeholder="Залиште порожнім для автогенерації"
                     />
                   </div>
                 </div>
