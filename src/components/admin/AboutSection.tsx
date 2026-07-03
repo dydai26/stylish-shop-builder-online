@@ -66,8 +66,8 @@ const AboutSection: React.FC = () => {
       }
     } catch (error) {
       toast({
-        title: "Помилка",
-        description: "Не вдалося завантажити дані контенту",
+        title: "Error",
+        description: "Failed to load content data",
         variant: "destructive",
       });
     } finally {
@@ -89,8 +89,8 @@ const AboutSection: React.FC = () => {
 
       if (success) {
         toast({
-          title: "Успішно",
-          description: "Філософію на головній сторінці оновлено!",
+          title: "Success",
+          description: "Homepage philosophy updated successfully!",
         });
         loadContent();
       } else {
@@ -98,8 +98,8 @@ const AboutSection: React.FC = () => {
       }
     } catch (error) {
       toast({
-        title: "Помилка",
-        description: "Не вдалося зберегти філософію на головній сторінці",
+        title: "Error",
+        description: "Failed to save homepage philosophy",
         variant: "destructive",
       });
     } finally {
@@ -122,8 +122,8 @@ const AboutSection: React.FC = () => {
 
       if (success) {
         toast({
-          title: "Успішно",
-          description: "Дані сторінки 'Про нас' оновлено!",
+          title: "Success",
+          description: "About page content updated successfully!",
         });
         loadContent();
       } else {
@@ -131,8 +131,8 @@ const AboutSection: React.FC = () => {
       }
     } catch (error) {
       toast({
-        title: "Помилка",
-        description: "Не вдалося зберегти дані сторінки 'Про нас'",
+        title: "Error",
+        description: "Failed to save About page content",
         variant: "destructive",
       });
     } finally {
@@ -151,13 +151,13 @@ const AboutSection: React.FC = () => {
       setAboutPage({ ...aboutPage, images: updatedImages });
       
       toast({
-        title: "Завантажено",
-        description: "Новий слайд додано до списку",
+        title: "Uploaded",
+        description: "New slide added to the list",
       });
     } catch (error) {
       toast({
-        title: "Помилка завантаження",
-        description: "Не вдалося завантажити зображення",
+        title: "Upload Error",
+        description: "Failed to upload image",
         variant: "destructive",
       });
     } finally {
@@ -219,7 +219,7 @@ const AboutSection: React.FC = () => {
     return (
       <div className="flex justify-center items-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-brand-brown" />
-        <span className="ml-2 text-gray-500">Завантаження контенту...</span>
+        <span className="ml-2 text-gray-500">Loading content...</span>
       </div>
     );
   }
@@ -228,15 +228,15 @@ const AboutSection: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center text-left">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Керування сторінкою "Про нас" (CMS)</h2>
-          <p className="text-gray-500">Редагування описів, картинок каруселі, інгредієнтів та кроків догляду.</p>
+          <h2 className="text-3xl font-bold text-gray-900">About Us CMS</h2>
+          <p className="text-gray-500">Edit description text, carousel slides, active ingredients, and care steps.</p>
         </div>
       </div>
 
       <Tabs defaultValue="home" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6 max-w-md">
-          <TabsTrigger value="home">Блок на Головній</TabsTrigger>
-          <TabsTrigger value="about">Сторінка "Про нас"</TabsTrigger>
+          <TabsTrigger value="home">Homepage Block</TabsTrigger>
+          <TabsTrigger value="about">About Page</TabsTrigger>
         </TabsList>
 
         {/* 1. HOME PHILOSOPHY TAB */}
@@ -244,37 +244,37 @@ const AboutSection: React.FC = () => {
           {homePhilosophy && (
             <Card className="text-left">
               <CardHeader>
-                <CardTitle>Блок філософії "About Ecovluu" на Головній</CardTitle>
+                <CardTitle>Homepage "About Ecovluu" Philosophy Block</CardTitle>
                 <CardDescription>
-                  Редагуйте зображення та текст філософії, що відображаються у блоці "Про нас" на головній сторінці.
+                  Edit the image and philosophy text displayed in the "About Us" section on the homepage.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="home-title">Заголовок</Label>
+                      <Label htmlFor="home-title">Title</Label>
                       <Input
                         id="home-title"
                         value={homePhilosophy.title || ''}
                         onChange={(e) => setHomePhilosophy({ ...homePhilosophy, title: e.target.value })}
-                        placeholder="Наприклад: About Ecovluu"
+                        placeholder="e.g., About Ecovluu"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="home-desc">Текст філософії</Label>
+                      <Label htmlFor="home-desc">Philosophy Text</Label>
                       <Textarea
                         id="home-desc"
                         rows={6}
                         value={homePhilosophy.description || ''}
                         onChange={(e) => setHomePhilosophy({ ...homePhilosophy, description: e.target.value })}
-                        placeholder="Введіть опис бренду..."
+                        placeholder="Enter brand description..."
                       />
                     </div>
                   </div>
                   <div>
                     <ImageUpload
-                      label="Фото блоку"
+                      label="Section Image"
                       value={homePhilosophy.images?.[0] || '/2.jpg'}
                       onChange={(url) => setHomePhilosophy({ ...homePhilosophy, images: [url] })}
                     />
@@ -310,7 +310,7 @@ const AboutSection: React.FC = () => {
                   >
                     {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     <Save className="mr-2 h-4 w-4" />
-                    Зберегти блок головної
+                    Save Homepage Block
                   </Button>
                 </div>
               </CardContent>
@@ -378,9 +378,9 @@ const AboutSection: React.FC = () => {
               {/* Slider Images */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Фотографії в каруселі сторінки "Про нас"</CardTitle>
+                  <CardTitle>About Page Carousel Photos</CardTitle>
                   <CardDescription>
-                    Ці фото відображаються у слайдері сторінки. Рекомендується завантажувати квадратні фотографії (1:1 ratio) розміром не більше 1600px.
+                    These photos are displayed in the carousel slider. Recommended square ratio (1:1) and maximum 1600px size.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -399,7 +399,7 @@ const AboutSection: React.FC = () => {
                           <Trash2 className="w-4 h-4" />
                         </button>
                         <div className="absolute bottom-1 left-2 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
-                          Слайд {index + 1}
+                          Slide {index + 1}
                         </div>
                       </div>
                     ))}
@@ -413,7 +413,7 @@ const AboutSection: React.FC = () => {
                         disabled={saving}
                       />
                       <Plus className="w-8 h-8 text-gray-400" />
-                      <span className="text-xs text-gray-500 mt-2 font-medium">Додати фото</span>
+                      <span className="text-xs text-gray-500 mt-2 font-medium">Add Photo</span>
                     </div>
                   </div>
                 </CardContent>
@@ -422,9 +422,9 @@ const AboutSection: React.FC = () => {
               {/* Approach (Ingredients - 6 items) */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Наш підхід та Інгредієнти (6 блоків)</CardTitle>
+                  <CardTitle>Our Approach & Active Ingredients (6 Blocks)</CardTitle>
                   <CardDescription>
-                    Редагуйте зображення, заголовки та опис активних інгредієнтів вашої продукції.
+                    Edit images, titles, and descriptions of your active product ingredients.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -441,7 +441,7 @@ const AboutSection: React.FC = () => {
                               />
                               <label className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-[10px] text-center font-medium">
                                 <Upload className="w-4 h-4 mb-1" />
-                                Змінити
+                                Change
                                 <input 
                                   type="file" 
                                   accept="image/*"
@@ -454,9 +454,9 @@ const AboutSection: React.FC = () => {
                                       setSaving(true);
                                       const result = await uploadImage(file, 'about');
                                       handleUpdateApproach(index, 'image', result.url);
-                                      toast({ title: "Успішно", description: "Зображення інгредієнта оновлено!" });
+                                      toast({ title: "Success", description: "Ingredient image updated!" });
                                     } catch (err) {
-                                      toast({ title: "Помилка", description: "Не вдалося завантажити зображення", variant: "destructive" });
+                                      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
                                     } finally {
                                       setSaving(false);
                                     }
@@ -464,11 +464,11 @@ const AboutSection: React.FC = () => {
                                 />
                               </label>
                             </div>
-                            <span className="text-[10px] text-gray-400 font-bold tracking-wider">ФОТО #{index + 1}</span>
+                            <span className="text-[10px] text-gray-400 font-bold tracking-wider">PHOTO #{index + 1}</span>
                           </div>
                           <div className="flex-1 space-y-3">
                             <div>
-                              <Label className="text-[11px] font-bold text-gray-400 tracking-wider">ІНГРЕДІЄНТ #{index + 1}</Label>
+                              <Label className="text-[11px] font-bold text-gray-400 tracking-wider">INGREDIENT #{index + 1}</Label>
                               <Input
                                 value={item.title}
                                 onChange={(e) => handleUpdateApproach(index, 'title', e.target.value)}
@@ -476,7 +476,7 @@ const AboutSection: React.FC = () => {
                               />
                             </div>
                             <div>
-                              <Label className="text-[11px] font-bold text-gray-400">ОПИС</Label>
+                              <Label className="text-[11px] font-bold text-gray-400">DESCRIPTION</Label>
                               <Textarea
                                 value={item.description}
                                 rows={2}
@@ -495,26 +495,26 @@ const AboutSection: React.FC = () => {
               {/* Founder Section */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Розділ "Засновник" (Founder Section)</CardTitle>
+                  <CardTitle>Founder Section</CardTitle>
                   <CardDescription>
-                    Блок про історію створення та філософію від імені засновника бренду.
+                    Block about the brand's creation story and philosophy from the founder.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {aboutPage.content && aboutPage.content.founder && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="md:col-span-2 space-y-2">
-                        <Label htmlFor="founder-text">Історія засновника</Label>
+                        <Label htmlFor="founder-text">Founder Story</Label>
                         <Textarea
                           id="founder-text"
                           rows={8}
                           value={aboutPage.content.founder.text}
                           onChange={(e) => handleUpdateFounderText(e.target.value)}
-                          placeholder="Історія створення від першої особи..."
+                          placeholder="Creation story in first-person..."
                         />
                       </div>
                       <div className="space-y-4">
-                        <Label>Фотографії засновника (3 шт.)</Label>
+                        <Label>Founder Photos (3 items)</Label>
                         <div className="grid grid-cols-3 gap-2">
                           {aboutPage.content.founder.images && aboutPage.content.founder.images.map((img: string, idx: number) => (
                             <div key={idx} className="space-y-1">
@@ -532,7 +532,7 @@ const AboutSection: React.FC = () => {
                                     const result = await uploadImage(file, 'about');
                                     handleUpdateFounderImage(idx, result.url);
                                   } catch (err) {
-                                    toast({ title: "Помилка", description: "Не вдалося завантажити фото", variant: "destructive" });
+                                    toast({ title: "Error", description: "Failed to upload photo", variant: "destructive" });
                                   } finally {
                                     setSaving(false);
                                   }
@@ -546,7 +546,7 @@ const AboutSection: React.FC = () => {
                                 className="w-full text-[10px] h-6 px-1"
                                 onClick={() => document.getElementById(`founder-img-file-${idx}`)?.click()}
                               >
-                                Змінити #{idx + 1}
+                                Change #{idx + 1}
                               </Button>
                             </div>
                           ))}
@@ -560,9 +560,9 @@ const AboutSection: React.FC = () => {
               {/* Steps of Care */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Кроки Догляду (4 кроки)</CardTitle>
+                  <CardTitle>Steps of Care (4 Steps)</CardTitle>
                   <CardDescription>
-                    Покрокова інструкція правильного використання та застосування косметичних засобів.
+                    Step-by-step instructions for correct application and usage of hair care products.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -574,10 +574,10 @@ const AboutSection: React.FC = () => {
                             <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#E08F35] text-white font-bold text-sm">
                               {step.num}
                             </span>
-                            <span className="text-[10px] font-bold text-gray-400">КРОК #{index + 1}</span>
+                            <span className="text-[10px] font-bold text-gray-400">STEP #{index + 1}</span>
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] text-gray-400 font-bold">НАЗВА ДІЇ</Label>
+                            <Label className="text-[10px] text-gray-400 font-bold">ACTION NAME</Label>
                             <Input
                               value={step.title}
                               onChange={(e) => handleUpdateStep(index, 'title', e.target.value)}
@@ -585,7 +585,7 @@ const AboutSection: React.FC = () => {
                             />
                           </div>
                           <div className="space-y-1">
-                            <Label className="text-[10px] text-gray-400 font-bold">ОПИС</Label>
+                            <Label className="text-[10px] text-gray-400 font-bold">DESCRIPTION</Label>
                             <Textarea
                               value={step.desc}
                               rows={3}
@@ -609,7 +609,7 @@ const AboutSection: React.FC = () => {
                 >
                   {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   <Save className="mr-2 h-4 w-4" />
-                  Зберегти сторінку Про нас
+                  Save About Page
                 </Button>
               </div>
             </div>
