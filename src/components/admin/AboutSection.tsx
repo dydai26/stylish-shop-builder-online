@@ -33,7 +33,22 @@ const AboutSection: React.FC = () => {
       const aboutData = await getAboutContent('about_page');
       
       if (homeData) setHomePhilosophy(homeData);
-      if (aboutData) setAboutPage(aboutData);
+      if (aboutData) {
+        const meta_title = aboutData.meta_title || (aboutData.title ? `${aboutData.title} | ECOVLUU` : "");
+        let meta_description = aboutData.meta_description;
+        if (!meta_description && aboutData.description) {
+          const textOnly = aboutData.description.replace(/<[^>]*>/g, "");
+          meta_description = textOnly.slice(0, 150).trim();
+          if (textOnly.length > 150) {
+            meta_description += "...";
+          }
+        }
+        setAboutPage({
+          ...aboutData,
+          meta_title,
+          meta_description: meta_description || ""
+        });
+      }
     } catch (error) {
       toast({
         title: "Помилка",
