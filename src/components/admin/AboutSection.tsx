@@ -283,21 +283,21 @@ const AboutSection: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
                   <div className="space-y-2">
-                    <Label htmlFor="home-meta-title">SEO Title (Авто / Вручну)</Label>
+                    <Label htmlFor="home-meta-title">SEO Title (Auto)</Label>
                     <Input
                       id="home-meta-title"
                       value={homePhilosophy.meta_title || ''}
                       onChange={(e) => setHomePhilosophy({ ...homePhilosophy, meta_title: e.target.value })}
-                      placeholder="Залиште порожнім для автогенерації"
+                      placeholder="Leave blank for auto-generation"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="home-meta-desc">SEO Description (Авто / Вручну)</Label>
+                    <Label htmlFor="home-meta-desc">SEO Description (Auto)</Label>
                     <Input
                       id="home-meta-desc"
                       value={homePhilosophy.meta_description || ''}
                       onChange={(e) => setHomePhilosophy({ ...homePhilosophy, meta_description: e.target.value })}
-                      placeholder="Залиште порожнім для автогенерації"
+                      placeholder="Leave blank for auto-generation"
                     />
                   </div>
                 </div>
@@ -325,50 +325,50 @@ const AboutSection: React.FC = () => {
               {/* Main Banner Text & Meta */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Основний заголовок та SEO мета-дані</CardTitle>
+                  <CardTitle>Page Title & SEO Metadata</CardTitle>
                   <CardDescription>
-                    Налаштування назви сторінки та пошукової оптимізації. Мета-опис згенерується автоматично, якщо залишити поле порожнім.
+                    Configure the page title and search engine optimization. Meta tags will generate automatically if left blank.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="about-title">Головний заголовок</Label>
+                      <Label htmlFor="about-title">Main Title</Label>
                       <Input
                         id="about-title"
                         value={aboutPage.title || ''}
                         onChange={(e) => setAboutPage({ ...aboutPage, title: e.target.value })}
-                        placeholder="Наприклад: About Us"
+                        placeholder="e.g. About Us"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="about-desc">Короткий опис під банером</Label>
+                      <Label htmlFor="about-desc">Short Description</Label>
                       <Input
                         id="about-desc"
                         value={aboutPage.description || ''}
                         onChange={(e) => setAboutPage({ ...aboutPage, description: e.target.value })}
-                        placeholder="Короткий слоган бренду..."
+                        placeholder="Brand tagline..."
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                     <div className="space-y-2">
-                      <Label htmlFor="meta-title">SEO Title (Авто / Вручну)</Label>
+                      <Label htmlFor="meta-title">SEO Title (Auto)</Label>
                       <Input
                         id="meta-title"
                         value={aboutPage.meta_title || ''}
                         onChange={(e) => setAboutPage({ ...aboutPage, meta_title: e.target.value })}
-                        placeholder="Залиште порожнім для автогенерації"
+                        placeholder="Leave blank for auto-generation"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="meta-desc">SEO Description (Авто / Вручну)</Label>
+                      <Label htmlFor="meta-desc">SEO Description (Auto)</Label>
                       <Input
                         id="meta-desc"
                         value={aboutPage.meta_description || ''}
                         onChange={(e) => setAboutPage({ ...aboutPage, meta_description: e.target.value })}
-                        placeholder="Залиште порожнім для автогенерації"
+                        placeholder="Leave blank for auto-generation"
                       />
                     </div>
                   </div>
