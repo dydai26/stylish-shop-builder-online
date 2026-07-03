@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      about_settings: {
+        Row: {
+          content: Json | null
+          description: string | null
+          id: string
+          images: Json | null
+          key: string
+          meta_description: string | null
+          meta_title: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          content?: Json | null
+          description?: string | null
+          id?: string
+          images?: Json | null
+          key: string
+          meta_description?: string | null
+          meta_title?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content?: Json | null
+          description?: string | null
+          id?: string
+          images?: Json | null
+          key?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       banners: {
         Row: {
           created_at: string

@@ -1,13 +1,35 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getAboutContent } from "@/lib/aboutService";
 
 const AboutEcovluu = () => {
+  const [content, setContent] = useState({
+    title: "About Ecovluu",
+    description: "Ecovluu was founded on a simple belief: healthy hair shouldn't come at the cost of harsh chemicals. Every formula is developed with a hair specialist who brings 25 years of industry experience.\n\nRecommended by professionals and loved by customers, we make natural hair care that genuinely works.",
+    image: "/2.jpg"
+  });
+
+  useEffect(() => {
+    const loadContent = async () => {
+      const data = await getAboutContent('home_philosophy');
+      if (data) {
+        setContent({
+          title: data.title || "About Ecovluu",
+          description: data.description || "",
+          image: (data.images && data.images[0]) || "/2.jpg"
+        });
+      }
+    };
+    loadContent();
+  }, []);
+
   return (
     <section className="py-8 sm:py-12 md:py-16 bg-white w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12" data-animate>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-brand-brown">
-            About Ecovluu
+            {content.title}
           </h2>
           <p className="text-gray-500 mt-2 text-sm sm:text-base">
             The story behind our natural hair care
@@ -20,7 +42,7 @@ const AboutEcovluu = () => {
           <div className="w-full" data-animate>
             <div className="rounded-xl overflow-hidden shadow-md aspect-[4/3] w-full bg-brand-brown/10">
               <img
-                src="/2.jpg"
+                src={content.image}
                 alt="About Ecovluu - Our story"
                 loading="lazy"
                 decoding="async"
@@ -31,16 +53,8 @@ const AboutEcovluu = () => {
 
           {/* Right Column: Text & Badges */}
           <div className="flex flex-col items-start space-y-6 md:space-y-8 text-left" data-animate>
-            <div className="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed">
-              <p>
-                Ecovluu was founded on a simple belief: healthy hair shouldn't come
-                at the cost of harsh chemicals. Every formula is developed with a
-                hair specialist who brings 25 years of industry experience.
-              </p>
-              <p>
-                Recommended by professionals and loved by customers, we make
-                natural hair care that genuinely works.
-              </p>
+            <div className="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+              {content.description}
             </div>
 
             {/* Badges/Pills */}
