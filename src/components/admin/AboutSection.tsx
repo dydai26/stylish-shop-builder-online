@@ -431,13 +431,40 @@ const AboutSection: React.FC = () => {
                   {aboutPage.content && aboutPage.content.approach && (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       {aboutPage.content.approach.map((item: any, index: number) => (
-                        <div key={index} className="flex gap-4 p-4 border rounded-xl bg-gray-50/50">
-                          <div className="w-24 flex-shrink-0">
-                            <ImageUpload
-                              label=""
-                              value={item.image}
-                              onChange={(url) => handleUpdateApproach(index, 'image', url)}
-                            />
+                        <div key={index} className="flex flex-col sm:flex-row gap-4 p-4 border rounded-xl bg-gray-50/50">
+                          <div className="flex flex-col items-center gap-2 flex-shrink-0 w-full sm:w-24">
+                            <div className="relative w-20 h-20 rounded-lg overflow-hidden border bg-white group shadow-sm">
+                              <img 
+                                src={item.image} 
+                                alt={item.title} 
+                                className="w-full h-full object-cover"
+                              />
+                              <label className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-[10px] text-center font-medium">
+                                <Upload className="w-4 h-4 mb-1" />
+                                Змінити
+                                <input 
+                                  type="file" 
+                                  accept="image/*"
+                                  className="hidden"
+                                  disabled={saving}
+                                  onChange={async (e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
+                                    try {
+                                      setSaving(true);
+                                      const result = await uploadImage(file, 'about');
+                                      handleUpdateApproach(index, 'image', result.url);
+                                      toast({ title: "Успішно", description: "Зображення інгредієнта оновлено!" });
+                                    } catch (err) {
+                                      toast({ title: "Помилка", description: "Не вдалося завантажити зображення", variant: "destructive" });
+                                    } finally {
+                                      setSaving(false);
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </div>
+                            <span className="text-[10px] text-gray-400 font-bold tracking-wider">ФОТО #{index + 1}</span>
                           </div>
                           <div className="flex-1 space-y-3">
                             <div>
