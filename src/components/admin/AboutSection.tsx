@@ -301,7 +301,7 @@ const AboutSection: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                     <div className="space-y-2">
-                      <Label htmlFor="meta-title">SEO Title (Вручну)</Label>
+                      <Label htmlFor="meta-title">SEO Title (Авто / Вручну)</Label>
                       <Input
                         id="meta-title"
                         value={aboutPage.meta_title || ''}
@@ -310,7 +310,7 @@ const AboutSection: React.FC = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="meta-desc">SEO Description (Вручну)</Label>
+                      <Label htmlFor="meta-desc">SEO Description (Авто / Вручну)</Label>
                       <Input
                         id="meta-desc"
                         value={aboutPage.meta_description || ''}
