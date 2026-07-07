@@ -10,23 +10,23 @@ import { Helmet } from "react-helmet-async";
 const faqs = [
   {
     question: "Are your products 100% natural?",
-    answer: "Yes, our products are formulated with premium natural ingredients and are developed by professionals to ensure they are safe, effective, and free from harsh chemicals."
+    answer: "Yes. We use natural ingredients and every formula is developed by professionals, so it's safe, effective, and free from harsh chemicals."
   },
   {
-    question: "What type of hair are ECOVLUU products suitable for?",
-    answer: "Our shampoos and masks are designed for all hair types, but they are particularly effective for dry, damaged, and color-treated hair in need of deep hydration."
+    question: "What type of hair are Ecovluu products suitable for?",
+    answer: "All hair types, really. But if your hair is dry, damaged, or color-treated, our keratin hair care range and sulfate-free shampoo options will do the most for you."
   },
   {
     question: "How long does shipping take?",
-    answer: "Orders are typically processed within 1-2 business days. Delivery times vary depending on your location, but standard shipping usually takes 3-5 business days."
+    answer: "We process orders in 1-2 business days. After that, delivery usually takes another 3-5 business days depending on where you're located."
   },
   {
     question: "Do you offer international shipping?",
-    answer: "Currently, we ship to selected countries. Please check our shipping policy page for the full list of available destinations."
+    answer: "We currently ship to select countries. Check our shipping policy page for the full list."
   },
   {
     question: "Can I return a product if I'm not satisfied?",
-    answer: "Yes, we offer a money-back guarantee. If your order isn't perfect, we accept refunds for damaged items within 14 days of receipt."
+    answer: "Yes. We back every order with a money-back guarantee - damaged items can be returned within 14 days of delivery for a refund."
   }
 ];
 
@@ -35,6 +35,7 @@ const FAQSection = () => {
   const schemaMarkup = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": "https://ecovluu.com/#faq",
     "mainEntity": faqs.map(faq => ({
       "@type": "Question",
       "name": faq.question,

@@ -71,6 +71,127 @@ const checkPincodeDelivery = (code: string): { available: boolean; country?: str
   return { available: false };
 };
 
+const KEY_INGREDIENTS_GLOSSARY: Record<string, Array<{ name: string; description: string; icon: string; subtype?: string }>> = {
+  "deep-conditioning-hair-mask": [
+    {
+      name: "Cetearyl Alcohol",
+      description: "A fatty alcohol that helps soften and smooth the hair, keeping the mask's texture rich and creamy.",
+      icon: "🧪",
+      subtype: "Softening Fatty Alcohol"
+    },
+    {
+      name: "Myristyl Alcohol",
+      description: "A conditioning agent that helps detangle hair and improve manageability without weighing it down.",
+      icon: "🧴",
+      subtype: "Detangling Conditioner"
+    },
+    {
+      name: "Inositol",
+      description: "Helps strengthen hair from within, supporting elasticity and reducing breakage over time.",
+      icon: "🧬",
+      subtype: "Strengthening B-Vitamin"
+    },
+    {
+      name: "Polyquaternium-37",
+      description: "A conditioning polymer that adds shine and smoothness while helping detangle the hair shaft.",
+      icon: "✨",
+      subtype: "Shine Conditioning Polymer"
+    }
+  ],
+  "deep-hydrating-shampoo": [
+    {
+      name: "Aqua",
+      description: "Simply water. It forms the base of the formula and helps everything else mix and work smoothly together.",
+      icon: "💧",
+      subtype: "Purified Water Base"
+    },
+    {
+      name: "Sodium Cocoyl Isethionate",
+      description: "Comes from coconut and cleans your hair gently. No harsh, stripped-out feeling after washing.",
+      icon: "🥥",
+      subtype: "Coconut-Derived Cleanser"
+    },
+    {
+      name: "Cocamidopropyl Betaine",
+      description: "Helps clean your hair and gives the shampoo a nice, soft lather you'll actually enjoy using.",
+      icon: "🧼",
+      subtype: "Gentle Lathering Agent"
+    },
+    {
+      name: "Sodium Lauroamphoacetate",
+      description: "Works alongside the other cleansers to lift away buildup, while still being gentle on your scalp.",
+      icon: "💆‍♀️",
+      subtype: "Scalp-Friendly Surfactant"
+    },
+    {
+      name: "Sodium Hydroxymethylglycinate",
+      description: "A mild preservative. Keeps the formula safe and fresh, wash after wash.",
+      icon: "🍃",
+      subtype: "Mild Safe Preservative"
+    }
+  ]
+};
+
+const PRODUCT_CLAIMS: Record<string, Array<{ name: string; value: string }>> = {
+  "deep-conditioning-hair-mask": [
+    { name: "Cruelty-Free", value: "Yes - not tested on animals" },
+    { name: "Formula", value: "Free from parabens, sulfates, and silicones" },
+    { name: "Packaging", value: "Recyclable packaging" }
+  ],
+  "deep-hydrating-shampoo": [
+    { name: "Silicone-Free", value: "Yes - formulated without silicones to allow real moisture absorption" },
+    { name: "Sulfate-Free", value: "Yes - free from harsh sulfates" },
+    { name: "Key Cleansing Source", value: "Coconut-derived (Sodium Cocoyl Isethionate)" }
+  ]
+};
+
+const OVERRIDE_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
+  "deep-hydrating-shampoo": [
+    {
+      question: "Is this shampoo safe to use on color-treated or blonde hair?",
+      answer: "Yes, it's gentle enough for colored and blonde hair. Since it's free from harsh sulfates, it cleanses without stripping out color, making it a good shampoo for colored hair that fades easily."
+    },
+    {
+      question: "I have a dry, itchy scalp. Will this actually help?",
+      answer: "This is formulated as a shampoo for dry scalp, focusing on hydration instead of stripping your scalp's natural oils. Most people notice their scalp feels calmer and less tight after a few washes."
+    },
+    {
+      question: "My hair is heat-damaged from styling. Can this shampoo repair it?",
+      answer: "No shampoo can undo damage completely, but this one's built for damaged hair care, focusing on improving softness, manageability and appearance over time with regular use."
+    },
+    {
+      question: "Why is silicone-free better for moisturizing hair?",
+      answer: "Silicones coat the hair and can build up over time, blocking real moisture from getting in. That's why we kept this formula silicone-free, so it stays one of the better hydrating shampoo options for hair that actually needs to absorb moisture, not just look shiny on the surface."
+    },
+    {
+      question: "How is this different from a regular moisturizing shampoo?",
+      answer: "A lot of shampoos that claim to moisturize hair just add slip or shine on the surface. This one's designed to actually hydrate the hair shaft itself, which is what makes it a genuinely best hair care shampoo to moisturize hair without leaving it feeling heavy or weighed down."
+    }
+  ],
+  "deep-conditioning-hair-mask": [
+    {
+      question: "Can I use this mask if I already deep condition every week?",
+      answer: "Yes, and it's actually a good habit. This isn't a harsh treatment, so using a hydrating hair mask weekly won't overload your hair - it just keeps building on the moisture you're already putting in. If your hair is on the drier side, this dry hair mask can even become a twice-a-week step without causing buildup."
+    },
+    {
+      question: "Will this weigh down fine or curly hair?",
+      answer: "No. A lot of people avoid deep conditioning because they're scared of that heavy, greasy feeling - especially with curls. This hair mask for curly hair was made to hydrate without flattening texture. It's lightweight enough that fine hair stays bouncy, and curly hair keeps its shape instead of going limp."
+    },
+    {
+      question: "How soon after bleaching can I start using it?",
+      answer: "You can actually start right after your appointment, once your hair is fully rinsed and dry. Bleached hair loses a lot of its natural moisture and protein during the process, so reaching for a hair mask for bleached hair early on helps it recover instead of staying brittle for weeks."
+    },
+    {
+      question: "Is this the same as a regular conditioner, just thicker?",
+      answer: "Not really. Regular conditioner smooths the surface, but a hair repair mask is built to work deeper into the strand, targeting the damage conditioner can't reach. That's the real difference between a quick rinse-out and an actual damaged hair mask - one maintains, the other repairs."
+    },
+    {
+      question: "My hair is damaged from heat styling, not color - will this still help?",
+      answer: "Definitely. Heat damage and chemical damage show up differently, but they both leave hair dry and weak. This mask works as one of the best hair masks for dry damaged hair regardless of the cause, whether it's from a flat iron, bleach, or just years of everyday styling."
+    }
+  ]
+};
+
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const [product, setProduct] = useState<Product | null>(null);
@@ -238,16 +359,352 @@ const ProductDetail = () => {
     const allImages = getAllImages();
     const productUrl = `https://ecovluu.com/product/${product.slug}`;
 
+    if (product.slug === 'deep-hydrating-shampoo') {
+      return {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "@id": "https://ecovluu.com/product/deep-hydrating-shampoo/#product",
+        "name": "Deep Hydrating Shampoo | Ecovluu",
+        "alternateName": "Best Moisturising Shampoo",
+        "description": "Ecovluu Deep Hydrating Shampoo is a professional-grade shampoo formulated to gently cleanse and hydrate dry or sensitive hair without disrupting its natural balance. It removes impurities while maintaining moisture, leaving hair soft, light, and comfortable from the first wash. Suitable for dry, sensitive, or stressed hair. Ideal for frequent use. Bottle size: 250 ml.",
+        "url": productUrl,
+        "image": allImages.length > 0 ? allImages : [product.image],
+        "sku": "DP-HYD-SHM",
+        "mpn": "DP-HYD-SHM",
+        "brand": {
+          "@type": "Brand",
+          "name": "Ecovluu"
+        },
+        "manufacturer": {
+          "@type": "Organization",
+          "@id": "https://ecovluu.com/#organization",
+          "name": "Ecovluu"
+        },
+        "category": "Shampoo Products",
+        "material": "Natural Ingredients",
+        "weight": {
+          "@type": "QuantitativeValue",
+          "value": "250",
+          "unitCode": "MLT"
+        },
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Hair Type",
+            "value": "Dry, Sensitive, Stressed, Damaged, Moisturize, Hydrating"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Key Benefits",
+            "value": "Gently cleanses without stripping natural oils, hydrates hair without weighing it down, helps maintain scalp comfort and balance, leaves hair soft, smooth and easy to manage, suitable for frequent use"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Free From",
+            "value": "SLS, SLES, Silicones, Parabens"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Key Ingredients",
+            "value": "Sodium Cocoyl Isethionate, Cocamidopropyl Betaine, Sodium Lauroamphoacetate, Sodium Hydroxymethylglycinate, Panthenol, Chamomilla Recutita (Chamomile) Flower Extract, Glycerin, Cymbopogon Flexuosus Oil (Lemongrass), Pogostemon Cablin (Patchouli) Oil, Ricinus Communis (Castor) Seed Oil, Aloe Barbadensis Leaf Powder"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "How to Use",
+            "value": "Apply to wet hair, lather, and rinse thoroughly. For a richer lather, rub between palms before applying. Follow with Ecovluu Deep Conditioning Hair Mask for best results."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Container Size",
+            "value": "250 ml"
+          }
+        ],
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Ireland Shipping",
+            "url": productUrl,
+            "priceCurrency": "EUR",
+            "price": product.price.toFixed(2),
+            "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@type": "Organization",
+              "@id": "https://ecovluu.com/#organization",
+              "name": "Ecovluu"
+            },
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": ["IE"]
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 1,
+                  "maxValue": 2,
+                  "unitCode": "DAY"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 2,
+                  "maxValue": 5,
+                  "unitCode": "DAY"
+                }
+              },
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "4.95",
+                "currency": "EUR"
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": ["IE"],
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 14,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn",
+              "returnPolicyUrl": "https://ecovluu.com/returns"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "European Union Shipping",
+            "url": productUrl,
+            "priceCurrency": "EUR",
+            "price": product.price.toFixed(2),
+            "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@type": "Organization",
+              "@id": "https://ecovluu.com/#organization",
+              "name": "Ecovluu"
+            },
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": ["AT","BE","BG","CY","CZ","DE","DK","EE","FI","FR","GR","HU","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE"]
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 1,
+                  "maxValue": 2,
+                  "unitCode": "DAY"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 5,
+                  "maxValue": 10,
+                  "unitCode": "DAY"
+                }
+              },
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "9.95",
+                "currency": "EUR"
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": ["AT","BE","BG","CY","CZ","DE","DK","EE","FI","FR","GR","HU","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE"],
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 14,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn",
+              "returnPolicyUrl": "https://ecovluu.com/returns"
+            }
+          }
+        ]
+      };
+    } else if (product.slug === 'deep-conditioning-hair-mask') {
+      return {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "@id": "https://ecovluu.com/product/deep-conditioning-hair-mask/#product",
+        "name": "Deep Conditioning Mask - Dry & Damaged Hair | Ecovluu",
+        "alternateName": "Deep Conditioning Hair Mask",
+        "description": "Ecovluu Deep Conditioning Hair Mask is a professional-grade, concentrated treatment designed for weekly use on dry, damaged and bleached hair. Its rich formula combines keratin, essential amino acids and botanical extracts to deeply nourish the hair fibre, improve manageability and enhance softness without weighing the hair down. Container size: 150 ml.",
+        "url": productUrl,
+        "image": allImages.length > 0 ? allImages : [product.image],
+        "sku": "HR-MSK-FOR-DMG",
+        "mpn": "HR-MSK-FOR-DMG",
+        "brand": {
+          "@type": "Brand",
+          "name": "Ecovluu"
+        },
+        "manufacturer": {
+          "@type": "Organization",
+          "@id": "https://ecovluu.com/#organization",
+          "name": "Ecovluu"
+        },
+        "category": "Mask Products",
+        "material": "Natural Ingredients",
+        "weight": {
+          "@type": "QuantitativeValue",
+          "value": "150",
+          "unitCode": "MLT"
+        },
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Hair Type",
+            "value": "Dry, Damaged, Bleached, Hydrating"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Key Benefits",
+            "value": "Deeply nourish and condition dry and damaged hair, improves softness, smoothness and detangling, helps strengthen hair with keratin and amino acids, enhances shine and manageability without heaviness"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Free From",
+            "value": "Sulfates, Parabens, Silicones, Mineral Oil, Petroleum, Polysorbates, Phthalates, Triclosan, Phosphates, Ammonia, VOCs, Gluten, Non-GMO, DEA, MEA, TEA"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Key Ingredients",
+            "value": "Keratin, Essential Amino Acids, Botanical Extracts, Hydrolyzed Keratin, Crambe Abyssinica Seed Oil, Helianthus Annuus Seed Oil"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "How to Use",
+            "value": "Massage into damp hair after shampooing. Rub between palms until creamy, then apply from mid-lengths to ends. Leave for 5-10 minutes and rinse thoroughly."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Container Size",
+            "value": "150 ml"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Packaging",
+            "value": "Recyclable packaging"
+          }
+        ],
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Ireland Shipping",
+            "url": productUrl,
+            "priceCurrency": "EUR",
+            "price": product.price.toFixed(2),
+            "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@type": "Organization",
+              "@id": "https://ecovluu.com/#organization",
+              "name": "Ecovluu"
+            },
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": ["IE"]
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 1,
+                  "maxValue": 2,
+                  "unitCode": "DAY"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 2,
+                  "maxValue": 5,
+                  "unitCode": "DAY"
+                }
+              },
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "4.95",
+                "currency": "EUR"
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": ["IE"],
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 14,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn",
+              "returnPolicyUrl": "https://ecovluu.com/returns"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "European Union Shipping",
+            "url": productUrl,
+            "priceCurrency": "EUR",
+            "price": product.price.toFixed(2),
+            "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@type": "Organization",
+              "@id": "https://ecovluu.com/#organization",
+              "name": "Ecovluu"
+            },
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE"]
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 1,
+                  "maxValue": 2,
+                  "unitCode": "DAY"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 5,
+                  "maxValue": 10,
+                  "unitCode": "DAY"
+                }
+              },
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "9.95",
+                "currency": "EUR"
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": ["IE"],
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 14,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn",
+              "returnPolicyUrl": "https://ecovluu.com/returns"
+            }
+          }
+        ]
+      };
+    }
+
+    // Default fallback
+    const claims = PRODUCT_CLAIMS[product.slug] || [];
     return {
       "@context": "https://schema.org",
       "@type": "Product",
+      "@id": `https://ecovluu.com/product/${product.slug}/#product`,
       "name": product.name,
       "description": product.description || `${product.name} - Premium hair care product from ECOVLUU`,
       "image": allImages.length > 0 ? allImages : [product.image],
       "sku": product.sku || `ECOVLUU-${product.id}`,
       "brand": {
         "@type": "Brand",
-        "name": "ECOVLUU"
+        "name": "Ecovluu"
       },
       "category": product.category,
       "url": productUrl,
@@ -259,9 +716,56 @@ const ProductDetail = () => {
         "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
         "seller": {
           "@type": "Organization",
-          "name": "ECOVLUU"
+          "name": "Ecovluu"
         }
-      }
+      },
+      "additionalProperty": claims.map(claim => ({
+        "@type": "PropertyValue",
+        "name": claim.name,
+        "value": claim.value
+      }))
+    };
+  };
+
+  // Generate DefinedTermSet JSON-LD for Ingredients Glossary
+  const generateIngredientsJsonLd = () => {
+    if (!product) return null;
+    const glossary = KEY_INGREDIENTS_GLOSSARY[product.slug];
+    if (!glossary) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "DefinedTermSet",
+      "@id": `https://ecovluu.com/product/${product.slug}/#ingredients-glossary`,
+      "name": `Key Ingredients Glossary - ${product.slug === 'deep-conditioning-hair-mask' ? 'Deep Conditioning Hair Mask' : 'Deep Hydrating Shampoo'}`,
+      "url": `https://ecovluu.com/product/${product.slug}`,
+      "hasDefinedTerm": glossary.map(term => ({
+        "@type": "DefinedTerm",
+        "name": term.name,
+        "description": term.description,
+        "inDefinedTermSet": `https://ecovluu.com/product/${product.slug}/#ingredients-glossary`
+      }))
+    };
+  };
+
+  // Generate FAQPage JSON-LD for product page FAQs
+  const generateFaqJsonLd = () => {
+    if (!product) return null;
+    const faqs = OVERRIDE_FAQS[product.slug] || product.faqs || [];
+    if (faqs.length === 0) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": `https://ecovluu.com/product/${product.slug}/#faq`,
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
     };
   };
 
@@ -273,8 +777,8 @@ const ProductDetail = () => {
     ? product.clinicalResults 
     : {};
     
-  const faqContent = product?.faqs && product.faqs.length > 0 
-    ? product.faqs 
+  const faqContent = product
+    ? (OVERRIDE_FAQS[product.slug] || (product.faqs && product.faqs.length > 0 ? product.faqs : []))
     : [];
     
   const reviewFilters = ["All (3)", "Dry Hair", "Fine Hair", "Oily Scalp", "Sensitive Scalp", "With Photos"];
@@ -330,6 +834,8 @@ const ProductDetail = () => {
   const mediaItems = allImages.map(img => ({ type: 'image' as const, url: img })); // Simplified to images only, easily adaptable if backend supports video later
   
   const productJsonLd = generateProductJsonLd();
+  const ingredientsJsonLd = generateIngredientsJsonLd();
+  const faqJsonLd = generateFaqJsonLd();
   const isInactive = product.status === 'inactive';
 
   const handlePrevMedia = () => {
@@ -353,13 +859,23 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-    {productJsonLd && (
       <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(productJsonLd)}
-        </script>
+        {productJsonLd && (
+          <script type="application/ld+json">
+            {JSON.stringify(productJsonLd)}
+          </script>
+        )}
+        {ingredientsJsonLd && (
+          <script type="application/ld+json">
+            {JSON.stringify(ingredientsJsonLd)}
+          </script>
+        )}
+        {faqJsonLd && (
+          <script type="application/ld+json">
+            {JSON.stringify(faqJsonLd)}
+          </script>
+        )}
       </Helmet>
-    )}
     
     <div className="w-full bg-background animate-fade-in font-sans text-foreground">
       <Helmet>
@@ -628,6 +1144,23 @@ const ProductDetail = () => {
                 </AccordionItem>
               )}
 
+              {PRODUCT_CLAIMS[product.slug] && (
+                <AccordionItem value="claims" className="border-b-gray-200">
+                  <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 text-left">
+                    SUSTAINABILITY & SPECIFICATIONS
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed text-sm pb-4">
+                    <ul className="list-disc pl-5 space-y-1.5">
+                      {PRODUCT_CLAIMS[product.slug].map((claim, idx) => (
+                        <li key={idx}>
+                          <span className="font-semibold text-brand-brown">{claim.name}:</span> {claim.value}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+
               <AccordionItem value="shipping" className="border-b-gray-200">
                 <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 text-left">
                   SHIPPING & RETURNS
@@ -650,68 +1183,42 @@ const ProductDetail = () => {
       </div>
 
       {/* WHAT'S INSIDE SECTION */}
-      <section className="py-12 sm:py-16 bg-brand-beige/20 border-t border-gray-200">
-        <div className="container-custom">
-          <div className="mb-8 sm:mb-10 text-center sm:text-left border-b border-gray-200 pb-4">
-            <h2 className="text-brand-orange font-semibold tracking-widest text-xs sm:text-sm mb-2 uppercase">What's Inside</h2>
-            <h3 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">Key Ingredients</h3>
-            <p className="text-gray-500 text-sm sm:text-base">Every ingredient chosen for a reason. Click to learn what it does.</p>
+      {KEY_INGREDIENTS_GLOSSARY[product.slug] && (
+        <section className="py-12 sm:py-16 bg-brand-beige/20 border-t border-gray-200">
+          <div className="container-custom">
+            <div className="mb-8 sm:mb-10 text-center sm:text-left border-b border-gray-200 pb-4">
+              <h2 className="text-brand-orange font-semibold tracking-widest text-xs sm:text-sm mb-2 uppercase">What's Inside</h2>
+              <h3 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">Key Ingredients</h3>
+              <p className="text-gray-500 text-sm sm:text-base">Every ingredient chosen for a reason. Click to learn what it does.</p>
+            </div>
+            
+            <Accordion type="single" collapsible defaultValue="ingredient-0" className="w-full">
+              {KEY_INGREDIENTS_GLOSSARY[product.slug].map((item, index) => (
+                <AccordionItem key={index} value={`ingredient-${index}`} className="border-b-gray-200">
+                  <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left uppercase">
+                    {item.name}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-beige rounded-full flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0 shadow-sm border border-gray-200">
+                        {item.icon}
+                      </div>
+                      <div>
+                        {item.subtype && (
+                          <h4 className="text-base sm:text-lg font-bold text-brand-brown mb-2">{item.subtype}</h4>
+                        )}
+                        <p className="text-gray-600 text-sm leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
-          
-          <Accordion type="single" collapsible defaultValue="ingredient-1" className="w-full">
-            <AccordionItem value="ingredient-1" className="border-b-gray-200">
-              <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left">
-                SODIUM COCOYL ISETHIONATE
-              </AccordionTrigger>
-              <AccordionContent className="pb-6">
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-beige rounded-full flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0 shadow-sm border border-gray-200">
-                    🥥
-                  </div>
-                  <div>
-                    <h4 className="text-base sm:text-lg font-bold text-brand-brown mb-2">Coconut-Derived Cleanser</h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      A mild, skin-friendly surfactant derived from coconut oil. It cleanses effectively without stripping the scalp's natural oils.
-                    </p>
-                  </div>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="ingredient-2" className="border-b-gray-200">
-              <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left">
-                PANTHENOL (PRO-VITAMIN B5)
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 text-sm text-gray-600">
-                A highly effective humectant that penetrates the hair shaft to deeply moisturize and improve elasticity.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="ingredient-3" className="border-b-gray-200">
-              <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left">
-                CHAMOMILE FLOWER EXTRACT
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 text-sm text-gray-600">
-                Soothes the scalp and provides anti-inflammatory properties, ideal for sensitive skin.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="ingredient-4" className="border-b-gray-200">
-              <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left">
-                LEMONGRASS OIL
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 text-sm text-gray-600">
-                Adds a refreshing scent and has antimicrobial properties for a healthy scalp environment.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="ingredient-5" className="border-b-gray-200">
-              <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left">
-                ALOE BARBADENSIS (ALOE VERA) LEAF POWDER
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 text-sm text-gray-600">
-                Rich in vitamins and minerals, aloe vera intensely hydrates and conditions the hair.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CLINICAL RESULTS SECTION */}
       <section className="py-12 sm:py-16 lg:py-24 bg-brand-brown text-brand-beige">

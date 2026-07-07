@@ -126,11 +126,11 @@ const BlogPost = () => {
     <Layout>
       <BlogArticleSchema 
         title={title}
-        url={`/blog/${post.slug}`}
+        slug={post.slug}
         datePublished={post.created_at}
         imageUrl={imageUrl}
-        authorName={post.author}
         description={description}
+        content={post.content}
       />
       <Helmet>
         <title>{title} | ECOVLUU Blog</title>

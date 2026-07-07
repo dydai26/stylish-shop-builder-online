@@ -2,48 +2,128 @@ import { Helmet } from "react-helmet-async";
 
 interface BlogArticleSchemaProps {
   title: string;
-  url: string;
+  slug: string;
   datePublished: string;
   dateModified?: string;
   imageUrl: string;
-  authorName?: string;
   description?: string;
+  content?: string;
 }
+
+const BLOG_ABOUT_MAP: Record<string, Array<{ "@type": string; name: string; description: string }>> = {
+  "dry-hair-water-lipid-balance": [
+    {
+      "@type": "Thing",
+      "name": "Dry Hair",
+      "description": "A hair condition where the hair fibre lacks sufficient water, internal structure, or lipids to maintain softness, elasticity and natural shine."
+    },
+    {
+      "@type": "Thing",
+      "name": "Hair Hydration",
+      "description": "The process of restoring and retaining water within the hair fibre using water-binding ingredients and amino acids."
+    },
+    {
+      "@type": "Thing",
+      "name": "Hair Lipids",
+      "description": "Natural fats and oils that protect the hair surface, seal in moisture, reduce moisture loss and enhance softness and shine."
+    },
+    {
+      "@type": "Thing",
+      "name": "Water Lipid Balance",
+      "description": "The correct balance between internal water hydration and lipid protection in hair care routines that leads to genuinely healthier hair over time."
+    }
+  ]
+};
 
 export const BlogArticleSchema = ({ 
   title, 
-  url, 
+  slug, 
   datePublished, 
   dateModified, 
   imageUrl,
-  authorName = "ECOVLUU",
-  description
+  description,
+  content
 }: BlogArticleSchemaProps) => {
+  const articleUrl = `https://ecovluu.com/blog/${slug}`;
+  const formattedDatePublished = datePublished.split('T')[0];
+  const formattedDateModified = (dateModified || datePublished).split('T')[0];
+  
+  // Dynamic word count estimation
+  const wordCount = content ? content.split(/\s+/).filter(Boolean).length.toString() : "450";
+  
+  // Dynamic about section
+  const about = BLOG_ABOUT_MAP[slug] || [
+    {
+      "@type": "Thing",
+      "name": title,
+      "description": description || title
+    }
+  ];
+
   const schema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": url.startsWith('http') ? url : `https://ecovluu.com${url}`
-    },
+    "@type": "Article",
+    "@id": `${articleUrl}/#article`,
     "headline": title,
-    ...(description && { "description": description }),
-    "image": imageUrl.startsWith('http') ? imageUrl : `https://ecovluu.com${imageUrl}`,
+    "description": description || title,
+    "url": articleUrl,
+    "image": {
+      "@type": "ImageObject",
+      "url": imageUrl.startsWith('http') ? imageUrl : `https://ecovluu.com${imageUrl}`,
+      "inLanguage": "en"
+    },
+    "inLanguage": "en",
     "author": {
       "@type": "Organization",
-      "name": authorName,
-      "url": "https://ecovluu.com"
+      "@id": "https://ecovluu.com/#organization",
+      "name": "Ecovluu",
+      "url": "https://ecovluu.com/"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "ECOVLUU",
+      "@id": "https://ecovluu.com/#organization",
+      "name": "Ecovluu",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ecovluu.com/ecovluu-logo.png"
+        "url": "https://ecovluu.com/Layer_1.png"
       }
     },
-    "datePublished": datePublished,
-    "dateModified": dateModified || datePublished
+    "datePublished": formattedDatePublished,
+    "dateModified": formattedDateModified,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": articleUrl,
+      "url": articleUrl,
+      "name": title,
+      "isPartOf": { "@id": "https://ecovluu.com/#website" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://ecovluu.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://ecovluu.com/blog"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": title,
+            "item": articleUrl
+          }
+        ]
+      }
+    },
+    "about": about,
+    "articleSection": "Hair Care Education",
+    "wordCount": wordCount,
+    "isAccessibleForFree": true
   };
 
   return (

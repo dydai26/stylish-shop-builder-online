@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
@@ -7,6 +8,180 @@ import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 interface LayoutProps {
   children: ReactNode;
 }
+
+const GLOBAL_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ecovluu.com/#organization",
+      "name": "Ecovluu",
+      "url": "https://ecovluu.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ecovluu.com/Layer_1.png",
+        "inLanguage": "en"
+      },
+      "description": "Hair care products developed by professionals. Deep hydration and hair restoration with EcoVluu - shampoos and rich masks for dry, damaged, and colour-treated hair.",
+      "email": "info@ecovluu.com",
+      "foundingDate": "2022",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "info@ecovluu.com",
+        "availableLanguage": ["English"],
+        "areaServed": [
+          { "@type": "Country", "name": "Ireland" },
+          { "@type": "Country", "name": "Austria" },
+          { "@type": "Country", "name": "Belgium" },
+          { "@type": "Country", "name": "Bulgaria" },
+          { "@type": "Country", "name": "Croatia" },
+          { "@type": "Country", "name": "Cyprus" },
+          { "@type": "Country", "name": "Czech Republic" },
+          { "@type": "Country", "name": "Denmark" },
+          { "@type": "Country", "name": "Estonia" },
+          { "@type": "Country", "name": "Finland" },
+          { "@type": "Country", "name": "France" },
+          { "@type": "Country", "name": "Germany" },
+          { "@type": "Country", "name": "Greece" },
+          { "@type": "Country", "name": "Hungary" },
+          { "@type": "Country", "name": "Italy" },
+          { "@type": "Country", "name": "Latvia" },
+          { "@type": "Country", "name": "Lithuania" },
+          { "@type": "Country", "name": "Luxembourg" },
+          { "@type": "Country", "name": "Malta" },
+          { "@type": "Country", "name": "Netherlands" },
+          { "@type": "Country", "name": "Poland" },
+          { "@type": "Country", "name": "Portugal" },
+          { "@type": "Country", "name": "Romania" },
+          { "@type": "Country", "name": "Slovakia" },
+          { "@type": "Country", "name": "Slovenia" },
+          { "@type": "Country", "name": "Spain" },
+          { "@type": "Country", "name": "Sweden" }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Ecovluu/100089921524516/",
+        "https://www.instagram.com/ecovluu/",
+        "https://www.tiktok.com/@ecovluu"
+      ]
+    },
+    {
+      "@type": ["LocalBusiness", "Store"],
+      "@id": "https://ecovluu.com/#localbusiness",
+      "name": "Ecovluu",
+      "url": "https://ecovluu.com/",
+      "parentOrganization": { "@id": "https://ecovluu.com/#organization" },
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ecovluu.com/Layer_1.png"
+      },
+      "image": "https://ecovluu.com/baner-home.jpg",
+      "description": "Hair care products developed by professionals. Deep hydration and hair restoration with EcoVluu - shampoos and rich masks for dry, damaged, and colour-treated hair.",
+      "email": "info@ecovluu.com",
+      "priceRange": "$ - $$$",
+      "currenciesAccepted": "EUR",
+      "paymentAccepted": "Cash, Credit Card, Debit Card",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "A6, Block A, Santry Business Park, Swords Road, Santry",
+        "addressLocality": "Dublin",
+        "postalCode": "D09",
+        "addressRegion": "Dublin 9",
+        "addressCountry": "IE"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "09:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "10:00",
+          "closes": "16:00"
+        }
+      ],
+      "areaServed": [
+        { "@type": "Country", "name": "Ireland" },
+        { "@type": "Country", "name": "Austria" },
+        { "@type": "Country", "name": "Belgium" },
+        { "@type": "Country", "name": "Bulgaria" },
+        { "@type": "Country", "name": "Croatia" },
+        { "@type": "Country", "name": "Cyprus" },
+        { "@type": "Country", "name": "Czech Republic" },
+        { "@type": "Country", "name": "Denmark" },
+        { "@type": "Country", "name": "Estonia" },
+        { "@type": "Country", "name": "Finland" },
+        { "@type": "Country", "name": "France" },
+        { "@type": "Country", "name": "Germany" },
+        { "@type": "Country", "name": "Greece" },
+        { "@type": "Country", "name": "Hungary" },
+        { "@type": "Country", "name": "Italy" },
+        { "@type": "Country", "name": "Latvia" },
+        { "@type": "Country", "name": "Lithuania" },
+        { "@type": "Country", "name": "Luxembourg" },
+        { "@type": "Country", "name": "Malta" },
+        { "@type": "Country", "name": "Netherlands" },
+        { "@type": "Country", "name": "Poland" },
+        { "@type": "Country", "name": "Portugal" },
+        { "@type": "Country", "name": "Romania" },
+        { "@type": "Country", "name": "Slovakia" },
+        { "@type": "Country", "name": "Slovenia" },
+        { "@type": "Country", "name": "Spain" },
+        { "@type": "Country", "name": "Sweden" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Hair Care Products",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Deep Hydrating Shampoo",
+              "alternateName": "Best Moisturising Shampoo",
+              "description": "Professional-grade moisturising shampoo for deep hydration of dry, damaged, and colour-treated hair."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Deep Conditioning Hair Mask",
+              "alternateName": "Deep Conditioning Mask",
+              "description": "Rich deep-conditioning mask for intensive hair hydration and restoration."
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/people/Ecovluu/100089921524516/",
+        "https://www.instagram.com/ecovluu/",
+        "https://www.tiktok.com/@ecovluu"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ecovluu.com/#website",
+      "url": "https://ecovluu.com/",
+      "name": "Ecovluu",
+      "description": "Premium hair care products developed by professionals.",
+      "publisher": { "@id": "https://ecovluu.com/#organization" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://ecovluu.com/?s={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "en"
+    }
+  ]
+};
 
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
@@ -63,13 +238,17 @@ const Layout = ({ children }: LayoutProps) => {
       // Format the name: capitalize first letter, replace hyphens with spaces
       let name = path.replace(/-/g, ' ');
       name = name.charAt(0).toUpperCase() + name.slice(1);
+      let url = currentPath;
       
-      // Handle specific routes for better names
-      if (path === 'product' && index === 0) name = 'Products';
+      // Handle specific routes for better names and paths (like Shop at position 2)
+      if (path === 'product' && index === 0) {
+        name = 'Shop';
+        url = '/shop';
+      }
       
       items.push({
         name: name,
-        url: currentPath
+        url: url
       });
     });
     
@@ -78,6 +257,11 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(GLOBAL_SCHEMA)}
+        </script>
+      </Helmet>
       <BreadcrumbSchema items={generateBreadcrumbs()} />
       <header className="sticky top-0 z-50">
         <Navbar />

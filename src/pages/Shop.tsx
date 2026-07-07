@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Layout from "@/components/layout/Layout";
 import DeliveryAnnouncement from "@/components/ui/DeliveryAnnouncement";
@@ -15,33 +15,50 @@ import {
 
 const shopFaqs = [
   {
-    question: "How long does shipping take?",
-    answer: "Orders are typically processed within 1-2 business days. Delivery times vary depending on your location, but standard shipping usually takes 3-5 business days."
+    question: "Does hydrating shampoo help with dry ends or just the scalp?",
+    answer: "Mostly the lengths. A natural hydrating shampoo is made to soften dry, rough ends while still cleaning the scalp gently."
   },
   {
-    question: "Are Ecovluu products sulfate-free?",
-    answer: "Yes, all Ecovluu products are 100% sulfate-free, silicone-free, and paraben-free. We use gentle, plant-based surfactants to cleanse your hair without stripping its natural moisture."
+    question: "Will color-safe shampoo help stop my hair color from fading?",
+    answer: "It can help. The best shampoo for colored hair is made without harsh cleansers that strip color, so it's gentler on dyed hair than a regular shampoo."
   },
   {
-    question: "Can I return a product if it doesn't work for me?",
-    answer: "Yes, we want you to love your hair care! We offer a 14-day money-back guarantee for damaged items. If you are not fully satisfied with your purchase, please contact our support team and we will do our best to make it right."
+    question: "How do I deal with blonde hair turning brassy?",
+    answer: "Brassiness is often caused by hard water and sun exposure. A shampoo made for blonde hair is formulated to help tone down those warm, yellow tones."
+  },
+  {
+    question: "What shampoo works if my scalp is oily but my hair is dry?",
+    answer: "A shampoo for oily scalp is made to balance oil at the roots while still being gentle on drier lengths."
   }
 ];
 
 const Shop = () => {
   const [searchParams] = useSearchParams();
+  const { pathname } = useLocation();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    pathname === "/shampoo" ? "shampoo" : null
+  );
   const [isExpanded, setIsExpanded] = useState(false);
   const searchQuery = searchParams.get("search");
   
   const categories = ["shampoo", "mask"];
 
-  // Generate JSON-LD Schema for FAQs
-  const schemaMarkup = {
+  // Sync selectedCategory with route pathname
+  useEffect(() => {
+    if (pathname === "/shampoo") {
+      setSelectedCategory("shampoo");
+    } else {
+      setSelectedCategory(null);
+    }
+  }, [pathname]);
+
+  // Generate FAQ Page schema (for /shop)
+  const faqSchemaMarkup = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": "https://ecovluu.com/shop/#faq",
     "mainEntity": shopFaqs.map(faq => ({
       "@type": "Question",
       "name": faq.question,
@@ -50,6 +67,40 @@ const Shop = () => {
         "text": faq.answer
       }
     }))
+  };
+
+  // Generate CollectionPage schema (for /shampoo)
+  const collectionSchemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://ecovluu.com/shampoo/#collectionpage",
+    "name": "Shampoo Collection | Ecovluu",
+    "description": "Browse our range of natural, professional-grade shampoos and hair masks for dry, damaged, and colour-treated hair.",
+    "url": "https://ecovluu.com/shampoo",
+    "isPartOf": {
+      "@id": "https://ecovluu.com/#website"
+    }
+  };
+
+  // Generate ItemList schema (for /shampoo)
+  const itemListSchemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": "https://ecovluu.com/shampoo/#itemlist",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://ecovluu.com/product/deep-hydrating-shampoo",
+        "name": "Deep Hydrating Shampoo | Ecovluu"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://ecovluu.com/product/deep-conditioning-hair-mask",
+        "name": "Deep Conditioning Mask - Dry & Damaged Hair | Ecovluu"
+      }
+    ]
   };
 
   useEffect(() => {
@@ -82,13 +133,30 @@ const Shop = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Natural Hydrating Shampoo & Best Hair Mask Buy At Best Deals</title>
-        <meta name="description" content="Healthy, gorgeous hair is just awash away! Our best hair care shampoo and hair repair mask are made to restore, hydrate & revive every single strand. Shop now!" />
-        <meta name="keywords" content="natural hair care, hair products, organic shampoo, hair mask, deep hydrating, ECOVLUU" />
-        <link rel="canonical" href="https://www.ecovluu.com/shop" />
-        <script type="application/ld+json">
-          {JSON.stringify(schemaMarkup)}
-        </script>
+        {pathname === "/shampoo" ? (
+          <>
+            <title>Shampoo Collection | Ecovluu</title>
+            <meta name="description" content="Browse our range of natural, professional-grade shampoos and hair masks for dry, damaged, and colour-treated hair." />
+            <meta name="keywords" content="natural shampoo, organic shampoo, dry hair shampoo, sulfate-free shampoo, ECOVLUU" />
+            <link rel="canonical" href="https://ecovluu.com/shampoo" />
+            <script type="application/ld+json">
+              {JSON.stringify(collectionSchemaMarkup)}
+            </script>
+            <script type="application/ld+json">
+              {JSON.stringify(itemListSchemaMarkup)}
+            </script>
+          </>
+        ) : (
+          <>
+            <title>Natural Hydrating Shampoo & Best Hair Mask Buy At Best Deals</title>
+            <meta name="description" content="Healthy, gorgeous hair is just awash away! Our best hair care shampoo and hair repair mask are made to restore, hydrate & revive every single strand. Shop now!" />
+            <meta name="keywords" content="natural hair care, hair products, organic shampoo, hair mask, deep hydrating, ECOVLUU" />
+            <link rel="canonical" href="https://www.ecovluu.com/shop" />
+            <script type="application/ld+json">
+              {JSON.stringify(faqSchemaMarkup)}
+            </script>
+          </>
+        )}
       </Helmet>
       <DeliveryAnnouncement />
       <div className="bg-gray-50 py-4 sm:py-8">
