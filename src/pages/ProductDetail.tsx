@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -967,6 +968,7 @@ const ProductDetail = () => {
               <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-4 flex flex-col bg-white border-none shadow-2xl rounded-xl">
                  <DialogHeader className="flex justify-between items-center border-b pb-2">
                    <DialogTitle className="text-xl text-brand-brown">Zoom Image</DialogTitle>
+                   <DialogDescription className="sr-only">Zoomed product image view</DialogDescription>
                  </DialogHeader>
                  <div className="relative flex-1 overflow-auto bg-[#F7F3EE] rounded-lg mt-2 flex items-center justify-center cursor-zoom-in">
                    {mediaItems[activeMedia]?.url && (
@@ -1476,6 +1478,8 @@ const ProductDetail = () => {
                            <img src={url} alt={`Customer review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0 cursor-pointer border-2 border-transparent hover:border-brand-orange transition-colors" />
                          </DialogTrigger>
                          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                           <DialogTitle className="sr-only">Customer Review Photo Zoom</DialogTitle>
+                           <DialogDescription className="sr-only">Zoomed customer review photo</DialogDescription>
                            <img src={url} alt={`Customer review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
                          </DialogContent>
                        </Dialog>
@@ -1522,6 +1526,8 @@ const ProductDetail = () => {
                             <img src={url} alt={`Review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md cursor-pointer border border-gray-200 hover:border-brand-orange transition-colors" />
                           </DialogTrigger>
                           <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                            <DialogTitle className="sr-only">Customer Review Photo Zoom</DialogTitle>
+                            <DialogDescription className="sr-only">Zoomed customer review photo</DialogDescription>
                             <img src={url} alt={`Review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
                           </DialogContent>
                         </Dialog>
@@ -1543,6 +1549,7 @@ const ProductDetail = () => {
               <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                   <DialogTitle className="text-2xl font-bold text-brand-brown mb-2">Write a Review</DialogTitle>
+                  <DialogDescription className="sr-only">Form to submit a product rating and feedback</DialogDescription>
                 </DialogHeader>
                 <form 
                   onSubmit={async (e) => {

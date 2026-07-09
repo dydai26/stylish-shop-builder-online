@@ -1,7 +1,7 @@
 
 import { Review } from "@/context/ReviewsContext";
 import { Star, StarHalf } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 interface ReviewCardProps {
   review: Review;
@@ -52,6 +52,8 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
                 <img src={url} alt={`Review photo ${i+1}`} className="w-16 h-16 object-cover rounded-md cursor-pointer border border-gray-200 hover:border-brand-orange transition-colors flex-shrink-0" />
               </DialogTrigger>
               <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                <DialogTitle className="sr-only">Review Image Zoom</DialogTitle>
+                <DialogDescription className="sr-only">Zoomed view of customer review photo</DialogDescription>
                 <img src={url} alt={`Review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
               </DialogContent>
             </Dialog>
