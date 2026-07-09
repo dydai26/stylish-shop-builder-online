@@ -212,7 +212,14 @@ const ProductDetail = () => {
   
   const { addToCart } = useCart();
   const { reviews, addReview } = useReviews();
-  const productReviews = product ? reviews.filter(r => r.product_id === product.id) : [];
+  const productReviews = product 
+    ? reviews.filter(r => r.product_id === product.id || r.product_id === null) 
+    : [];
+
+  const totalReviewsCount = productReviews.length;
+  const averageRating = totalReviewsCount > 0
+    ? Math.round((productReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviewsCount) * 10) / 10
+    : 5.0;
 
   // Form state for reviews
   const [reviewName, setReviewName] = useState("");
@@ -1000,7 +1007,7 @@ const ProductDetail = () => {
             )}
 
             <div className="mb-4 sm:mb-6 w-full flex justify-start">
-              <StarRating rating={5} totalReviews={68} />
+              <StarRating rating={averageRating} totalReviews={totalReviewsCount} />
             </div>
 
             <div className="text-2xl sm:text-3xl font-bold text-brand-orange mb-6 sm:mb-8 flex items-center gap-4 text-left w-full">
@@ -1432,14 +1439,16 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16">
             {/* Reviews Summary */}
             <div className="md:col-span-5 lg:col-span-4 bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
-               <div className="text-5xl sm:text-6xl font-bold text-brand-brown mb-3 sm:mb-4">5.0</div>
-               <div className="mb-3 sm:mb-4 scale-110 sm:scale-125 flex justify-center w-full">
-                 <StarRating rating={5} showReviewsCount={false} />
+               <div className="text-5xl sm:text-6xl font-bold text-brand-brown mb-3 sm:mb-4">
+                 {averageRating.toFixed(1)}
                </div>
-              <p className="text-gray-500 text-sm mb-4">Based on {productReviews.length} reviews</p>
-              {productReviews.length > 0 && (
+               <div className="mb-3 sm:mb-4 scale-110 sm:scale-125 flex justify-center w-full">
+                 <StarRating rating={averageRating} showReviewsCount={false} />
+               </div>
+              <p className="text-gray-500 text-sm mb-4">Based on {totalReviewsCount} reviews</p>
+              {totalReviewsCount > 0 && (
                 <div className="text-brand-orange font-bold text-lg">
-                  100% recommend
+                  {Math.round((productReviews.filter(r => r.rating >= 4).length / totalReviewsCount) * 100)}% recommend
                 </div>
               )}
             </div>
