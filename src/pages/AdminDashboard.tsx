@@ -14,6 +14,7 @@ import {
   Trash2,
   Package,
   MessageSquare,
+  MessageCircle,
   Menu,
   X,
   TrendingUp,
@@ -36,6 +37,7 @@ import GoogleAnalyticsSection from '@/components/admin/GoogleAnalyticsSection';
 import NewsletterSection from '@/components/admin/NewsletterSection';
 import BlogSection from '@/components/admin/BlogSection';
 import AboutSection from '@/components/admin/AboutSection';
+import BotSection from '@/components/admin/BotSection';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 
@@ -183,6 +185,7 @@ const AdminDashboard = () => {
     { id: 'reviews', label: 'Reviews', icon: MessageSquare },
     { id: 'products', label: 'Products', icon: Package },
     { id: 'blog', label: 'Blog', icon: FileText },
+    { id: 'chatbot', label: 'Chatbot FAQ', icon: MessageCircle },
     { id: 'newsletter', label: 'Newsletter', icon: Mail },
     { id: 'banners', label: 'Banners', icon: Layout },
     { id: 'about', label: 'About Us CMS', icon: FileText },
@@ -340,6 +343,8 @@ const AdminDashboard = () => {
         return <ProductsSection />;
       case 'blog':
         return <BlogSection />;
+      case 'chatbot':
+        return <BotSection />;
       case 'newsletter':
         return <NewsletterSection />;
       case 'banners':

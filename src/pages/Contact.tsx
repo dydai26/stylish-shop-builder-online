@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -26,19 +27,43 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    let dbSuccess = false;
+    let dbErrorObj: any = null;
+    let emailErrorObj: any = null;
+    
+    // 1. Try to save the message to Supabase database
     try {
-      // Initialize EmailJS with your user ID (public key)
+      const { error: dbError } = await (supabase as any)
+        .from("contact_messages")
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+          status: 'unread'
+        }]);
+      
+      if (dbError) throw dbError;
+      dbSuccess = true;
+      console.log("Contact message successfully saved to database.");
+    } catch (dbError) {
+      dbErrorObj = dbError;
+      console.error("Failed to save contact message to database:", dbError);
+    }
+
+    // 2. Try to send the email notification via EmailJS
+    try {
       emailjs.init("5Oigz1bCaEn2zPhRC");
       
-      // Make sure all form fields are included in the template params
       const templateParams = {
-        to_name: "Admin", // The recipient's name in the email template
+        to_name: "Admin",
         from_name: formData.name,
         from_email: formData.email,
-        phone_number: formData.phone, // Make sure this matches your template variable
+        phone_number: formData.phone,
         subject: formData.subject,
         message: formData.message,
-        reply_to: formData.email // This helps you reply directly to the sender
+        reply_to: formData.email
       };
 
       const result = await emailjs.send(
@@ -46,31 +71,51 @@ const Contact = () => {
         "template_5jo06ng",
         templateParams
       );
-      
-      console.log("Email sent successfully:", result);
-      
+      console.log("Email sent successfully via EmailJS:", result);
+    } catch (emailError) {
+      emailErrorObj = emailError;
+      console.warn("EmailJS notification failed to send:", emailError);
+    }
+
+    // 3. Evaluate results
+    if (dbSuccess) {
+      // If saved in DB, it is a success regardless of EmailJS
       toast({
         title: "Message sent!",
         description: "We'll get back to you as soon as possible.",
       });
-      
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: ""
-      });
-    } catch (error) {
-      console.error("Error sending email:", error);
-      toast({
-        title: "Error sending message",
-        description: "Please try again later or contact us directly.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    } else {
+      // If DB failed, check if EmailJS succeeded
+      if (!emailErrorObj) {
+        // EmailJS succeeded, so message was sent to admin's email
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      } else {
+        // Both failed!
+        console.error("Both Database and EmailJS operations failed.", { dbErrorObj, emailErrorObj });
+        
+        let errorDesc = "Please try again later or contact us directly at info@ecovluu.com.";
+        
+        const dbMsg = dbErrorObj?.message || dbErrorObj?.details || "";
+        if (dbMsg.toLowerCase().includes("relation") && dbMsg.toLowerCase().includes("does not exist")) {
+          errorDesc = "Database table 'contact_messages' does not exist in Supabase. Please copy-paste and run the SQL migration in your Supabase SQL Editor.";
+        } else if (emailErrorObj?.text === "User threshold reached" || emailErrorObj?.status === 400) {
+          errorDesc = "EmailJS quota exceeded or invalid service configuration. Please contact us directly at info@ecovluu.com.";
+        }
+        
+        toast({
+          title: "Error sending message",
+          description: errorDesc,
+          variant: "destructive"
+        });
+      }
     }
+    
+    setIsSubmitting(false);
   };
 
   const faqItems = [
