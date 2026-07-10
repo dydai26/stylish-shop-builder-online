@@ -854,6 +854,30 @@ const ProductDetail = () => {
     setActiveMedia((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
   };
 
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.targetTouches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart) return;
+    const touch = e.changedTouches[0];
+    const diffX = touchStart.x - touch.clientX;
+    const diffY = touchStart.y - touch.clientY;
+    
+    // Only trigger swipe if horizontal swipe is greater than vertical swipe, and horizontal is > 50px
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        handleNextMedia();
+      } else {
+        handlePrevMedia();
+      }
+    }
+    setTouchStart(null);
+  };
+
   let metaTitle = `${product.name} - ECOVLUU`;
   let metaDescription = product.metaDescription || product.description;
 
@@ -908,7 +932,11 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16 lg:mb-24 items-start relative">
           {/* Images Area (Left) */}
           <div className="space-y-4 lg:sticky lg:top-24 h-fit">
-            <div className="w-full aspect-[4/5] sm:aspect-square bg-[#F7F3EE] rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border-2 border-brand-orange/20 relative overflow-hidden group">
+            <div 
+              className="w-full aspect-[4/5] sm:aspect-square bg-[#F7F3EE] rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border-2 border-brand-orange/20 relative overflow-hidden group"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               {mediaItems.length > 0 && (
                 <>
                   <img 
