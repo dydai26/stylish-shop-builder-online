@@ -229,6 +229,7 @@ const ProductDetail = () => {
   const [reviewFiles, setReviewFiles] = useState<File[]>([]);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const { toast } = useToast();
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   
   const { trackViewContent, trackAddToCart } = useTikTokTracking();
   const { trackViewContent: trackMetaViewContent } = useMetaTracking();
@@ -854,7 +855,6 @@ const ProductDetail = () => {
     setActiveMedia((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
   };
 
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.targetTouches[0];
