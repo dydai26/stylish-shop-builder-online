@@ -217,7 +217,7 @@ const CustomChatbot = () => {
 
       {/* Chat Window Overlay */}
       {isOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[400px] h-[500px] bg-[#FAF5F0] rounded-2xl shadow-2xl border border-brand-brown/10 overflow-hidden flex flex-col animate-fade-in">
+        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[400px] h-[400px] sm:h-[500px] max-h-[calc(100dvh-120px)] bg-[#FAF5F0] rounded-2xl shadow-2xl border border-brand-brown/10 overflow-hidden flex flex-col animate-fade-in">
           {/* Header */}
           <div className="bg-brand-brown text-white p-4 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
@@ -317,7 +317,7 @@ const CustomChatbot = () => {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Ask a question..."
-              className="flex-1 min-w-0 px-4 py-2 rounded-xl text-sm border border-gray-200 bg-white focus:outline-none focus:border-brand-orange transition-colors placeholder-gray-400"
+              className="flex-1 min-w-0 px-4 py-2 rounded-xl text-base sm:text-sm border border-gray-200 bg-white focus:outline-none focus:border-brand-orange transition-colors placeholder-gray-400"
             />
             <button
               onClick={() => handleSend(inputValue)}
