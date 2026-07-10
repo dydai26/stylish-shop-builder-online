@@ -1475,14 +1475,66 @@ const ProductDetail = () => {
                </div>
               <p className="text-gray-500 text-sm mb-4">Based on {totalReviewsCount} reviews</p>
               {totalReviewsCount > 0 && (
-                <div className="text-brand-orange font-bold text-lg mb-4">
+                <div className="text-brand-orange font-bold text-lg">
                   {Math.round((productReviews.filter(r => r.rating >= 4).length / totalReviewsCount) * 100)}% recommend
                 </div>
               )}
+            </div>
+            
+            {/* Rating Bars */}
+            <div className="md:col-span-7 lg:col-span-8 flex flex-col justify-center gap-3 sm:gap-4">
+               {[
+                 { stars: 5, count: productReviews.filter(r => r.rating === 5).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 5).length / productReviews.length) * 100 : 0 },
+                 { stars: 4, count: productReviews.filter(r => r.rating === 4).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 4).length / productReviews.length) * 100 : 0 },
+                 { stars: 3, count: productReviews.filter(r => r.rating === 3).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 3).length / productReviews.length) * 100 : 0 },
+                 { stars: 2, count: productReviews.filter(r => r.rating === 2).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 2).length / productReviews.length) * 100 : 0 },
+                 { stars: 1, count: productReviews.filter(r => r.rating === 1).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 1).length / productReviews.length) * 100 : 0 }
+               ].map((bar) => (
+                 <div key={bar.stars} className="flex items-center gap-3 sm:gap-4 text-sm sm:text-base font-medium">
+                   <div className="w-10 sm:w-12 text-brand-brown">{bar.stars} ★</div>
+                   <div className="flex-1 h-2 sm:h-3 bg-gray-200 rounded-full overflow-hidden">
+                     <div className="h-full bg-brand-orange rounded-full transition-all duration-500" style={{ width: `${bar.percent}%` }}></div>
+                   </div>
+                   <div className="w-8 sm:w-12 text-right text-gray-500">{bar.count}</div>
+                 </div>
+               ))}
+               
+               {/* Photo Reviews Gallery */}
+               {(() => {
+                 const allReviewImages = productReviews
+                   .filter(review => review.image_urls && Array.isArray(review.image_urls))
+                   .flatMap(review => review.image_urls);
+                 
+                 if (allReviewImages.length === 0) return null;
+                 
+                 return (
+                   <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-6 overflow-x-auto pb-2 scrollbar-hide">
+                     {allReviewImages.map((url, i) => (
+                       <Dialog key={i}>
+                         <DialogTrigger asChild>
+                           <img src={url} alt={`Customer review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0 cursor-pointer border-2 border-transparent hover:border-brand-orange transition-colors" />
+                         </DialogTrigger>
+                         <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
+                           <DialogTitle className="sr-only">Customer Review Photo Zoom</DialogTitle>
+                           <DialogDescription className="sr-only">Zoomed customer review photo</DialogDescription>
+                           <img src={url} alt={`Customer review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
+                         </DialogContent>
+                       </Dialog>
+                     ))}
+                   </div>
+                 );
+               })()}
+            </div>
+          </div>
+          
+           <div className="flex flex-wrap gap-3 sm:gap-4 my-8 sm:my-10 justify-center items-center">
+              <div className="px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm bg-brand-orange text-white font-semibold">
+                 All ({productReviews.length})
+              </div>
               
               <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
                 <DialogTrigger asChild>
-                  <button className="w-full mt-2 bg-white border-2 border-brand-orange text-brand-orange font-semibold px-4 py-2.5 text-sm rounded hover:bg-brand-orange hover:text-white transition-colors uppercase tracking-wide">
+                  <button className="px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white font-semibold uppercase tracking-wide cursor-pointer bg-white">
                     WRITE A REVIEW
                   </button>
                 </DialogTrigger>
@@ -1611,58 +1663,6 @@ const ProductDetail = () => {
                   </form>
                 </DialogContent>
               </Dialog>
-            </div>
-            
-            {/* Rating Bars */}
-            <div className="md:col-span-7 lg:col-span-8 flex flex-col justify-center gap-3 sm:gap-4">
-               {[
-                 { stars: 5, count: productReviews.filter(r => r.rating === 5).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 5).length / productReviews.length) * 100 : 0 },
-                 { stars: 4, count: productReviews.filter(r => r.rating === 4).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 4).length / productReviews.length) * 100 : 0 },
-                 { stars: 3, count: productReviews.filter(r => r.rating === 3).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 3).length / productReviews.length) * 100 : 0 },
-                 { stars: 2, count: productReviews.filter(r => r.rating === 2).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 2).length / productReviews.length) * 100 : 0 },
-                 { stars: 1, count: productReviews.filter(r => r.rating === 1).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 1).length / productReviews.length) * 100 : 0 }
-               ].map((bar) => (
-                 <div key={bar.stars} className="flex items-center gap-3 sm:gap-4 text-sm sm:text-base font-medium">
-                   <div className="w-10 sm:w-12 text-brand-brown">{bar.stars} ★</div>
-                   <div className="flex-1 h-2 sm:h-3 bg-gray-200 rounded-full overflow-hidden">
-                     <div className="h-full bg-brand-orange rounded-full transition-all duration-500" style={{ width: `${bar.percent}%` }}></div>
-                   </div>
-                   <div className="w-8 sm:w-12 text-right text-gray-500">{bar.count}</div>
-                 </div>
-               ))}
-               
-               {/* Photo Reviews Gallery */}
-               {(() => {
-                 const allReviewImages = productReviews
-                   .filter(review => review.image_urls && Array.isArray(review.image_urls))
-                   .flatMap(review => review.image_urls);
-                 
-                 if (allReviewImages.length === 0) return null;
-                 
-                 return (
-                   <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-6 overflow-x-auto pb-2 scrollbar-hide">
-                     {allReviewImages.map((url, i) => (
-                       <Dialog key={i}>
-                         <DialogTrigger asChild>
-                           <img src={url} alt={`Customer review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0 cursor-pointer border-2 border-transparent hover:border-brand-orange transition-colors" />
-                         </DialogTrigger>
-                         <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
-                           <DialogTitle className="sr-only">Customer Review Photo Zoom</DialogTitle>
-                           <DialogDescription className="sr-only">Zoomed customer review photo</DialogDescription>
-                           <img src={url} alt={`Customer review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
-                         </DialogContent>
-                       </Dialog>
-                     ))}
-                   </div>
-                 );
-               })()}
-            </div>
-          </div>
-          
-           <div className="flex flex-wrap gap-2 sm:gap-3 my-8 sm:my-10">
-             <div className="px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm bg-brand-orange text-white font-semibold">
-                All ({productReviews.length})
-             </div>
            </div>
           
           {/* Review List */}
