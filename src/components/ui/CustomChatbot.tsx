@@ -207,7 +207,7 @@ const CustomChatbot = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-white",
+          "fixed bottom-6 right-4 sm:right-6 z-50 p-4 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-white",
           isOpen ? "bg-brand-brown" : "bg-brand-orange animate-netflix-pulse hover:bg-brand-orange/95"
         )}
         aria-label="Open Chatbot"
@@ -217,7 +217,7 @@ const CustomChatbot = () => {
 
       {/* Chat Window Overlay */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[90vw] sm:w-[400px] h-[500px] bg-[#FAF5F0] rounded-2xl shadow-2xl border border-brand-brown/10 overflow-hidden flex flex-col animate-fade-in">
+        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[400px] h-[500px] bg-[#FAF5F0] rounded-2xl shadow-2xl border border-brand-brown/10 overflow-hidden flex flex-col animate-fade-in">
           {/* Header */}
           <div className="bg-brand-brown text-white p-4 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
@@ -317,13 +317,13 @@ const CustomChatbot = () => {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Ask a question..."
-              className="flex-1 px-4 py-2 rounded-xl text-sm border border-gray-200 bg-white focus:outline-none focus:border-brand-orange transition-colors placeholder-gray-400"
+              className="flex-1 min-w-0 px-4 py-2 rounded-xl text-sm border border-gray-200 bg-white focus:outline-none focus:border-brand-orange transition-colors placeholder-gray-400"
             />
             <button
               onClick={() => handleSend(inputValue)}
               disabled={!inputValue.trim()}
               className={cn(
-                "p-2.5 rounded-xl text-white transition-all duration-200",
+                "p-2.5 rounded-xl text-white transition-all duration-200 shrink-0",
                 inputValue.trim()
                   ? "bg-brand-orange hover:bg-brand-orange/90 cursor-pointer"
                   : "bg-gray-300 cursor-not-allowed"
