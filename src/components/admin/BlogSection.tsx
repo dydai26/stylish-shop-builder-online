@@ -98,9 +98,12 @@ const BlogSection = () => {
   };
 
   const stripHtml = (html: string) => {
+    if (!html) return "";
+    // Replace closing and opening HTML tags of blocks with spaces to avoid gluing words
+    const cleanHtml = html.replace(/<\/?[^>]+(>|$)/g, " ");
     const tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    tmp.innerHTML = cleanHtml;
+    return (tmp.textContent || tmp.innerText || "").replace(/\s+/g, ' ').trim();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -192,6 +195,16 @@ const BlogSection = () => {
     });
     setFormTab("general");
     setShowForm(true);
+
+    // Smooth scroll main content area back to top-left to show the form
+    setTimeout(() => {
+      const mainContent = document.querySelector('.flex-1.overflow-auto');
+      if (mainContent) {
+        mainContent.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   const handleDelete = async () => {
@@ -307,7 +320,20 @@ const BlogSection = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <Button onClick={() => setShowForm(!showForm)}>
+        <Button onClick={() => {
+          const nextShow = !showForm;
+          setShowForm(nextShow);
+          if (nextShow) {
+            setTimeout(() => {
+              const mainContent = document.querySelector('.flex-1.overflow-auto');
+              if (mainContent) {
+                mainContent.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+              } else {
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+              }
+            }, 50);
+          }
+        }}>
           <Plus className="w-4 h-4 mr-2" />
           {showForm ? "Cancel" : "Add New Post"}
         </Button>
@@ -618,7 +644,7 @@ const BlogSection = () => {
                     )}
                   </div>
                   <p className="text-sm text-gray-600 mb-2 text-left w-full">/{post.slug}</p>
-                  <p className="text-sm text-gray-700 line-clamp-2 text-left w-full">{stripHtml(post.content)}</p>
+                  <p className="text-sm text-gray-700 line-clamp-2 text-left w-full break-words">{stripHtml(post.content)}</p>
                   <div className="flex gap-4 items-center mt-3">
                     {post.image && (
                       <img src={post.image} alt={post.title} className="w-32 h-20 object-cover rounded border" />

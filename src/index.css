@@ -240,7 +240,7 @@
 .blog-content p {
   margin-bottom: 1.25rem;
   line-height: 1.8;
-  text-align: justify;
+  text-align: left;
 }
 
 .blog-content ul {
@@ -316,4 +316,24 @@
 .whatsapp-float-btn {
   animation: whatsapp-pulse 2s infinite;
 }
+
+/* Quill Rich Text Editor Styles inside Admin Panel */
+.ql-editor h1, 
+.ql-editor h2, 
+.ql-editor h3, 
+.ql-editor h4 {
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+.ql-editor p {
+  margin-bottom: 0.75rem !important;
+  line-height: 1.6 !important;
+}
+.ql-editor ul, 
+.ql-editor ol {
+  margin-bottom: 0.75rem !important;
+}
+
 

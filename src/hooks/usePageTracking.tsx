@@ -5,11 +5,7 @@ import { GOOGLE_ANALYTICS_ID } from '@/lib/constants';
 
 declare global {
   interface Window {
-    gtag?: (
-      command: 'config' | 'event' | 'js',
-      targetId: string,
-      config?: Record<string, any>
-    ) => void;
+    gtag?: (command: string, action: string, params?: any) => void;
     fbq?: (type: string, eventName: string, data?: any) => void;
   }
 }

@@ -1,18 +1,389 @@
-# ECOVLUU - Natural Hair Care Products
+# https://www.ecovluu.com/ llms-full.txt
 
-## About the Brand
-ECOVLUU provides premium natural hair care products developed by professionals. The brand focuses on deep hydration and hair restoration using natural ingredients. 
+> Ecovluu is a Dublin, Ireland-based hair care brand selling premium natural hair care products — sulfate-, paraben-, and silicone-free shampoos and deep conditioning masks formulated with proteins, keratin, niacinamide, and botanical extracts for dry, damaged, and color-treated hair. Founded by hairstylist Catalina Baciu, operated by Lab Organic Cosmetics Ltd (t/a Ecovluu).
 
-## Products
-- Shampoos: Designed for dry, damaged, and color-treated hair. Formulated to cleanse gently while retaining moisture.
-- Hair Masks: Rich, deeply hydrating masks that restore vitality, shine, and health to the hair.
+---
 
-## Key Values
-- Natural Ingredients
-- Professional Quality
-- Deep Hydration
-- Hair Restoration
+## Home / Shop
 
-## Contact & Policies
-- Contact via email or phone on the official website.
-- ECOVLUU offers secure shopping, transparent shipping, and return policies which can be found in the website footer.
+URL: https://www.ecovluu.com/ and https://www.ecovluu.com/shop
+
+At Ecovluu, hair care is made for real results — deeply nourishing, sulfate-free formulas designed for dry, damaged, and color-treated hair.
+
+Product catalog (filterable by "shampoo" / "mask"):
+
+- **Deep Conditioning Mask - Dry & Damaged Hair | Ecovluu** — https://www.ecovluu.com/product/deep-conditioning-hair-mask
+- **Deep Hydrating Shampoo | Ecovluu** — https://www.ecovluu.com/product/deep-hydrating-shampoo
+
+Homepage FAQ prompts (accordion, questions only visible without expanded answers):
+- Does hydrating shampoo help with dry ends or just the scalp?
+- Will color-safe shampoo help stop my hair color from fading?
+- How do I deal with blonde hair turning brassy?
+- What shampoo works if my scalp is oily but my hair is dry?
+
+Footer tagline (appears sitewide): "🌱 Professional Hair Care · Dublin, Ireland"
+
+---
+
+## About Us
+
+URL: https://www.ecovluu.com/about (implied)
+
+Discover the story behind ECOVLUU. Ecovluu develops premium natural hair care products to restore, hydrate, and strengthen hair using professional formulas.
+
+### Trusted Ingredients
+
+- **Crambe Abyssinica Oil** — Deeply hydrates without weighing hair down. Reduces frizz and smooths the hair cuticle.
+- **Genadvance® Life** — Chosen for its ability to breathe new life into tired, dry hair.
+- **Keratin** — Rebuilds hair structure, fills in damaged areas, and improves elasticity and strength.
+- **Saffron Extract** — Rich in antioxidants. Protects hair from environmental stressors and maintains color vibrancy.
+- **Amino Acids Complex** — Strengthens hair roots, stimulates growth, and prevents breakage by reinforcing structural bonds.
+- **Aloe Vera Extract** — Soothes the scalp, balances hydration, and adds natural shine and softness to every strand.
+
+Section heading: "Trusted Ingredients. Proven Results."
+
+### Founder
+
+**Catalina Baciu, founder** — Ecovluu was founded on the belief that hair care should be both natural and effective. As a hair care specialist with 25 years of experience, the founder set out to create products that deliver salon-quality results at home using clean, premium ingredients.
+
+### Routine Steps (as illustrated on the About page)
+
+1. **Apply** — Apply a small amount of shampoo to damp hair, massage into a rich lather, and rinse.
+2. **Restore** — Distribute the conditioning mask evenly through damp hair, focusing on lengths and ends.
+3. **Wait** — Leave the mask on for 5–10 minutes to allow the natural active ingredients to penetrate deeply.
+4. **Enjoy!** — Enjoy the result: nourished, shiny and hydrated hair.
+
+CTA: [Shop Now](https://www.ecovluu.com/shop)
+
+---
+
+## Product: Deep Hydrating Shampoo
+
+URL: https://www.ecovluu.com/product/deep-hydrating-shampoo
+SKU: DP-HYD-SHM
+Reviews: 26 (5.0 average)
+
+Badges: sulfate-free / no SLS, no SLES, gentle cleanser, professional hair care
+
+⚠️ **Patch Test Recommended:** Before first use, apply a small amount to a discreet area and wait 24 hours to check for any adverse reactions.
+
+### Key Ingredients (highlighted)
+- **Aqua** — Purified Water Base. Forms the base of the formula and helps everything else mix and work smoothly together.
+- Sodium Cocoyl Isethionate
+- Cocamidopropyl Betaine
+- Sodium Lauroamphoacetate
+- Sodium Hydroxymethylglycinate
+
+### Clinical / Survey Results (self-reported, dry hair segment)
+Based on a customer survey of 68 verified purchasers:
+- 92% reported softer, smoother hair after first wash
+- 88% noticed reduced scalp irritation within one week
+- 100% would recommend to someone with dry hair
+
+### Education: Why Hair Hydration Matters
+Hair is roughly 95% protein, but without adequate moisture even healthy protein bonds can become brittle and prone to breakage. Dry hair has a disrupted cuticle layer that lets moisture escape, making hair look dull, feel rough, and tangle easily. Real hydration requires ingredients that penetrate the cortex and bind water inside the hair shaft rather than just coating the surface. The Deep Hydrating Shampoo uses humectants such as Sodium Lactate and Panthenol alongside Sodium Lauroamphoacetate to cleanse and replenish at the same time, so hair doesn't lose more moisture than it gains from each wash.
+
+Did-you-know callout: hair can absorb up to 30% of its own weight in water — when it can't retain moisture, it becomes brittle, not just dry.
+
+### Customer quote featured on page
+"This completely transformed my dry hair!" — Sarah M.
+
+### FAQ prompts on this product page
+- Is this shampoo safe to use on color-treated or blonde hair?
+- I have a dry, itchy scalp. Will this actually help?
+- My hair is heat-damaged from styling. Can this shampoo repair it?
+- Why is silicone-free better for moisturizing hair?
+- How is this different from a regular moisturizing shampoo?
+
+---
+
+## Product: Deep Conditioning Mask (Dry & Damaged Hair)
+
+URL: https://www.ecovluu.com/product/deep-conditioning-hair-mask
+SKU: HR-MSK-FOR-DMG
+Reviews: 26 (5.0 average)
+
+Badges: Professional Hair Mask, Deep Conditioning, hair repair care, damaged hair care
+
+⚠️ **Patch Test Recommended:** Before first use, apply a small amount to a discreet area and wait 24 hours to check for any adverse reactions.
+
+### Key Ingredients (highlighted)
+- **Cetearyl Alcohol** — Softening Fatty Alcohol. A fatty alcohol that helps soften and smooth the hair, keeping the mask's texture rich and creamy.
+- Myristyl Alcohol
+- Inositol
+- Polyquaternium-37
+
+### Clinical / Survey Results (self-reported, dry hair segment)
+Based on a customer survey of 68 verified purchasers:
+- 92% reported softer, smoother hair after first wash
+- 88% noticed reduced scalp irritation within one week
+- 100% would recommend to someone with dry hair
+
+### Education: Why Hair Hydration Matters
+(Same educational copy as the shampoo page — the mask page reuses the hydration-science explainer, including the "hair can absorb up to 30% of its own weight in water" fact.)
+
+### Customer quotes featured on page
+- "This completely transformed my dry hair!" — Sarah M.
+- "The best hydration my scalp has ever felt." — Elena R.
+
+### FAQ prompts on this product page
+- Can I use this mask if I already deep condition every week?
+- Will this weigh down fine or curly hair?
+- How soon after bleaching can I start using it?
+- Is this the same as a regular conditioner, just thicker?
+- My hair is damaged from heat styling, not color - will this still help?
+
+---
+
+## Customer Reviews
+
+URL: https://www.ecovluu.com/reviews
+
+Rating summary: 5.0 average, based on 26 reviews (26 five-star, 0 four/three/two/one-star). Appears on the dedicated Reviews page and on both product pages.
+
+Selected reviews (verified buyers), most recent first:
+
+- **Monica** (2026-06-07): Satisfied with both the shampoo and mask — pleasant scent, cleans well, leaves hair soft and shiny.
+- **Janna Ungureanu** (2026-05-25, x2 entries — one about the products, one describing an in-salon haircut experience with Catalina): Reports hair feeling healthier, softer, and more hydrated with continued use; separately praises a haircut/styling experience.
+- **Andreea Madosa** (2026-05-25): Weeks of use with the mask left hair softer and nourished without heaviness, less dryness and frizz on the ends, likened to a salon treatment at home.
+- **Oana** (2026-05-25): Previously dry, tangle-prone ends became easier to brush and less frizzy without feeling weighed down.
+- **Lavinia Gafincu** (2026-03-24): Shampoo cleans gently without drying hair out; mask adds hydration without weighing hair down.
+- **Denisa Mihaela** (2026-01-26): Hair went from rough and lifeless to shiny and hydrated; also notes her husband resolved a long-standing dandruff issue using the shampoo.
+- **Emilia Lazar** (2025-11-14): Natural-feeling texture and scent; hair softer, shinier, and healthier after a few washes.
+- **Cristina Dudan** (2025-10-29): Highlights the products are concentrated, so jars last a long time.
+- **Felicia** (2025-10-25): Detailed review describing pleasant fragrance, gentle lather, and shiny, frizz-free, manageable hair after using the mask.
+- **Ela** (2025-10-20): Long-time client of Catalina's salon; praises both the haircuts and the natural products sold there.
+- **Anca** (2025-10-17): Notes visible results from first use and a pleasant, discreet scent.
+- **isabella czikra** (2025-10-17): First-time use on blonde hair gave soft, shiny results.
+- **Mirabela** (2025-08-07): Nearly a year of use, very pleased.
+- **Irina Salgau** (2025-06-05, review in Romanian): Long-term user who regularly bleaches her hair every three months; reports no damage issues while using Ecovluu products, thanks Catalina Baciu by name.
+- **Bursuc Daniela** (2025-06-04, Romanian): Recommends the products for healthy hair.
+- **Tracey** (2025-05-28): Hair stronger and less frizzy; calls them the best products.
+- **Bogdan Cardu** (2025-05-26): Calls it the best shampoo he's used.
+- **ihor** (2025-05-26): Short positive review.
+- **Narcisa** (2025-05-06, Romanian): Recommends with high confidence.
+- **Cristina Calugar** (2025-05-01): Compares favorably to other expensive/cheap products tried during her "blonde era."
+- **Lenuta** (2025-05-01): Recommends for all hair types.
+- **Mantea Maria** (2025-05-01): Recommends with confidence.
+- **Sofiya** (2025-04-29), **Aoife** (2025-04-16), **Lina** (2025-04-10): Brief positive reviews/thank-yous.
+
+(Note: the same 26-review set is repeated verbatim across the Reviews page, the Shampoo product page, and the Mask product page.)
+
+---
+
+## Blog
+
+URL: https://www.ecovluu.com/blog
+
+Tagline: Guides, tips, and expert advice on organic hair care — find the right routine for healthy hair.
+
+Posts:
+1. [Why Dry Hair Needs Both Water and Lipids – The Balance Most Routines Miss](https://www.ecovluu.com/blog/dry-hair-water-lipid-balance) — Ecovluu, January 6, 2026
+2. [How to Hydrate Dry Hair Without Weighing It Down](https://www.ecovluu.com/blog/hydrate-dry-hair-without-weighing-down) — Ecovluu, January 6, 2026
+3. [Dry vs Dehydrated Hair: How to Tell the Difference and Fix It Naturally](https://www.ecovluu.com/blog/dry-vs-dehydrated-hair) — Ecovluu, January 6, 2026
+4. [Ecovluu – The Honest Beginning of a New Haircare Era](https://www.ecovluu.com/blog/beginning-new-haircare-era) — Ecovluu, October 1, 2025 (also duplicated at a second slug: /blog/Ecovluu%20%E2%80%93%20The%20Honest%20Beginning%20of%20a%20New%E2%80%A8Haircare%20Era)
+
+### Post: Dry vs Dehydrated Hair — How to Tell the Difference and Fix It Naturally
+
+Dry hair and dehydrated hair are often used interchangeably but describe two different problems, and picking the right routine depends on knowing which one you have.
+
+**Dry hair** lacks lipids (natural oils), often for genetic reasons but worsened by harsh cleansers, over-washing, or environmental exposure. Signs: rough texture, lack of shine, increased friction and breakage. It responds best to gentle cleansing and formulas that protect the scalp's natural oil balance — the article points to the Deep Hydrating Shampoo as an example of a gentle, mild-surfactant option.
+
+**Dehydrated hair** lacks water, not oil, typically from heat styling, chemical treatments, environmental stress, or under-conditioning. Signs: stiffness, frizz, and hair that feels dry but turns greasy quickly. It needs deep hydration and moisture retention — the article points to the Deep Conditioning Mask as a way to restore moisture and elasticity.
+
+Hair can be **both** dry and dehydrated at once, which is common. The recommended two-step routine: cleanse gently to protect natural oils, then treat lengths with an intensive hydrating mask, rebalancing both oil and water levels in the fiber.
+
+Suggested routine: start with a gentle cleansing shampoo, follow with a deep conditioning mask, and avoid aggressive surfactants and excessive heat. Consistency matters more than overloading hair with product.
+
+Key takeaway: dry and dehydrated hair need different but complementary care, and understanding which one you're dealing with lets you build a routine that restores softness, strength, and shine without unnecessary stress on the scalp or fiber.
+
+### Post: How to Hydrate Dry Hair Without Weighing It Down
+
+A common fear for people with dry or dehydrated hair is that hydration will leave hair heavy, flat, or greasy — a valid concern, since many products overload hair with oils and silicones instead of delivering real hydration, coating the hair while it stays dehydrated underneath.
+
+The article argues hydration should never mean added weight. The fix is prioritizing water-binding ingredients over heavy occlusives, starting with a gentle, balanced cleansing step since scalp and lengths have different needs (pointing to the hydrating shampoo), then concentrating hydration on mid-lengths and ends with an intensive mask for dry/damaged hair that restores softness and elasticity without residue or overload (pointing to the mask).
+
+Frequency matters too: hydration works best applied consistently rather than excessively — the right products in the right order beat over-applying rich treatments. If hair feels soft right after washing but dry again the next day, the issue is a lack of balance, not a lack of product. Properly hydrated hair stays flexible, light, and responsive to styling — it moves naturally, reflects light, and feels comfortable rather than stiff, greasy, or coated. Done right, hydration doesn't just make hair look better — it behaves better.
+
+### Post: Why Dry Hair Needs Both Water and Lipids – The Balance Most Routines Miss
+
+Many routines treat dry hair by layering on more and more oil, assuming more oil equals more hydration. In reality, dry hair is rarely just short on oil — it's usually short on water, internal structure, or both. Real improvement comes from correcting the balance between water and lipids inside the hair fiber, not from adding more product.
+
+Hair fiber is made of water, lipids, and proteins: water provides internal hydration, lipids protect the surface, and proteins give strength and elasticity. When one or more of these is compromised — through frequent washing with aggressive surfactants, heat styling, UV exposure, chemical treatments, or environmental dehydration — hair becomes rough, dull, tangle-prone, and breakage-prone.
+
+Oils and butters matter, but only at the right moment: if hair lacks internal water, oil can seal the surface but can't hydrate the fiber itself, which can leave hair temporarily smoother but eventually stiff, heavy, or coated. Hydration has to come first; lipids should follow to protect and preserve that hydration rather than replace it.
+
+Recommended sequence: gentle cleansing that removes buildup without stripping the scalp or fiber, then restoring internal moisture with water-binding ingredients and amino acids, then — only after hydration is re-established — introducing lipids to smooth the cuticle, reduce moisture loss, and add softness and shine.
+
+When water and lipids are balanced, hair feels soft without greasiness, keeps its shape and elasticity, detangles easily, and reflects light naturally — the difference between temporary cosmetic softness and hair that's genuinely healthier over time. Consistency beats heavy, infrequent treatments; healthy hair builds up progressively through routines that respect both scalp and fiber. The core message: dry hair doesn't need more product, it needs the right balance — water first, lipids second, structure supported continuously.
+
+### Post: Ecovluu – The Honest Beginning of a New Haircare Era
+
+In a crowded haircare market full of promises of instant repair and overnight transformation, the article argues hair — like people — thrives on balance rather than empty claims: balance between strength and softness, performance and gentleness, science and nature. That idea is presented as the founding principle of Ecovluu.
+
+Written from the founder's perspective as a hairstylist with more than 25 years of experience: after seeing countless products come and go — some working briefly, many disappointing, few genuinely respecting both hair and scalp — and after watching clients repeatedly struggle with the same issues, the founder created Ecovluu. The brand is described as having originated not purely in a lab, but in the salon chair, through client conversations and real, observed needs.
+
+---
+
+## Contact Us
+
+URL: https://www.ecovluu.com/contact
+
+Have questions? Ecovluu is available to help with your hair care journey via a contact form (Name, Email, Phone, Subject dropdown: Product Inquiry / Order Status / Hair Consultation / Feedback / Other, Message).
+
+**Business Hours**
+- Monday–Friday: 9:00 AM – 5:00 PM
+- Saturday: 10:00 AM – 4:00 PM
+- Sunday: Closed
+
+**Email:** info@ecovluu.com (response within 24 hours)
+
+### Contact page FAQ prompts
+- Are Ecovluu products suitable for all hair types?
+- Do your products contain sulfates, silicones, or parabens?
+- Are your products vegan and cruelty-free?
+- Can I use Ecovluu products on color-treated hair?
+- What makes Ecovluu different from other clean hair care brands?
+- How often should I use the Hair Mask – Concentrate?
+- Are your products safe for sensitive scalps?
+- Where are Ecovluu products made?
+- Do you offer samples or travel sizes?
+
+---
+
+## Privacy Policy
+
+URL: https://www.ecovluu.com/privacy-policy
+Last updated: 7/20/2026
+
+Ecovluu is committed to protecting visitor privacy and explains how it collects, uses, shares, and protects information collected via www.ecovluu.com or through purchases.
+
+**Information collected:** personal information (name, email, billing/shipping addresses, phone number), payment details at purchase, technical data (IP address, device type, browser version), and information collected via cookies.
+
+**How the information is used:** to process orders and payments, provide customer support, communicate order updates, send promotional emails, improve site performance, and tailor product recommendations.
+
+**Sharing:** data may be shared with trusted third-party service providers such as payment processors (e.g., Stripe) and shipping companies. Ecovluu states it does not sell or rent personal data, and requires partners to protect data and comply with GDPR.
+
+**Cookies & tracking:** used to improve browsing experience and analyze site performance; users can control cookie preferences via browser settings, though disabling cookies may affect site features.
+
+**GDPR rights (EU residents):** access personal data, correct inaccurate data, delete data ("right to be forgotten"), restrict use of data, request a portable copy of data, and object to processing for marketing purposes. Requests go to info@ecovluu.com.
+
+**Legal bases for processing:** contractual necessity (orders, payments, delivery, support), consent (marketing communications, non-essential cookies), and legitimate interests/legal obligations (site improvement, fraud prevention, legal compliance).
+
+**Data retention:**
+| Data Type | Retention Period |
+|---|---|
+| Transaction Data | 6 years |
+| Marketing Data | Until unsubscribe |
+| Technical Data | 12 months |
+| Support Data | 2 years |
+
+**Security:** SSL encryption, secure server storage, and regular system monitoring.
+
+**Supervisory authority:** Ireland's Data Protection Commission (DPC) — www.dataprotection.ie, 21 Fitzwilliam Square South, Dublin 2, D02 RD28, Ireland, +353 578 684 800.
+
+**Contact:** info@ecovluu.com; A6, Block A, Santry Business Park, Swords Road, Santry, Dublin 9, Ireland.
+
+---
+
+## Terms & Conditions
+
+URL: https://www.ecovluu.com/terms-conditions
+Last updated: 7/20/2026
+
+Governs use of www.ecovluu.com and purchases from Ecovluu; accessing the site or placing an order means agreeing to these Terms.
+
+**1. Company Information** — Ecovluu; Email: info@ecovluu.com; Legal entity: Lab Organic Cosmetics Ltd, T/A Ecovluu; Company registration number: 699199; Registered address: Santry Business Park, Swords Road, Santry, Dublin 9, D09X651.
+
+**2. Scope** — Applies to all consumer orders placed through the website; does not affect statutory consumer rights under EU or Irish law.
+
+**3. Products** — Ecovluu sells hair care products online. Descriptions/images/specifications are as accurate as possible; minor packaging variations may occur. Site content is not medical advice.
+
+**4. Prices and Payment** — Payment is due in full at checkout; VAT is included where applicable, and shipping is calculated separately and shown at checkout.
+
+**5. Order Process & Contract Formation** — Placing an order is an offer to purchase; a contract forms once an order confirmation email is sent. Ecovluu may refuse/cancel orders for product unavailability, pricing errors, or suspected fraud, with a full refund issued if payment was taken.
+
+**6. Shipping & Delivery**
+- Ireland: delivery 2–5 business days.
+- European Union: rates calculated at checkout; delivery 5–10 business days.
+- Delivery times are estimates; Ecovluu is not liable for delays from incorrect/incomplete address details provided by the customer.
+- Full policy: https://www.ecovluu.com/shipping-policy
+
+**7. Right of Withdrawal (EU consumers)** — 14 calendar days to withdraw without giving a reason, starting the day physical possession of goods is acquired. Exercise by emailing info@ecovluu.com. Refunds processed within 14 days of receiving the returned goods or proof of return, whichever is first.
+
+**8. Conditions for Returns** — Items must be unused, unopened, with intact safety seals (if applicable), in original packaging, and in resalable condition. Unless defective/incorrect, the customer covers return shipping.
+
+**9. Hygiene Exception (Cosmetic Products)** — Per Article 16(e) of Directive 2011/83/EU, the right of withdrawal does not apply to sealed goods unsuitable for return for health/hygiene reasons once unsealed. Opened, unsealed, or used hair care/cosmetic products cannot be returned.
+
+**10. Defective or Incorrect Products** — Contact info@ecovluu.com within 48 hours of delivery; Ecovluu offers a replacement or full refund including applicable shipping costs.
+
+**11. Legal Guarantee** — Minimum 2-year legal guarantee under EU consumer protection law for faulty or not-as-described goods, independent of any commercial warranty.
+
+**12. Limitation of Liability** — Ecovluu is not liable for indirect, incidental, or consequential damages from product use, except where limiting liability isn't legally permitted.
+
+**13. Intellectual Property** — All site content (text, graphics, branding, images) belongs to Ecovluu and may not be reproduced without written consent.
+
+**14. Force Majeure** — No liability for delays/failures due to events beyond reasonable control (natural disasters, strikes, transport disruptions, government actions, etc.).
+
+**15. Severability** — Invalid/unenforceable provisions don't affect the remaining Terms.
+
+**16. Amendments** — Terms may be updated; the version live at time of purchase applies to that order.
+
+**17. Governing Law & Jurisdiction** — Governed by Irish and applicable EU law; disputes subject to Irish courts. EU Online Dispute Resolution platform available where applicable.
+
+**18. Contact** — info@ecovluu.com
+
+---
+
+## Return & Refund Policy
+
+URL: https://www.ecovluu.com/return-refund-policy
+Last updated: 7/20/2026
+
+**1. Right of Withdrawal (EU consumers)** — 14 calendar days to withdraw without reason, expiring 14 days after the consumer (or a third party they designate, other than the carrier) takes physical possession of the goods. Must inform Ecovluu via a clear statement to info@ecovluu.com; an optional model withdrawal form is provided (see below).
+
+**2. Effects of Withdrawal** — All payments received, including standard delivery cost, are reimbursed (excluding extra costs from choosing non-standard delivery). Reimbursement may be withheld until goods are received back or proof of return is supplied, whichever is earlier. Refunds use the original payment method unless otherwise agreed, issued no later than 14 days after Ecovluu is informed of the withdrawal.
+
+**3. Conditions for Returns** — Goods must be sent back within 14 days of communicating withdrawal; must be unused, unopened, with intact safety seals, original packaging, and resalable condition. Customers are liable only for value loss from handling beyond what's needed to check the nature/characteristics/functioning of the goods.
+
+**4. Hygiene & Safety Exception (Cosmetic Products)** — Per Article 16(e) of Directive 2011/83/EU, sealed goods unsuitable for return for health/hygiene reasons once unsealed are excluded from the right of withdrawal; opened, unsealed, or used hair care/cosmetic products cannot be returned.
+
+**5. Return Shipping Costs** — Customer pays return shipping unless goods are defective, damaged, or incorrect (in which case Ecovluu covers it). Tracked shipping is recommended; Ecovluu isn't responsible for items lost in return transit.
+
+**6. Defective or Incorrect Products** — Contact within 48 hours of delivery with order number, description of the issue, and clear photos of product and packaging. Ecovluu offers a replacement or full refund including shipping where applicable.
+
+**7. Exchanges** — No direct exchanges; return the original item and place a new order instead.
+
+**8. How to Return an Item** — Email info@ecovluu.com to initiate; return instructions are provided after the request is reviewed.
+
+**9. Model Withdrawal Form (optional)** — Addressed to Ecovluu, info@ecovluu.com, containing: order number; order/receipt date; consumer name and address; signature (paper submissions only); date.
+
+---
+
+## Shipping & Delivery Policy
+
+URL: https://www.ecovluu.com/shipping-policy
+Last updated: 7/20/2026
+
+**1. Order Processing** — Orders processed within 1–2 business days (Mon–Fri, excluding public holidays). A confirmation email is sent on dispatch, with tracking info where applicable.
+
+**2. Shipping Costs**
+- Ireland: estimated delivery 2–5 business days.
+- European Union: estimated delivery 5–10 business days.
+- Costs are shown at checkout before payment; shipping fees are non-refundable except where the product is defective or incorrect.
+
+**3. Delivery Times** — Estimates only; may vary due to carrier delays, peak seasons, or unforeseen events. Ecovluu isn't responsible for courier delays post-dispatch.
+
+**4. Shipping Responsibility** — Customers must provide accurate, complete shipping information; Ecovluu isn't responsible for extra costs from incorrect/incomplete addresses, and reshipment after a return-to-sender may incur additional charges.
+
+**5. Damaged or Lost Shipments** — Contact info@ecovluu.com with order number, description of the issue, and photos if applicable; Ecovluu will assist in resolving it.
+
+---
+
+## Site notes
+
+- Brand/company: Ecovluu, operated by Lab Organic Cosmetics Ltd (T/A Ecovluu), company registration number 699199, registered at A6, Block A, Santry Business Park, Swords Road, Santry, Dublin 9, Ireland (D09X651).
+- Contact email: info@ecovluu.com
+- Ships to Ireland and the EU.
+- Copyright footer: "Copyright © 2026 Ecovluu | Powered by Ecovluu" · "🌱 Professional Hair Care · Dublin, Ireland"
+- Only two SKUs identified: Deep Hydrating Shampoo (DP-HYD-SHM) and Deep Conditioning Mask (HR-MSK-FOR-DMG).

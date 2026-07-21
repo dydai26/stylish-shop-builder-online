@@ -72,14 +72,14 @@ const Hero = () => {
         <div className="absolute inset-0 flex items-center text-white">
           <div className="container-custom">
             <div className="max-w-xs">
-              <h1
+              <h2
                 ref={titleRef}
                 className="text-xl font-bold mb-4 opacity-0 transition-all duration-1000 text-left leading-tight"
               >
                 <div>WANT A HEALTHY &</div>
                 <div>SHINY HAIR ENHANCED</div>
                 <div>BY NATURAL INGREDIENTS?</div>
-              </h1>
+              </h2>
               {bannerDescription && (
                 <p className="text-sm mb-4 opacity-90">{bannerDescription}</p>
               )}

@@ -56,21 +56,18 @@ const Checkout = () => {
   const [selectedShippingRate, setSelectedShippingRate] = useState<UPSShippingRate | null>(null);
   const [processingPayment, setProcessingPayment] = useState(false);
   
-  // Shipping rates are only calculated when the user clicks "Validate with UPS"
-  // Automatic calculation is disabled to satisfy user requirements
-  /*
+  // Automatically calculate shipping rates when all required address fields are filled
   useEffect(() => {
     const { address, city, postalCode, country } = formData;
     
     if (currentStep === 2 && address && city && postalCode && country && !isValidatingAddress && !isLoadingRates) {
       const timer = setTimeout(() => {
         validateAddress();
-      }, 1000);
+      }, 800);
       
       return () => clearTimeout(timer);
     }
   }, [formData.address, formData.city, formData.postalCode, formData.country, currentStep]);
-  */
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -392,6 +389,8 @@ const Checkout = () => {
                     setProcessingPayment={setProcessingPayment}
                     total={total}
                     cartItems={cartItems}
+                    promoCode={promoCode?.code}
+                    shippingCost={shipping}
                   />
                 )}
               </div>

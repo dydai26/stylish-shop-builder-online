@@ -70,7 +70,7 @@ const ReviewsSection = () => {
     <div className="py-8 sm:py-12 md:py-16 bg-gray-50">
       <div className="container-custom">
         <div className="mb-6 sm:mb-8 md:mb-10 px-4 sm:px-0">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center">Customer Reviews</h1>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center">Customer Reviews</h2>
           <p className="text-center text-black text-sm sm:text-base">See what our customers say about our products</p>
         </div>
         

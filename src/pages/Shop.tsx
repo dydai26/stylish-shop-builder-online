@@ -138,7 +138,7 @@ const Shop = () => {
             <title>Shampoo Collection | Ecovluu</title>
             <meta name="description" content="Browse our range of natural, professional-grade shampoos and hair masks for dry, damaged, and colour-treated hair." />
             <meta name="keywords" content="natural shampoo, organic shampoo, dry hair shampoo, sulfate-free shampoo, ECOVLUU" />
-            <link rel="canonical" href="https://ecovluu.com/shampoo" />
+            <link rel="canonical" href="https://www.ecovluu.com/shampoo" />
             <script type="application/ld+json">
               {JSON.stringify(collectionSchemaMarkup)}
             </script>

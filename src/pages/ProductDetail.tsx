@@ -15,12 +15,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
 import Layout from "@/components/layout/Layout";
@@ -28,11 +25,15 @@ import ProductCard from "@/components/ui/ProductCard";
 
 import { useCart, Product } from "@/context/CartContext";
 import { useReviews } from "@/context/ReviewsContext";
-import { uploadMultipleImages } from "@/lib/imageUploadService";
 import { getProductBySlug, getRelatedProducts } from "@/lib/api";
 import { useTikTokTracking } from "@/hooks/useTikTokTracking";
 import { useMetaTracking } from "@/hooks/useMetaTracking";
 import { useGoogleTracking } from "@/hooks/useGoogleTracking";
+
+import { KEY_INGREDIENTS_GLOSSARY, PRODUCT_CLAIMS, OVERRIDE_FAQS } from "@/data/productStaticData";
+import { ProductIngredients } from "@/components/product/ProductIngredients";
+import { ProductFAQ } from "@/components/product/ProductFAQ";
+import { ProductReviewsSection } from "@/components/product/ProductReviewsSection";
 
 const checkPincodeDelivery = (code: string): { available: boolean; country?: string } => {
   const clean = code.trim().replace(/[\s-]/g, '').toUpperCase();
@@ -72,126 +73,6 @@ const checkPincodeDelivery = (code: string): { available: boolean; country?: str
   return { available: false };
 };
 
-const KEY_INGREDIENTS_GLOSSARY: Record<string, Array<{ name: string; description: string; icon: string; subtype?: string }>> = {
-  "deep-conditioning-hair-mask": [
-    {
-      name: "Cetearyl Alcohol",
-      description: "A fatty alcohol that helps soften and smooth the hair, keeping the mask's texture rich and creamy.",
-      icon: "🧪",
-      subtype: "Softening Fatty Alcohol"
-    },
-    {
-      name: "Myristyl Alcohol",
-      description: "A conditioning agent that helps detangle hair and improve manageability without weighing it down.",
-      icon: "🧴",
-      subtype: "Detangling Conditioner"
-    },
-    {
-      name: "Inositol",
-      description: "Helps strengthen hair from within, supporting elasticity and reducing breakage over time.",
-      icon: "🧬",
-      subtype: "Strengthening B-Vitamin"
-    },
-    {
-      name: "Polyquaternium-37",
-      description: "A conditioning polymer that adds shine and smoothness while helping detangle the hair shaft.",
-      icon: "✨",
-      subtype: "Shine Conditioning Polymer"
-    }
-  ],
-  "deep-hydrating-shampoo": [
-    {
-      name: "Aqua",
-      description: "Simply water. It forms the base of the formula and helps everything else mix and work smoothly together.",
-      icon: "💧",
-      subtype: "Purified Water Base"
-    },
-    {
-      name: "Sodium Cocoyl Isethionate",
-      description: "Comes from coconut and cleans your hair gently. No harsh, stripped-out feeling after washing.",
-      icon: "🥥",
-      subtype: "Coconut-Derived Cleanser"
-    },
-    {
-      name: "Cocamidopropyl Betaine",
-      description: "Helps clean your hair and gives the shampoo a nice, soft lather you'll actually enjoy using.",
-      icon: "🧼",
-      subtype: "Gentle Lathering Agent"
-    },
-    {
-      name: "Sodium Lauroamphoacetate",
-      description: "Works alongside the other cleansers to lift away buildup, while still being gentle on your scalp.",
-      icon: "💆‍♀️",
-      subtype: "Scalp-Friendly Surfactant"
-    },
-    {
-      name: "Sodium Hydroxymethylglycinate",
-      description: "A mild preservative. Keeps the formula safe and fresh, wash after wash.",
-      icon: "🍃",
-      subtype: "Mild Safe Preservative"
-    }
-  ]
-};
-
-const PRODUCT_CLAIMS: Record<string, Array<{ name: string; value: string }>> = {
-  "deep-conditioning-hair-mask": [
-    { name: "Cruelty-Free", value: "Yes - not tested on animals" },
-    { name: "Formula", value: "Free from parabens, sulfates, and silicones" },
-    { name: "Packaging", value: "Recyclable packaging" }
-  ],
-  "deep-hydrating-shampoo": [
-    { name: "Silicone-Free", value: "Yes - formulated without silicones to allow real moisture absorption" },
-    { name: "Sulfate-Free", value: "Yes - free from harsh sulfates" },
-    { name: "Key Cleansing Source", value: "Coconut-derived (Sodium Cocoyl Isethionate)" }
-  ]
-};
-
-const OVERRIDE_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
-  "deep-hydrating-shampoo": [
-    {
-      question: "Is this shampoo safe to use on color-treated or blonde hair?",
-      answer: "Yes, it's gentle enough for colored and blonde hair. Since it's free from harsh sulfates, it cleanses without stripping out color, making it a good shampoo for colored hair that fades easily."
-    },
-    {
-      question: "I have a dry, itchy scalp. Will this actually help?",
-      answer: "This is formulated as a shampoo for dry scalp, focusing on hydration instead of stripping your scalp's natural oils. Most people notice their scalp feels calmer and less tight after a few washes."
-    },
-    {
-      question: "My hair is heat-damaged from styling. Can this shampoo repair it?",
-      answer: "No shampoo can undo damage completely, but this one's built for damaged hair care, focusing on improving softness, manageability and appearance over time with regular use."
-    },
-    {
-      question: "Why is silicone-free better for moisturizing hair?",
-      answer: "Silicones coat the hair and can build up over time, blocking real moisture from getting in. That's why we kept this formula silicone-free, so it stays one of the better hydrating shampoo options for hair that actually needs to absorb moisture, not just look shiny on the surface."
-    },
-    {
-      question: "How is this different from a regular moisturizing shampoo?",
-      answer: "A lot of shampoos that claim to moisturize hair just add slip or shine on the surface. This one's designed to actually hydrate the hair shaft itself, which is what makes it a genuinely best hair care shampoo to moisturize hair without leaving it feeling heavy or weighed down."
-    }
-  ],
-  "deep-conditioning-hair-mask": [
-    {
-      question: "Can I use this mask if I already deep condition every week?",
-      answer: "Yes, and it's actually a good habit. This isn't a harsh treatment, so using a hydrating hair mask weekly won't overload your hair - it just keeps building on the moisture you're already putting in. If your hair is on the drier side, this dry hair mask can even become a twice-a-week step without causing buildup."
-    },
-    {
-      question: "Will this weigh down fine or curly hair?",
-      answer: "No. A lot of people avoid deep conditioning because they're scared of that heavy, greasy feeling - especially with curls. This hair mask for curly hair was made to hydrate without flattening texture. It's lightweight enough that fine hair stays bouncy, and curly hair keeps its shape instead of going limp."
-    },
-    {
-      question: "How soon after bleaching can I start using it?",
-      answer: "You can actually start right after your appointment, once your hair is fully rinsed and dry. Bleached hair loses a lot of its natural moisture and protein during the process, so reaching for a hair mask for bleached hair early on helps it recover instead of staying brittle for weeks."
-    },
-    {
-      question: "Is this the same as a regular conditioner, just thicker?",
-      answer: "Not really. Regular conditioner smooths the surface, but a hair repair mask is built to work deeper into the strand, targeting the damage conditioner can't reach. That's the real difference between a quick rinse-out and an actual damaged hair mask - one maintains, the other repairs."
-    },
-    {
-      question: "My hair is damaged from heat styling, not color - will this still help?",
-      answer: "Definitely. Heat damage and chemical damage show up differently, but they both leave hair dry and weak. This mask works as one of the best hair masks for dry damaged hair regardless of the cause, whether it's from a flat iron, bleach, or just years of everyday styling."
-    }
-  ]
-};
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -200,18 +81,24 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   
   const [quantity, setQuantity] = useState(1);
+  const renderHtmlContent = (text: string) => {
+    if (!text) return { __html: "" };
+    // If it doesn't look like HTML, convert newlines to <br />
+    if (!/<[a-z][\s\S]*>/i.test(text)) {
+      return { __html: text.replace(/\n/g, '<br />') };
+    }
+    return { __html: text };
+  };
   const [activeEducationTab, setActiveEducationTab] = useState("Hydration");
   const [activeResultTab, setActiveResultTab] = useState("Dry Hair");
-  const [activeReviewFilter, setActiveReviewFilter] = useState("All (3)");
   const [activeMedia, setActiveMedia] = useState(0);
   const [isZoomDialogOpen, setIsZoomDialogOpen] = useState(false);
   const [pincode, setPincode] = useState("");
   const [deliveryStatus, setDeliveryStatus] = useState<"idle" | "checking" | "available" | "unavailable">("idle");
   const [detectedCountry, setDetectedCountry] = useState("");
-  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   
   const { addToCart } = useCart();
-  const { reviews, addReview } = useReviews();
+  const { reviews } = useReviews();
   const productReviews = product 
     ? reviews.filter(r => r.product_id === product.id || r.product_id === null) 
     : [];
@@ -221,13 +108,6 @@ const ProductDetail = () => {
     ? Math.round((productReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviewsCount) * 10) / 10
     : 5.0;
 
-  // Form state for reviews
-  const [reviewName, setReviewName] = useState("");
-  const [reviewEmail, setReviewEmail] = useState("");
-  const [reviewText, setReviewText] = useState("");
-  const [reviewRating, setReviewRating] = useState(5);
-  const [reviewFiles, setReviewFiles] = useState<File[]>([]);
-  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const { toast } = useToast();
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   
@@ -877,21 +757,28 @@ const ProductDetail = () => {
     }
     setTouchStart(null);
   };
+  const metaTitle = product.metaTitle || (
+    product.slug === 'deep-hydrating-shampoo'
+      ? "Best Moisturising Shampoo for Deep Hydrating Results | EcoVluu"
+      : product.slug === 'deep-conditioning-hair-mask'
+        ? "Best Hair Mask for Dry & Damaged Hair – Try EcoVluu Today"
+        : `${product.name} - ECOVLUU`
+  );
 
-  let metaTitle = `${product.name} - ECOVLUU`;
-  let metaDescription = product.metaDescription || product.description;
-
-  if (product.slug === 'deep-hydrating-shampoo') {
-    metaTitle = "Best Moisturising Shampoo for Deep Hydrating Results | EcoVluu";
-    metaDescription = "Gorgeous, hydrated hair is finally here! EcoVluu's hydrating shampoo delivers the deep moisture your hair craves. Shop the best moisturising shampoo today!";
-  } else if (product.slug === 'deep-conditioning-hair-mask') {
-    metaTitle = "Best Hair Mask for Dry & Damaged Hair – Try EcoVluu Today";
-    metaDescription = "Your damaged hair deserves better! EcoVluu's deep conditioning mask is the best natural hair mask for dry damaged hair. Try it once and never look back!";
-  }
+  const metaDescription = product.metaDescription || (
+    product.slug === 'deep-hydrating-shampoo'
+      ? "Gorgeous, hydrated hair is finally here! EcoVluu's hydrating shampoo delivers the deep moisture your hair craves. Shop the best moisturising shampoo today!"
+      : product.slug === 'deep-conditioning-hair-mask'
+        ? "Your damaged hair deserves better! EcoVluu's deep conditioning mask is the best natural hair mask for dry damaged hair. Try it once and never look back!"
+        : product.description
+  );
 
   return (
     <Layout>
       <Helmet>
+        <title>{metaTitle}</title>
+        {metaDescription && <meta name="description" content={metaDescription} />}
+        <link rel="canonical" href={`https://www.ecovluu.com/product/${product.slug}`} />
         {productJsonLd && (
           <script type="application/ld+json">
             {JSON.stringify(productJsonLd)}
@@ -910,11 +797,6 @@ const ProductDetail = () => {
       </Helmet>
     
     <div className="w-full bg-background animate-fade-in font-sans text-foreground">
-      <Helmet>
-        <title>{metaTitle}</title>
-        {metaDescription && <meta name="description" content={metaDescription} />}
-        <link rel="canonical" href={`https://www.ecovluu.com/product/${product.slug}`} />
-      </Helmet>
 
       <div className="container-custom py-4 sm:py-8 lg:py-12">
         {/* Breadcrumbs */}
@@ -942,6 +824,11 @@ const ProductDetail = () => {
                   <img 
                     src={mediaItems[activeMedia]?.url} 
                     alt={`${product.name} - View ${activeMedia + 1}`}
+                    width={600}
+                    height={600}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
                     className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 cursor-pointer ${isInactive ? 'grayscale opacity-75' : ''}`}
                     onClick={() => setIsZoomDialogOpen(true)}
                   />
@@ -992,7 +879,7 @@ const ProductDetail = () => {
                     onClick={() => setActiveMedia(idx)}
                     className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex-shrink-0 overflow-hidden bg-[#F7F3EE] border-2 transition-all ${activeMedia === idx ? 'border-brand-orange shadow-md' : 'border-transparent hover:border-brand-orange/50'} ${isInactive ? 'grayscale opacity-75' : ''}`}
                   >
-                    <img src={item.url} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    <img src={item.url} alt={`Thumbnail ${idx + 1}`} width={96} height={96} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -1139,7 +1026,7 @@ const ProductDetail = () => {
                     DESCRIPTION
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed text-sm pb-4">
-                    {product.description}
+                    <div className="blog-content w-full text-left" dangerouslySetInnerHTML={renderHtmlContent(product.description)} />
                   </AccordionContent>
                 </AccordionItem>
               )}
@@ -1165,7 +1052,7 @@ const ProductDetail = () => {
                     HOW TO USE
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed text-sm pb-4">
-                    {product.usage}
+                    <div className="blog-content w-full text-left" dangerouslySetInnerHTML={renderHtmlContent(product.usage)} />
                   </AccordionContent>
                 </AccordionItem>
               )}
@@ -1176,7 +1063,7 @@ const ProductDetail = () => {
                     INGREDIENTS
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed text-sm pb-4">
-                    {product.ingredients}
+                    <div className="blog-content w-full text-left" dangerouslySetInnerHTML={renderHtmlContent(product.ingredients)} />
                   </AccordionContent>
                 </AccordionItem>
               )}
@@ -1203,7 +1090,7 @@ const ProductDetail = () => {
                   SHIPPING & RETURNS
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-600 leading-relaxed text-sm pb-4">
-                  Free shipping on orders over €50. 30-day money-back guarantee.
+                  Free shipping on orders over €50. 14-day money-back guarantee (for unopened products).
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -1220,42 +1107,7 @@ const ProductDetail = () => {
       </div>
 
       {/* WHAT'S INSIDE SECTION */}
-      {KEY_INGREDIENTS_GLOSSARY[product.slug] && (
-        <section className="py-12 sm:py-16 bg-brand-beige/20 border-t border-gray-200">
-          <div className="container-custom">
-            <div className="mb-8 sm:mb-10 text-center sm:text-left border-b border-gray-200 pb-4">
-              <h2 className="text-brand-orange font-semibold tracking-widest text-xs sm:text-sm mb-2 uppercase">What's Inside</h2>
-              <h3 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">Key Ingredients</h3>
-              <p className="text-gray-500 text-sm sm:text-base">Every ingredient chosen for a reason. Click to learn what it does.</p>
-            </div>
-            
-            <Accordion type="single" collapsible defaultValue="ingredient-0" className="w-full">
-              {KEY_INGREDIENTS_GLOSSARY[product.slug].map((item, index) => (
-                <AccordionItem key={index} value={`ingredient-${index}`} className="border-b-gray-200">
-                  <AccordionTrigger className="text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left uppercase">
-                    {item.name}
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-6">
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-beige rounded-full flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0 shadow-sm border border-gray-200">
-                        {item.icon}
-                      </div>
-                      <div>
-                        {item.subtype && (
-                          <h4 className="text-base sm:text-lg font-bold text-brand-brown mb-2">{item.subtype}</h4>
-                        )}
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </section>
-      )}
+      <ProductIngredients productSlug={product.slug} />
 
       {/* CLINICAL RESULTS SECTION */}
       <section className="py-12 sm:py-16 lg:py-24 bg-brand-brown text-brand-beige">
@@ -1434,284 +1286,15 @@ const ProductDetail = () => {
       </section>
 
       {/* FAQ SECTION */}
-      <section className="py-12 sm:py-16 lg:py-24 bg-white">
-        <div className="container-custom max-w-3xl">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-brand-orange font-semibold tracking-widest text-xs sm:text-sm mb-2 sm:mb-3 uppercase">Support</h2>
-            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-brown mb-3 sm:mb-4">Have questions? We've got answers.</h3>
-            <p className="text-gray-500 text-sm sm:text-base">Your most common concerns, answered.</p>
-          </div>
-
-          <Accordion type="single" collapsible className="w-full">
-            {faqContent.map((faq: any, i: number) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border-b-gray-200">
-                <AccordionTrigger className="text-xs sm:text-sm font-bold text-brand-brown hover:text-brand-orange py-4 sm:py-5 text-left leading-snug">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 text-sm sm:text-base leading-relaxed pb-4 sm:pb-6">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
+      <ProductFAQ faqContent={faqContent} />
       
       {/* REVIEWS SECTION */}
-      <section className="py-12 sm:py-16 lg:py-24 bg-brand-beige/20 border-t border-gray-200">
-        <div className="container-custom">
-          <div className="mb-8 sm:mb-12">
-             <h2 className="text-2xl sm:text-3xl font-bold text-brand-brown mb-2 text-center sm:text-left">Customer Reviews</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16">
-            {/* Reviews Summary */}
-            <div className="md:col-span-5 lg:col-span-4 bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
-               <div className="text-5xl sm:text-6xl font-bold text-brand-brown mb-3 sm:mb-4">
-                 {averageRating.toFixed(1)}
-               </div>
-               <div className="mb-3 sm:mb-4 scale-110 sm:scale-125 flex justify-center w-full">
-                 <StarRating rating={averageRating} showReviewsCount={false} />
-               </div>
-              <p className="text-gray-500 text-sm mb-4">Based on {totalReviewsCount} reviews</p>
-              {totalReviewsCount > 0 && (
-                <div className="text-brand-orange font-bold text-lg">
-                  {Math.round((productReviews.filter(r => r.rating >= 4).length / totalReviewsCount) * 100)}% recommend
-                </div>
-              )}
-            </div>
-            
-            {/* Rating Bars */}
-            <div className="md:col-span-7 lg:col-span-8 flex flex-col justify-center gap-3 sm:gap-4">
-               {[
-                 { stars: 5, count: productReviews.filter(r => r.rating === 5).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 5).length / productReviews.length) * 100 : 0 },
-                 { stars: 4, count: productReviews.filter(r => r.rating === 4).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 4).length / productReviews.length) * 100 : 0 },
-                 { stars: 3, count: productReviews.filter(r => r.rating === 3).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 3).length / productReviews.length) * 100 : 0 },
-                 { stars: 2, count: productReviews.filter(r => r.rating === 2).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 2).length / productReviews.length) * 100 : 0 },
-                 { stars: 1, count: productReviews.filter(r => r.rating === 1).length, percent: productReviews.length ? (productReviews.filter(r => r.rating === 1).length / productReviews.length) * 100 : 0 }
-               ].map((bar) => (
-                 <div key={bar.stars} className="flex items-center gap-3 sm:gap-4 text-sm sm:text-base font-medium">
-                   <div className="w-10 sm:w-12 text-brand-brown">{bar.stars} ★</div>
-                   <div className="flex-1 h-2 sm:h-3 bg-gray-200 rounded-full overflow-hidden">
-                     <div className="h-full bg-brand-orange rounded-full transition-all duration-500" style={{ width: `${bar.percent}%` }}></div>
-                   </div>
-                   <div className="w-8 sm:w-12 text-right text-gray-500">{bar.count}</div>
-                 </div>
-               ))}
-               
-               {/* Photo Reviews Gallery */}
-               {(() => {
-                 const allReviewImages = productReviews
-                   .filter(review => review.image_urls && Array.isArray(review.image_urls))
-                   .flatMap(review => review.image_urls);
-                 
-                 if (allReviewImages.length === 0) return null;
-                 
-                 return (
-                   <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-6 overflow-x-auto pb-2 scrollbar-hide">
-                     {allReviewImages.map((url, i) => (
-                       <Dialog key={i}>
-                         <DialogTrigger asChild>
-                           <img src={url} alt={`Customer review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0 cursor-pointer border-2 border-transparent hover:border-brand-orange transition-colors" />
-                         </DialogTrigger>
-                         <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
-                           <DialogTitle className="sr-only">Customer Review Photo Zoom</DialogTitle>
-                           <DialogDescription className="sr-only">Zoomed customer review photo</DialogDescription>
-                           <img src={url} alt={`Customer review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
-                         </DialogContent>
-                       </Dialog>
-                     ))}
-                   </div>
-                 );
-               })()}
-            </div>
-          </div>
-          
-           <div className="flex flex-wrap gap-3 sm:gap-4 my-8 sm:my-10 justify-center items-center">
-              <div className="px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm bg-brand-orange text-white font-semibold">
-                 All ({productReviews.length})
-              </div>
-              
-              <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
-                <DialogTrigger asChild>
-                  <button className="px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm transition-colors shadow-sm border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white font-semibold uppercase tracking-wide cursor-pointer bg-white">
-                    WRITE A REVIEW
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px]">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-brand-brown mb-2">Write a Review</DialogTitle>
-                    <DialogDescription className="sr-only">Form to submit a product rating and feedback</DialogDescription>
-                  </DialogHeader>
-                  <form 
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      if (product) {
-                        setIsSubmittingReview(true);
-                        try {
-                          let uploadedUrls: string[] = [];
-                          if (reviewFiles.length > 0) {
-                            const uploadResults = await uploadMultipleImages(reviewFiles, "reviews");
-                            uploadedUrls = uploadResults.map(r => r.url);
-                          }
-
-                          await addReview({
-                            name: reviewName,
-                            text: reviewText,
-                            rating: reviewRating,
-                            product_id: product.id,
-                            image_urls: uploadedUrls.length > 0 ? uploadedUrls : null,
-                          });
-                          setIsReviewDialogOpen(false);
-                          setReviewName("");
-                          setReviewEmail("");
-                          setReviewText("");
-                          setReviewRating(5);
-                          setReviewFiles([]);
-                          toast({
-                            title: "Review Submitted",
-                            description: "Thank you for your feedback! Your review has been added.",
-                          });
-                        } catch (err) {
-                          toast({
-                            title: "Error",
-                            description: "Failed to submit your review. Please try again later.",
-                            variant: "destructive"
-                          });
-                        } finally {
-                          setIsSubmittingReview(false);
-                        }
-                      }
-                    }}
-                    className="space-y-4 pt-2"
-                  >
-                    <div className="space-y-2">
-                      <Label htmlFor="rating">Rating</Label>
-                      <div className="flex gap-1 text-2xl cursor-pointer">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <span 
-                            key={star} 
-                            onClick={() => setReviewRating(star)}
-                            className={star <= reviewRating ? "text-brand-orange" : "text-gray-300"}
-                          >★</span>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input id="name" placeholder="Your name" value={reviewName} onChange={e => setReviewName(e.target.value)} required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email <span className="text-gray-400 font-normal text-xs">(optional)</span></Label>
-                        <Input id="email" type="email" placeholder="Your email" value={reviewEmail} onChange={e => setReviewEmail(e.target.value)} />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="review">Review</Label>
-                      <Textarea 
-                        id="review" 
-                        placeholder="Share your thoughts about this product..." 
-                        rows={4}
-                        value={reviewText}
-                        onChange={e => setReviewText(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="photos" className="flex items-center gap-2 mb-2">
-                        <span className="text-lg">📸</span> Upload Photos <span className="text-gray-400 font-normal text-xs">(optional)</span>
-                      </Label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer relative group">
-                        <Input 
-                          id="photos" 
-                          type="file" 
-                          accept="image/*" 
-                          multiple 
-                          onChange={(e) => {
-                            if (e.target.files) {
-                              setReviewFiles(Array.from(e.target.files));
-                            }
-                          }}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
-                        />
-                        <div className="text-gray-500 text-center pointer-events-none flex flex-col items-center">
-                          <div className="bg-white p-3 rounded-full shadow-sm mb-3 group-hover:scale-105 transition-transform">
-                            <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                          </div>
-                          <div><span className="text-brand-orange font-medium">Click to upload</span> or drag and drop</div>
-                          <p className="text-xs text-gray-400 mt-1">PNG, JPG, GIF up to 5MB</p>
-                          {reviewFiles.length > 0 && (
-                            <div className="mt-3 text-sm text-green-600 font-medium bg-green-50 px-3 py-1 rounded-full">
-                              {reviewFiles.length} file(s) selected
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="pt-4 flex justify-end">
-                      <Button type="submit" disabled={isSubmittingReview} className="bg-brand-orange hover:bg-brand-orange/90 text-white px-8">
-                        {isSubmittingReview ? "Submitting..." : "Submit Review"}
-                      </Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
-           </div>
-          
-          {/* Review List */}
-          <div className="space-y-4 sm:space-y-6">
-            {productReviews.length === 0 ? (
-              <p className="text-gray-500 italic text-center py-8">No reviews yet for this product. Be the first to leave one!</p>
-            ) : (
-              productReviews.map((review, idx) => (
-                <div key={idx} className="bg-white p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
-                    <div>
-                      <h4 className="font-bold text-brand-brown text-base sm:text-lg flex items-center gap-2">
-                        {review.name}
-                        <span className="text-green-600 text-xs font-semibold bg-green-50 px-2 py-0.5 rounded-full">✓ Verified Buyer</span>
-                      </h4>
-                    </div>
-                    <div className="text-left sm:text-right">
-                      <div className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">{review.date}</div>
-                      <StarRating rating={review.rating} showReviewsCount={false} />
-                    </div>
-                  </div>
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                    {review.text}
-                  </p>
-                  {review.image_urls && Array.isArray(review.image_urls) && review.image_urls.length > 0 && (
-                    <div className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                      {review.image_urls.map((url, i) => (
-                        <Dialog key={i}>
-                          <DialogTrigger asChild>
-                            <img src={url} alt={`Review photo ${i+1}`} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md cursor-pointer border border-gray-200 hover:border-brand-orange transition-colors" />
-                          </DialogTrigger>
-                          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-black/90 border-none flex items-center justify-center">
-                            <DialogTitle className="sr-only">Customer Review Photo Zoom</DialogTitle>
-                            <DialogDescription className="sr-only">Zoomed customer review photo</DialogDescription>
-                            <img src={url} alt={`Review photo ${i+1}`} className="max-w-full max-h-[90vh] object-contain" />
-                          </DialogContent>
-                        </Dialog>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
-
-
-          
-        </div>
-      </section>
+      <ProductReviewsSection
+        productId={product.id}
+        productReviews={productReviews}
+        averageRating={averageRating}
+        totalReviewsCount={totalReviewsCount}
+      />
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (

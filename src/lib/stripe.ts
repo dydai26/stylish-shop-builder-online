@@ -7,17 +7,21 @@ export const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 export const createPayment = async (
   paymentMethodId: string, 
-  amount: number, 
+  items: Array<{ id: number; quantity: number }>,
+  promoCode?: string,
+  shippingCost: number = 0,
   currency: string = 'eur',
   metadata: Record<string, string> = {}
 ) => {
   try {
-    console.log("Calling create-payment function...", { paymentMethodId, amount, currency });
+    console.log("Calling create-payment function...", { paymentMethodId, items, promoCode, shippingCost, currency });
     
     const { data, error } = await supabase.functions.invoke('create-payment', {
       body: {
         paymentMethodId,
-        amount,
+        items,
+        promoCode,
+        shippingCost,
         currency,
         metadata,
       }

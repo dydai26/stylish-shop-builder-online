@@ -121,6 +121,22 @@ const BlogPost = () => {
   const imageUrl = post.image.startsWith('http') ? post.image : `${BASE_URL}${post.image}`;
   const description = post.meta_description || post.excerpt || post.content.slice(0, 160);
   const title = post.meta_title || post.title;
+  const normalizeCanonicalUrl = (inputUrl?: string | null, fallback?: string) => {
+    if (!inputUrl || inputUrl.trim() === '') return fallback || articleUrl;
+    let url = inputUrl.trim();
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      if (url.startsWith('/')) {
+        url = `${BASE_URL}${url}`;
+      } else {
+        url = `${BASE_URL}/blog/${url}`;
+      }
+    }
+    return url.replace('https://ecovluu.com', BASE_URL)
+              .replace('http://ecovluu.com', BASE_URL)
+              .replace('http://www.ecovluu.com', BASE_URL);
+  };
+
+  const canonicalHref = normalizeCanonicalUrl(post.canonical_url, articleUrl);
 
   return (
     <Layout>
@@ -161,36 +177,38 @@ const BlogPost = () => {
         {/* Pinterest */}
         <meta name="pinterest-rich-pin" content="true" />
 
-        <link rel="canonical" href={post.canonical_url || articleUrl} />
+        <link rel="canonical" href={canonicalHref} />
       </Helmet>
 
-      <div className="container-custom py-12 md:py-16">
+      <div className="container-custom py-8 md:py-12 px-4 max-w-5xl mx-auto">
         {/* Back link */}
         <Link
           to="/blog"
-          className="inline-flex items-center gap-2 text-brand-brown hover:underline mb-8"
+          className="inline-flex items-center gap-2 text-brand-brown hover:underline mb-6 text-sm font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Blog
         </Link>
 
-        <article className="max-w-4xl mx-auto">
-          {/* Featured Image */}
-          <div className="relative rounded-2xl overflow-hidden h-56 md:h-[500px] mb-8">
-            <img
-              src={post.image}
-              alt={post.title}
-              className="w-full h-full object-contain"
-            />
-          </div>
-
+        <article className="max-w-4xl mx-auto w-full overflow-hidden">
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 leading-snug text-left text-brand-brown">
             {post.title}
           </h1>
 
+          {/* Featured Image */}
+          {post.image && (
+            <div className="relative rounded-2xl overflow-hidden max-h-[450px] mb-8 bg-gray-50 flex items-center justify-center w-full">
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-full max-h-[700px] object-cover rounded-2xl"
+              />
+            </div>
+          )}
+
           {/* Content */}
-          <div className="mt-8 text-gray-900 leading-relaxed blog-content text-justify w-full">
+          <div className="mt-6 text-gray-900 leading-relaxed blog-content text-left w-full overflow-hidden">
             {isHtml(post.content) ? (
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
             ) : (

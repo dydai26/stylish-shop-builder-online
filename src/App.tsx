@@ -6,7 +6,6 @@ import './App.css';
 import Index from "@/pages/Index";
 import { Toaster } from "@/components/ui/toaster";
 import { AppProviders } from "@/components/AppProviders";
-import AdminDashboard from "@/pages/AdminDashboard";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
 // Lazy load heavy components
@@ -21,7 +20,7 @@ const Checkout = React.lazy(() => import('@/pages/Checkout'));
 const OrderSuccess = React.lazy(() => import('@/pages/OrderSuccess'));
 const Reviews = React.lazy(() => import("@/pages/Reviews"));
 const Login = React.lazy(() => import('@/pages/Login'));
-// AdminDashboard eagerly imported above to avoid dynamic import fetch issues
+const AdminDashboard = React.lazy(() => import('@/pages/AdminDashboard'));
 const NotFound = React.lazy(() => import("@/pages/NotFound"));
 const TermsAndConditions = React.lazy(() => import("@/pages/TermsAndConditions"));
 const PrivacyPolicy = React.lazy(() => import("@/pages/PrivacyPolicy"));

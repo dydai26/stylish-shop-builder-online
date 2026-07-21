@@ -176,7 +176,7 @@ const AboutPage = () => {
         <div className="bg-white py-8 sm:py-12 md:py-16">
           <div className="container-custom">
             <div className="text-center mb-8 sm:mb-10 md:mb-12" data-animate>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-black uppercase">{pageData.title}</h2>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-black uppercase">{pageData.title}</h1>
               <p className="text-gray-600 mt-2 text-sm sm:text-base">{pageData.description}</p>
             </div>
 

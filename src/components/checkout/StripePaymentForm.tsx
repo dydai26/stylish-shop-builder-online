@@ -7,6 +7,8 @@ interface StripePaymentFormProps {
   processingPayment: boolean;
   setProcessingPayment: (processing: boolean) => void;
   total: number;
+  promoCode?: string;
+  shippingCost: number;
   customerInfo: {
     name: string;
     email: string;
@@ -23,6 +25,8 @@ const StripePaymentForm = ({
   processingPayment,
   setProcessingPayment,
   total,
+  promoCode,
+  shippingCost,
   customerInfo,
   orderInfo
 }: StripePaymentFormProps) => {
@@ -74,9 +78,18 @@ const StripePaymentForm = ({
 
       try {
         const { createPayment } = await import('@/lib/stripe');
+        
+        // Map cart items to send only product ID and quantity (safe)
+        const itemsPayload = orderInfo.items.map((item: any) => ({
+          id: item.product.id,
+          quantity: item.quantity
+        }));
+
         const paymentResult = await createPayment(
           paymentMethod.id,
-          total,
+          itemsPayload,
+          promoCode,
+          shippingCost,
           'eur',
           {
             orderId: orderInfo.id,

@@ -16,6 +16,8 @@ interface PaymentStepProps {
   setProcessingPayment: (processing: boolean) => void;
   total: number;
   cartItems: any[];
+  promoCode?: string;
+  shippingCost: number;
 }
 
 const PaymentStep = ({
@@ -26,7 +28,9 @@ const PaymentStep = ({
   processingPayment,
   setProcessingPayment,
   total,
-  cartItems
+  cartItems,
+  promoCode,
+  shippingCost
 }: PaymentStepProps) => {
   return (
     <div>
@@ -67,6 +71,8 @@ const PaymentStep = ({
             processingPayment={processingPayment}
             setProcessingPayment={setProcessingPayment}
             total={total}
+            promoCode={promoCode}
+            shippingCost={shippingCost}
             customerInfo={{
               name: `${formData.firstName} ${formData.lastName}`,
               email: formData.email,

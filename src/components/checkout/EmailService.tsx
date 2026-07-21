@@ -13,8 +13,8 @@ export const sendOrderConfirmationEmail = async (orderData: OrderData) => {
     const templateParams = {
       order_id: orderData.orderId,
       to_email: "ecovluu@gmail.com",
-      recipient: "ecovluu@gmail.com", // Явно вказуємо отримувача
-      to_name: "Адміністратор",       // Ім'я адміністратора, який отримує листа
+      recipient: "ecovluu@gmail.com", // Explicitly specifying recipient
+      to_name: "Administrator",       // Name of the administrator receiving the email
       customer_name: `${orderData.customer.firstName} ${orderData.customer.lastName}`,
       customer_email: orderData.customer.email,
       customer_phone: orderData.customer.phone,
@@ -29,13 +29,13 @@ export const sendOrderConfirmationEmail = async (orderData: OrderData) => {
       total: `€${orderData.total.toFixed(2)}`,
       payment_method: orderData.paymentInfo ? "Credit Card (Stripe)" : "N/A",
       shipping_method: orderData.shipping?.name || "Standard Shipping",
-      email: "ecovluu@gmail.com" // Додаємо явний email параметр, який EmailJS може вимагати
+      email: "ecovluu@gmail.com" // Adding explicit email parameter which EmailJS might require
     };
     
     console.log("Sending order confirmation email with params:", templateParams);
     
     const result = await emailjs.send(
-      "service_3301k2m", // Використовуємо сервіс ID як вказано користувачем
+      "service_3301k2m", // Using service ID specified by user
       "template_gs9l77e", 
       templateParams
     );

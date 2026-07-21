@@ -128,10 +128,10 @@ const Footer = () => {
                     type="submit" 
                     variant="secondary" 
                     size="sm" 
-                    className="w-full bg-brand-orange text-white hover:bg-white text-black "
+                    className="w-full bg-brand-orange text-white hover:bg-white hover:text-black"
                     disabled={isSubmitting || !consentChecked}
                   >
-                    {isSubmitting ? "Підписка..." : "Subscribe"}
+                    {isSubmitting ? "Subscribing..." : "Subscribe"}
                   </Button>
                 </form>
               </div>

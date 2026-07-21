@@ -11,6 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import ImageUpload from "@/components/ui/ImageUpload";
 import VideoUpload from "@/components/ui/VideoUpload";
 import MultiImageUpload from "@/components/ui/MultiImageUpload";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import {
   Dialog,
   DialogContent,
@@ -520,20 +522,74 @@ const ProductsSection = () => {
 
           <TabsContent value="content" className="space-y-4">
             <div>
-              <Label>Description</Label>
-              <Textarea value={localFormData.description || ""} onChange={(e) => handleChange('description', e.target.value)} onBlur={handleBlur} rows={4} />
+              <Label className="block mb-2 font-semibold">Description</Label>
+              <div className="bg-white rounded-md border text-left">
+                <ReactQuill
+                  theme="snow"
+                  value={localFormData.description || ""}
+                  onChange={(val) => {
+                    handleChange('description', val);
+                    setFormData(prev => ({ ...prev, description: val }));
+                  }}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{'list': 'ordered'}, {'list': 'bullet'}],
+                      ['link', 'clean']
+                    ]
+                  }}
+                  placeholder="Enter product description..."
+                />
+              </div>
             </div>
             <div>
-              <Label>Benefits (one per line)</Label>
+              <Label className="block mb-2 font-semibold">Benefits (one per line)</Label>
               <Textarea value={localFormData.benefits || ""} onChange={(e) => handleChange('benefits', e.target.value)} onBlur={handleBlur} rows={4} />
             </div>
             <div>
-              <Label>Usage Instructions</Label>
-              <Textarea value={localFormData.usage || ""} onChange={(e) => handleChange('usage', e.target.value)} onBlur={handleBlur} rows={3} />
+              <Label className="block mb-2 font-semibold">Usage Instructions</Label>
+              <div className="bg-white rounded-md border text-left">
+                <ReactQuill
+                  theme="snow"
+                  value={localFormData.usage || ""}
+                  onChange={(val) => {
+                    handleChange('usage', val);
+                    setFormData(prev => ({ ...prev, usage: val }));
+                  }}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{'list': 'ordered'}, {'list': 'bullet'}],
+                      ['link', 'clean']
+                    ]
+                  }}
+                  placeholder="Enter usage instructions..."
+                />
+              </div>
             </div>
             <div>
-              <Label>Ingredients</Label>
-              <Textarea value={localFormData.ingredients || ""} onChange={(e) => handleChange('ingredients', e.target.value)} onBlur={handleBlur} rows={3} />
+              <Label className="block mb-2 font-semibold">Ingredients</Label>
+              <div className="bg-white rounded-md border text-left">
+                <ReactQuill
+                  theme="snow"
+                  value={localFormData.ingredients || ""}
+                  onChange={(val) => {
+                    handleChange('ingredients', val);
+                    setFormData(prev => ({ ...prev, ingredients: val }));
+                  }}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{'list': 'ordered'}, {'list': 'bullet'}],
+                      ['link', 'clean']
+                    ]
+                  }}
+                  placeholder="Enter ingredients list..."
+                />
+              </div>
             </div>
           </TabsContent>
 
