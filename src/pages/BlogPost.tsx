@@ -210,9 +210,9 @@ const BlogPost = () => {
           {/* Content */}
           <div className="mt-6 text-gray-900 leading-relaxed blog-content text-left w-full overflow-hidden">
             {isHtml(post.content) ? (
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              <div dangerouslySetInnerHTML={{ __html: post.content.replace(/&nbsp;/g, ' ').replace(/\u00a0/g, ' ') }} />
             ) : (
-              formatContent(post.content)
+              formatContent(post.content.replace(/&nbsp;/g, ' ').replace(/\u00a0/g, ' '))
             )}
           </div>
 
