@@ -227,8 +227,6 @@
 .blog-content * {
   max-width: 100% !important;
   box-sizing: border-box !important;
-  overflow-wrap: break-word !important;
-  word-wrap: break-word !important;
 }
 
 .blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4 {
