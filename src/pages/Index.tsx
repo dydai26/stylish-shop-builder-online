@@ -13,6 +13,54 @@ import NewsletterSection from "@/components/home/NewsletterSection";
 import IntroAnimation from "@/components/intro/IntroAnimation";
 import { getAboutContent } from "@/lib/aboutService";
 
+const HOMEPAGE_FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://www.ecovluu.com/#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are your products 100% natural?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We use natural ingredients and every formula is developed by professionals, so it's safe, effective, and free from harsh chemicals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What type of hair are Ecovluu products suitable for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All hair types, really. But if your hair is dry, damaged, or color-treated, our keratin hair care range and sulfate-free shampoo options will do the most for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does shipping take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We process orders in 1-2 business days. After that, delivery usually takes another 3-5 business days depending on where you're located."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer international shipping?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We currently ship to select countries. Check our shipping policy page for the full list."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I return a product if I'm not satisfied?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We back every order with a money-back guarantee - damaged items can be returned within 14 days of delivery for a refund."
+      }
+    }
+  ]
+};
+
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [hasShownIntro, setHasShownIntro] = useState(false);
@@ -62,6 +110,9 @@ const Index = () => {
         <title>{seoData.title}</title>
         <meta name="description" content={seoData.description} />
         <link rel="canonical" href="https://www.ecovluu.com/" />
+        <script type="application/ld+json">
+          {JSON.stringify(HOMEPAGE_FAQ_SCHEMA)}
+        </script>
       </Helmet>
       <DeliveryAnnouncement />
       <div className="w-full overflow-hidden">

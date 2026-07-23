@@ -648,7 +648,7 @@ const ProductDetail = () => {
     return {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "@id": `https://ecovluu.com/product/${product.slug}/#faq`,
+      "@id": `https://www.ecovluu.com/product/${product.slug}/#faq`,
       "mainEntity": faqs.map(faq => ({
         "@type": "Question",
         "name": faq.question,
