@@ -308,6 +308,21 @@ const ProductDetail = () => {
             "@type": "PropertyValue",
             "name": "Container Size",
             "value": "250 ml"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Silicone-Free",
+            "value": "Yes - formulated without silicones to allow real moisture absorption"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Sulfate-Free",
+            "value": "Yes - free from harsh sulfates"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Key Cleansing Source",
+            "value": "Coconut-derived (Sodium Cocoyl Isethionate)"
           }
         ],
         "offers": [
@@ -476,6 +491,16 @@ const ProductDetail = () => {
           },
           {
             "@type": "PropertyValue",
+            "name": "Cruelty-Free",
+            "value": "Yes - not tested on animals"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Formula",
+            "value": "Free from parabens, sulfates, and silicones"
+          },
+          {
+            "@type": "PropertyValue",
             "name": "Packaging",
             "value": "Recyclable packaging"
           }
@@ -627,14 +652,14 @@ const ProductDetail = () => {
     return {
       "@context": "https://schema.org",
       "@type": "DefinedTermSet",
-      "@id": `https://ecovluu.com/product/${product.slug}/#ingredients-glossary`,
+      "@id": `https://www.ecovluu.com/product/${product.slug}/#ingredients-glossary`,
       "name": `Key Ingredients Glossary - ${product.slug === 'deep-conditioning-hair-mask' ? 'Deep Conditioning Hair Mask' : 'Deep Hydrating Shampoo'}`,
-      "url": `https://ecovluu.com/product/${product.slug}`,
+      "url": `https://www.ecovluu.com/product/${product.slug}`,
       "hasDefinedTerm": glossary.map(term => ({
         "@type": "DefinedTerm",
         "name": term.name,
         "description": term.description,
-        "inDefinedTermSet": `https://ecovluu.com/product/${product.slug}/#ingredients-glossary`
+        "inDefinedTermSet": `https://www.ecovluu.com/product/${product.slug}/#ingredients-glossary`
       }))
     };
   };
