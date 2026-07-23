@@ -15,12 +15,12 @@ const GLOBAL_SCHEMA = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://ecovluu.com/#organization",
+      "@id": "https://www.ecovluu.com/#organization",
       "name": "Ecovluu",
-      "url": "https://ecovluu.com/",
+      "url": "https://www.ecovluu.com/",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ecovluu.com/Layer_1.png",
+        "url": "https://www.ecovluu.com/Layer_1.png",
         "inLanguage": "en"
       },
       "description": "Hair care products developed by professionals. Deep hydration and hair restoration with EcoVluu - shampoos and rich masks for dry, damaged, and colour-treated hair.",
@@ -69,15 +69,15 @@ const GLOBAL_SCHEMA = {
     },
     {
       "@type": ["LocalBusiness", "Store"],
-      "@id": "https://ecovluu.com/#localbusiness",
+      "@id": "https://www.ecovluu.com/#localbusiness",
       "name": "Ecovluu",
-      "url": "https://ecovluu.com/",
-      "parentOrganization": { "@id": "https://ecovluu.com/#organization" },
+      "url": "https://www.ecovluu.com/",
+      "parentOrganization": { "@id": "https://www.ecovluu.com/#organization" },
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ecovluu.com/Layer_1.png"
+        "url": "https://www.ecovluu.com/Layer_1.png"
       },
-      "image": "https://ecovluu.com/baner-home.jpg",
+      "image": "https://www.ecovluu.com/baner-home.jpg",
       "description": "Hair care products developed by professionals. Deep hydration and hair restoration with EcoVluu - shampoos and rich masks for dry, damaged, and colour-treated hair.",
       "email": "info@ecovluu.com",
       "priceRange": "$ - $$$",
@@ -134,30 +134,6 @@ const GLOBAL_SCHEMA = {
         { "@type": "Country", "name": "Spain" },
         { "@type": "Country", "name": "Sweden" }
       ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Hair Care Products",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Product",
-              "name": "Deep Hydrating Shampoo",
-              "alternateName": "Best Moisturising Shampoo",
-              "description": "Professional-grade moisturising shampoo for deep hydration of dry, damaged, and colour-treated hair."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Product",
-              "name": "Deep Conditioning Hair Mask",
-              "alternateName": "Deep Conditioning Mask",
-              "description": "Rich deep-conditioning mask for intensive hair hydration and restoration."
-            }
-          }
-        ]
-      },
       "sameAs": [
         "https://www.facebook.com/people/Ecovluu/100089921524516/",
         "https://www.instagram.com/ecovluu/",
@@ -166,16 +142,16 @@ const GLOBAL_SCHEMA = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://ecovluu.com/#website",
-      "url": "https://ecovluu.com/",
+      "@id": "https://www.ecovluu.com/#website",
+      "url": "https://www.ecovluu.com/",
       "name": "Ecovluu",
       "description": "Premium hair care products developed by professionals.",
-      "publisher": { "@id": "https://ecovluu.com/#organization" },
+      "publisher": { "@id": "https://www.ecovluu.com/#organization" },
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://ecovluu.com/?s={search_term_string}"
+          "urlTemplate": "https://www.ecovluu.com/?s={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       },
