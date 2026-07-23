@@ -727,6 +727,25 @@ const ProductDetail = () => {
   const productJsonLd = generateProductJsonLd();
   const ingredientsJsonLd = generateIngredientsJsonLd();
   const faqJsonLd = generateFaqJsonLd();
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": "https://www.ecovluu.com/shampoo/#itemlist",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://www.ecovluu.com/product/deep-hydrating-shampoo",
+        "name": "Deep Hydrating Shampoo | Ecovluu"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.ecovluu.com/product/deep-conditioning-hair-mask",
+        "name": "Deep Conditioning Mask - Dry & Damaged Hair | Ecovluu"
+      }
+    ]
+  };
   const isInactive = product.status === 'inactive';
 
   const handlePrevMedia = () => {
@@ -759,15 +778,15 @@ const ProductDetail = () => {
     }
     setTouchStart(null);
   };
-  const metaTitle = product.metaTitle || (
+  const metaTitle = (
     product.slug === 'deep-hydrating-shampoo'
-      ? "Best Moisturising Shampoo for Deep Hydrating Results | EcoVluu"
+      ? "Buy Deep Hydrating Shampoo Online for Dry Hair | EcoVluu"
       : product.slug === 'deep-conditioning-hair-mask'
-        ? "Best Hair Mask for Dry & Damaged Hair – Try EcoVluu Today"
-        : `${product.name} - ECOVLUU`
+        ? "Buy Best Hair Mask for Dry Damaged Hair Online | EcoVluu"
+        : product.name
   );
 
-  const metaDescription = product.metaDescription || (
+  const metaDescription = (
     product.slug === 'deep-hydrating-shampoo'
       ? "Gorgeous, hydrated hair is finally here! EcoVluu's hydrating shampoo delivers the deep moisture your hair craves. Shop the best moisturising shampoo today!"
       : product.slug === 'deep-conditioning-hair-mask'
@@ -796,6 +815,9 @@ const ProductDetail = () => {
             {JSON.stringify(faqJsonLd)}
           </script>
         )}
+        <script type="application/ld+json">
+          {JSON.stringify(itemListJsonLd)}
+        </script>
       </Helmet>
     
     <div className="w-full bg-background animate-fade-in font-sans text-foreground">

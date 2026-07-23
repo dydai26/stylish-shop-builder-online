@@ -58,7 +58,7 @@ const Shop = () => {
   const faqSchemaMarkup = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": "https://ecovluu.com/shop/#faq",
+    "@id": "https://www.ecovluu.com/shop/#faq",
     "mainEntity": shopFaqs.map(faq => ({
       "@type": "Question",
       "name": faq.question,
@@ -73,12 +73,12 @@ const Shop = () => {
   const collectionSchemaMarkup = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "https://ecovluu.com/shampoo/#collectionpage",
+    "@id": "https://www.ecovluu.com/shampoo/#collectionpage",
     "name": "Shampoo Collection | Ecovluu",
     "description": "Browse our range of natural, professional-grade shampoos and hair masks for dry, damaged, and colour-treated hair.",
-    "url": "https://ecovluu.com/shampoo",
+    "url": "https://www.ecovluu.com/shampoo",
     "isPartOf": {
-      "@id": "https://ecovluu.com/#website"
+      "@id": "https://www.ecovluu.com/#website"
     }
   };
 
@@ -86,18 +86,18 @@ const Shop = () => {
   const itemListSchemaMarkup = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "@id": "https://ecovluu.com/shampoo/#itemlist",
+    "@id": "https://www.ecovluu.com/shampoo/#itemlist",
     "itemListElement": [
       {
         "@type": "ListItem",
         "position": 1,
-        "url": "https://ecovluu.com/product/deep-hydrating-shampoo",
+        "url": "https://www.ecovluu.com/product/deep-hydrating-shampoo",
         "name": "Deep Hydrating Shampoo | Ecovluu"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "url": "https://ecovluu.com/product/deep-conditioning-hair-mask",
+        "url": "https://www.ecovluu.com/product/deep-conditioning-hair-mask",
         "name": "Deep Conditioning Mask - Dry & Damaged Hair | Ecovluu"
       }
     ]
