@@ -44,9 +44,9 @@ export const BlogArticleSchema = ({
   description,
   content
 }: BlogArticleSchemaProps) => {
-  const articleUrl = `https://ecovluu.com/blog/${slug}`;
-  const formattedDatePublished = datePublished.split('T')[0];
-  const formattedDateModified = (dateModified || datePublished).split('T')[0];
+  const articleUrl = `https://www.ecovluu.com/blog/${slug}`;
+  const formattedDatePublished = datePublished;
+  const formattedDateModified = dateModified || datePublished;
   
   // Dynamic word count estimation
   const wordCount = content ? content.split(/\s+/).filter(Boolean).length.toString() : "450";
@@ -69,23 +69,23 @@ export const BlogArticleSchema = ({
     "url": articleUrl,
     "image": {
       "@type": "ImageObject",
-      "url": imageUrl.startsWith('http') ? imageUrl : `https://ecovluu.com${imageUrl}`,
+      "url": imageUrl.startsWith('http') ? imageUrl : `https://www.ecovluu.com${imageUrl}`,
       "inLanguage": "en"
     },
     "inLanguage": "en",
     "author": {
       "@type": "Organization",
-      "@id": "https://ecovluu.com/#organization",
+      "@id": "https://www.ecovluu.com/#organization",
       "name": "Ecovluu",
-      "url": "https://ecovluu.com/"
+      "url": "https://www.ecovluu.com/"
     },
     "publisher": {
       "@type": "Organization",
-      "@id": "https://ecovluu.com/#organization",
+      "@id": "https://www.ecovluu.com/#organization",
       "name": "Ecovluu",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ecovluu.com/Layer_1.png"
+        "url": "https://www.ecovluu.com/Layer_1.png"
       }
     },
     "datePublished": formattedDatePublished,
@@ -95,7 +95,7 @@ export const BlogArticleSchema = ({
       "@id": articleUrl,
       "url": articleUrl,
       "name": title,
-      "isPartOf": { "@id": "https://ecovluu.com/#website" },
+      "isPartOf": { "@id": "https://www.ecovluu.com/#website" },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -103,13 +103,13 @@ export const BlogArticleSchema = ({
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://ecovluu.com/"
+            "item": "https://www.ecovluu.com/"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Blog",
-            "item": "https://ecovluu.com/blog"
+            "item": "https://www.ecovluu.com/blog"
           },
           {
             "@type": "ListItem",
