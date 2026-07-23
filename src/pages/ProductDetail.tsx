@@ -417,12 +417,14 @@ const ProductDetail = () => {
       return {
         "@context": "https://schema.org",
         "@type": "Product",
-        "@id": "https://ecovluu.com/product/deep-conditioning-hair-mask/#product",
+        "@id": "https://www.ecovluu.com/product/deep-conditioning-hair-mask/#product",
         "name": "Deep Conditioning Mask - Dry & Damaged Hair | Ecovluu",
         "alternateName": "Deep Conditioning Hair Mask",
         "description": "Ecovluu Deep Conditioning Hair Mask is a professional-grade, concentrated treatment designed for weekly use on dry, damaged and bleached hair. Its rich formula combines keratin, essential amino acids and botanical extracts to deeply nourish the hair fibre, improve manageability and enhance softness without weighing the hair down. Container size: 150 ml.",
-        "url": productUrl,
-        "image": allImages.length > 0 ? allImages : [product.image],
+        "url": "https://www.ecovluu.com/product/deep-conditioning-hair-mask",
+        "image": [
+          "https://inivoiunisrgdinrcquu.supabase.co/storage/v1/object/public/product-images/products/1767729847008-w8q4se.png"
+        ],
         "sku": "HR-MSK-FOR-DMG",
         "mpn": "HR-MSK-FOR-DMG",
         "brand": {
@@ -431,7 +433,7 @@ const ProductDetail = () => {
         },
         "manufacturer": {
           "@type": "Organization",
-          "@id": "https://ecovluu.com/#organization",
+          "@id": "https://www.ecovluu.com/#organization",
           "name": "Ecovluu"
         },
         "category": "Mask Products",
@@ -482,14 +484,14 @@ const ProductDetail = () => {
           {
             "@type": "Offer",
             "name": "Ireland Shipping",
-            "url": productUrl,
+            "url": "https://www.ecovluu.com/product/deep-conditioning-hair-mask",
             "priceCurrency": "EUR",
             "price": product.price.toFixed(2),
             "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": {
               "@type": "Organization",
-              "@id": "https://ecovluu.com/#organization",
+              "@id": "https://www.ecovluu.com/#organization",
               "name": "Ecovluu"
             },
             "shippingDetails": {
@@ -515,31 +517,30 @@ const ProductDetail = () => {
               },
               "shippingRate": {
                 "@type": "MonetaryAmount",
-                "value": "4.95",
+                "value": "12.05",
                 "currency": "EUR"
               }
             },
             "hasMerchantReturnPolicy": {
               "@type": "MerchantReturnPolicy",
-              "applicableCountry": ["IE"],
+              "applicableCountry": "IE",
               "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
               "merchantReturnDays": 14,
               "returnMethod": "https://schema.org/ReturnByMail",
-              "returnFees": "https://schema.org/FreeReturn",
-              "returnPolicyUrl": "https://ecovluu.com/returns"
+              "returnFees": "https://schema.org/FreeReturn"
             }
           },
           {
             "@type": "Offer",
             "name": "European Union Shipping",
-            "url": productUrl,
+            "url": "https://www.ecovluu.com/product/deep-conditioning-hair-mask",
             "priceCurrency": "EUR",
             "price": product.price.toFixed(2),
             "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": {
               "@type": "Organization",
-              "@id": "https://ecovluu.com/#organization",
+              "@id": "https://www.ecovluu.com/#organization",
               "name": "Ecovluu"
             },
             "shippingDetails": {
@@ -565,18 +566,17 @@ const ProductDetail = () => {
               },
               "shippingRate": {
                 "@type": "MonetaryAmount",
-                "value": "9.95",
+                "value": "23.12",
                 "currency": "EUR"
               }
             },
             "hasMerchantReturnPolicy": {
               "@type": "MerchantReturnPolicy",
-              "applicableCountry": ["IE"],
+              "applicableCountry": "IE",
               "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
               "merchantReturnDays": 14,
               "returnMethod": "https://schema.org/ReturnByMail",
-              "returnFees": "https://schema.org/FreeReturn",
-              "returnPolicyUrl": "https://ecovluu.com/returns"
+              "returnFees": "https://schema.org/FreeReturn"
             }
           }
         ]
