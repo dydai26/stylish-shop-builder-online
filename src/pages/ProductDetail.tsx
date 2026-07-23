@@ -252,12 +252,14 @@ const ProductDetail = () => {
       return {
         "@context": "https://schema.org",
         "@type": "Product",
-        "@id": "https://ecovluu.com/product/deep-hydrating-shampoo/#product",
+        "@id": "https://www.ecovluu.com/product/deep-hydrating-shampoo/#product",
         "name": "Deep Hydrating Shampoo | Ecovluu",
         "alternateName": "Best Moisturising Shampoo",
         "description": "Ecovluu Deep Hydrating Shampoo is a professional-grade shampoo formulated to gently cleanse and hydrate dry or sensitive hair without disrupting its natural balance. It removes impurities while maintaining moisture, leaving hair soft, light, and comfortable from the first wash. Suitable for dry, sensitive, or stressed hair. Ideal for frequent use. Bottle size: 250 ml.",
-        "url": productUrl,
-        "image": allImages.length > 0 ? allImages : [product.image],
+        "url": "https://www.ecovluu.com/product/deep-hydrating-shampoo",
+        "image": [
+          "https://nivoluinisrgdincqau.supabase.co/storage/v1/object/public/product-images/products/1767734309542-5jv0h4.png"
+        ],
         "sku": "DP-HYD-SHM",
         "mpn": "DP-HYD-SHM",
         "brand": {
@@ -266,7 +268,7 @@ const ProductDetail = () => {
         },
         "manufacturer": {
           "@type": "Organization",
-          "@id": "https://ecovluu.com/#organization",
+          "@id": "https://www.ecovluu.com/#organization",
           "name": "Ecovluu"
         },
         "category": "Shampoo Products",
@@ -312,14 +314,14 @@ const ProductDetail = () => {
           {
             "@type": "Offer",
             "name": "Ireland Shipping",
-            "url": productUrl,
+            "url": "https://www.ecovluu.com/product/deep-hydrating-shampoo",
             "priceCurrency": "EUR",
             "price": product.price.toFixed(2),
             "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": {
               "@type": "Organization",
-              "@id": "https://ecovluu.com/#organization",
+              "@id": "https://www.ecovluu.com/#organization",
               "name": "Ecovluu"
             },
             "shippingDetails": {
@@ -345,7 +347,7 @@ const ProductDetail = () => {
               },
               "shippingRate": {
                 "@type": "MonetaryAmount",
-                "value": "4.95",
+                "value": "12.05",
                 "currency": "EUR"
               }
             },
@@ -356,20 +358,20 @@ const ProductDetail = () => {
               "merchantReturnDays": 14,
               "returnMethod": "https://schema.org/ReturnByMail",
               "returnFees": "https://schema.org/FreeReturn",
-              "returnPolicyUrl": "https://ecovluu.com/returns"
+              "merchantReturnLink": "https://www.ecovluu.com/returns"
             }
           },
           {
             "@type": "Offer",
             "name": "European Union Shipping",
-            "url": productUrl,
+            "url": "https://www.ecovluu.com/product/deep-hydrating-shampoo",
             "priceCurrency": "EUR",
             "price": product.price.toFixed(2),
             "availability": product.status === 'inactive' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": {
               "@type": "Organization",
-              "@id": "https://ecovluu.com/#organization",
+              "@id": "https://www.ecovluu.com/#organization",
               "name": "Ecovluu"
             },
             "shippingDetails": {
@@ -395,7 +397,7 @@ const ProductDetail = () => {
               },
               "shippingRate": {
                 "@type": "MonetaryAmount",
-                "value": "9.95",
+                "value": "23.12",
                 "currency": "EUR"
               }
             },
@@ -406,7 +408,7 @@ const ProductDetail = () => {
               "merchantReturnDays": 14,
               "returnMethod": "https://schema.org/ReturnByMail",
               "returnFees": "https://schema.org/FreeReturn",
-              "returnPolicyUrl": "https://ecovluu.com/returns"
+              "merchantReturnLink": "https://www.ecovluu.com/returns"
             }
           }
         ]
