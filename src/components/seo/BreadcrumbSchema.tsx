@@ -17,7 +17,7 @@ export const BreadcrumbSchema = ({ items }: BreadcrumbSchemaProps) => {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": item.url.startsWith('http') ? item.url : `https://ecovluu.com${item.url}`
+      "item": item.url.startsWith('http') ? item.url : `https://www.ecovluu.com${item.url}`
     }))
   };
 
